@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{f7cb96ef-1852-4f53-b98f-f87833974643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{0ecdb0f0-5a1d-4fa3-8991-d0e29ca6691a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features">
+      <UniqueIdentifier>{d4cc911b-c792-4792-95cd-dfc0f9445550}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures">
+      <UniqueIdentifier>{0a7b6353-b20f-4d19-9ce7-fa3ec07212ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\module">
+      <UniqueIdentifier>{21838e33-a92a-4fd8-8d13-77e194880e78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\client">
+      <UniqueIdentifier>{4ba2d8ed-732d-4f2c-a1e7-a8c070ec791b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\offsets">
+      <UniqueIdentifier>{87013fa5-99f7-4470-8e43-b496b800bbad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\Angle">
+      <UniqueIdentifier>{5260d32a-e93e-42c7-a4d5-f58574afcf08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\Position">
+      <UniqueIdentifier>{d16da958-aa2e-4937-afbb-ea6e7addbad1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\Vector3">
+      <UniqueIdentifier>{cac250b2-721f-46fe-b27b-b0336879ba61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\BoneMatrix">
+      <UniqueIdentifier>{314210ee-21e8-4352-8a1e-4ca613bd4af6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\Cham">
+      <UniqueIdentifier>{a18f7272-3b6b-48f0-8dd3-7cb293991a11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\GlobalVar">
+      <UniqueIdentifier>{02bac0ac-540a-43ba-bd5a-bbecaad6a944}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\Glow">
+      <UniqueIdentifier>{445f979d-8fcf-436f-98db-dfb9c1c403fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\Input">
+      <UniqueIdentifier>{7e805fb7-5d33-4c4e-a419-e75b212daae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\PlayerEntity">
+      <UniqueIdentifier>{f4089812-6fec-49ab-a0c6-bda7295576d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\PlayerEntityAddress">
+      <UniqueIdentifier>{80a11768-b693-4673-b326-284ae19d0840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\weapon">
+      <UniqueIdentifier>{2b20fe2b-176c-4456-b1f0-750f7c788251}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="module.cpp">
+      <Filter>Features\module</Filter>
+    </ClCompile>
+    <ClCompile Include="client.cpp">
+      <Filter>Features\client</Filter>
+    </ClCompile>
+    <ClCompile Include="offsets.cpp">
+      <Filter>Resources\offsets</Filter>
+    </ClCompile>
+    <ClCompile Include="Angle.cpp">
+      <Filter>Structures\Angle</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>Structures\Vector3</Filter>
+    </ClCompile>
+    <ClCompile Include="Position.cpp">
+      <Filter>Structures\Position</Filter>
+    </ClCompile>
+    <ClCompile Include="BoneMatrix.cpp">
+      <Filter>Structures\BoneMatrix</Filter>
+    </ClCompile>
+    <ClCompile Include="Cham.cpp">
+      <Filter>Structures\Cham</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalVar.cpp">
+      <Filter>Structures\GlobalVar</Filter>
+    </ClCompile>
+    <ClCompile Include="Glow.cpp">
+      <Filter>Structures\Glow</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Structures\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerEntity.cpp">
+      <Filter>Structures\PlayerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerEntityAddress.cpp">
+      <Filter>Structures\PlayerEntityAddress</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="weapon.cpp">
+      <Filter>Resources\weapon</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="module.h">
+      <Filter>Features\module</Filter>
+    </ClInclude>
+    <ClInclude Include="client.h">
+      <Filter>Features\client</Filter>
+    </ClInclude>
+    <ClInclude Include="offsets.h">
+      <Filter>Resources\offsets</Filter>
+    </ClInclude>
+    <ClInclude Include="Angle.h">
+      <Filter>Structures\Angle</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Structures\Vector3</Filter>
+    </ClInclude>
+    <ClInclude Include="Position.h">
+      <Filter>Structures\Position</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneMatrix.h">
+      <Filter>Structures\BoneMatrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Cham.h">
+      <Filter>Structures\Cham</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalVar.h">
+      <Filter>Structures\GlobalVar</Filter>
+    </ClInclude>
+    <ClInclude Include="Glow.h">
+      <Filter>Structures\Glow</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Structures\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerEntity.h">
+      <Filter>Structures\PlayerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerEntityAddress.h">
+      <Filter>Structures\PlayerEntityAddress</Filter>
+    </ClInclude>
+    <ClInclude Include="weapon.h">
+      <Filter>Resources\weapon</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
