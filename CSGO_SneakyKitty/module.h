@@ -13,15 +13,3 @@ namespace module
     DWORD GetModuleBaseAddress(const std::string& module_name);
 }
 
-template <class T>
-void rM(DWORD address, T& destination)
-{
-    ReadProcessMemory(module::csgo_process_handle, reinterpret_cast<LPCVOID>(address), &destination, sizeof(destination), NULL);
-}
-
-
-template <class T>
-void wM(DWORD address, const T& source)
-{
-    WriteProcessMemory(module::csgo_process_handle, reinterpret_cast<LPVOID>(address), &source, sizeof(source), NULL);
-}

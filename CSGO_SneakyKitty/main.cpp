@@ -37,11 +37,29 @@ int main()
 
 
 
+    /*
+    
+    load gui
+
+    loop:
+        update connection status:
+
+            if in game:
+                thd: update basic client info (local_player_index, client_state, net_channel, tick rate, curr tick)
+                thd: update player entity address array
+
+                thd: update player entity info array
+                thd: update player bone matrix array
+                thd: update player weapon info
+                thd: update player input info
 
 
-    Angle a(1.0f, 1.0f);
-    BoneMatrix b;
-    constexpr Cham c(1, 1, 1, 1);
-    Position p(1.0f, 1.0f, 1.0f);
-    Vector3 v(1.0f, 1.0f, 1.0f);
+                thd: check hotkey activation
+                         toggle cheat features
+
+        
+            else:
+                turn off all the features
+    
+    */
 }

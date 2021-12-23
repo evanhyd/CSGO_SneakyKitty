@@ -14,15 +14,9 @@ namespace client
         kChangeLevel
     };
 
-    /*
-	extern DWORD client_state;
-	extern DWORD net_channel;
-    */
-
-    extern int connection_status;
-
     constexpr int kMaxPlayer = 32;
 
-    void UpdateClient();
+
+    /*void UpdateClient();*/
 }
 

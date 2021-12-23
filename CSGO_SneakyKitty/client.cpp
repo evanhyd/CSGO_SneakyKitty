@@ -1,12 +1,12 @@
 #include "client.h"
 
-int client::connection_status = client::ConnectionState::kNone;
+//int client::connection_status = client::ConnectionState::kNone;
 
 
-void client::UpdateClient()
-{
-
-}
+//void client::UpdateClient()
+//{
+//
+//}
 
 
 /*

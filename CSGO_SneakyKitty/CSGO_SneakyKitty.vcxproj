@@ -147,9 +147,11 @@
     <ClInclude Include="BoneMatrix.h" />
     <ClInclude Include="Cham.h" />
     <ClInclude Include="client.h" />
+    <ClInclude Include="game_info.h" />
     <ClInclude Include="GlobalVar.h" />
     <ClInclude Include="Glow.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="memory.h" />
     <ClInclude Include="module.h" />
     <ClInclude Include="offsets.h" />
     <ClInclude Include="PlayerEntity.h" />
@@ -163,10 +165,12 @@
     <ClCompile Include="BoneMatrix.cpp" />
     <ClCompile Include="Cham.cpp" />
     <ClCompile Include="client.cpp" />
+    <ClCompile Include="game_info.cpp" />
     <ClCompile Include="GlobalVar.cpp" />
     <ClCompile Include="Glow.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="memory.cpp" />
     <ClCompile Include="module.cpp" />
     <ClCompile Include="offsets.cpp" />
     <ClCompile Include="PlayerEntity.cpp" />
