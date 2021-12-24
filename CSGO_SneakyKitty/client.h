@@ -14,9 +14,7 @@ namespace client
         kChangeLevel
     };
 
-    constexpr int kMaxPlayer = 32;
-
-
-    /*void UpdateClient();*/
+    constexpr int kMaxPlayerNum = 32;
+    constexpr float kMaxLagCompensation = 200.0f; //200 ms
 }
 

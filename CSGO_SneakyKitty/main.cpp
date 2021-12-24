@@ -1,13 +1,9 @@
-#include "module.h"
 #include <iostream>
+#include <thread>
 
-
-#include "Angle.h"
-#include "BoneMatrix.h"
-#include "Cham.h"
-#include "Position.h"
-#include "Vector3.h"
+#include "module.h"
 #include "weapon.h"
+#include "UpdateClientInfo.h"
 
 int main()
 {
@@ -36,6 +32,15 @@ int main()
     std::cout << "Weapon config tables have loaded\n";
 
 
+
+    std::thread UpdateClientInfoThread(UpdateClientInfo(), 5000);
+
+
+    while (true)
+    {
+        Sleep(10000);
+    }
+    //UpdateClientInfoThread.
 
     /*
     

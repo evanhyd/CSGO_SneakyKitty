@@ -84,7 +84,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
@@ -98,7 +98,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -106,6 +106,9 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,6 +160,7 @@
     <ClInclude Include="PlayerEntity.h" />
     <ClInclude Include="PlayerEntityAddress.h" />
     <ClInclude Include="Position.h" />
+    <ClInclude Include="UpdateClientInfo.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="weapon.h" />
   </ItemGroup>
@@ -176,6 +180,7 @@
     <ClCompile Include="PlayerEntity.cpp" />
     <ClCompile Include="PlayerEntityAddress.cpp" />
     <ClCompile Include="Position.cpp" />
+    <ClCompile Include="UpdateClientInfo.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="weapon.cpp" />
   </ItemGroup>

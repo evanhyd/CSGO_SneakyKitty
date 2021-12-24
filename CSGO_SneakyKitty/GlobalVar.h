@@ -3,9 +3,9 @@ class GlobalVar
 {
 public:
 	float realtime_;
-	int frame_count_;
+	int simulation_tick_;
 	float absolute_frametime_;
-	float unknown_;
+	float foot_yaw_;
 	float curtime_;
 	float frametime_;
 	int max_clients_;
