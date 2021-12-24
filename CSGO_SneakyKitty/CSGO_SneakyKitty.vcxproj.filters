@@ -64,6 +64,9 @@
     <Filter Include="Features\UpdateClientInfo">
       <UniqueIdentifier>{ed60bbbc-7e63-4c5b-883f-5bb9fa11bfeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features\UpdatePlayerEntityInfo">
+      <UniqueIdentifier>{015c8163-0ffc-45e1-bbb5-28385c2e739d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="module.cpp">
@@ -118,6 +121,9 @@
     <ClCompile Include="UpdateClientInfo.cpp">
       <Filter>Features\UpdateClientInfo</Filter>
     </ClCompile>
+    <ClCompile Include="UpdatePlayerEntityInfo.cpp">
+      <Filter>Features\UpdatePlayerEntityInfo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="module.h">
@@ -170,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="UpdateClientInfo.h">
       <Filter>Features\UpdateClientInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdatePlayerEntityInfo.h">
+      <Filter>Features\UpdatePlayerEntityInfo</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

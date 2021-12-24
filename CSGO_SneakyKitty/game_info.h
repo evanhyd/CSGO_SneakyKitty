@@ -4,6 +4,7 @@
 
 #include "GlobalVar.h"
 #include "PlayerEntityAddress.h"
+#include "PlayerEntity.h"
 
 namespace game_info
 {
@@ -21,6 +22,10 @@ namespace game_info
 
 
     //player entity list
+    extern PlayerEntity player_entity_list[client::kMaxPlayerNum];
+
+    bool AreAlly(int player_entity_index_0, int player_entity_index_1);
+    bool IsAVisibleToB(int entity_index_a, int entity_index_b);
 
 
     //player bone matrix list

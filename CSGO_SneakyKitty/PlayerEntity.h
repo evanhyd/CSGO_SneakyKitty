@@ -30,8 +30,7 @@ public:
 		kSpectator,
 		kT,
 		kCT,
-		kEnemy,
-		kAlly
+		kAll //artificial
 	};
 
 

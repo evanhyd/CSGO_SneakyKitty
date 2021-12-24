@@ -7,6 +7,7 @@ public:
     float y_;
     float z_;
 
+    Vector3() = default;
     Vector3(float new_x, float new_y, float new_z);
 
     Vector3& operator+=(const Vector3& addend);

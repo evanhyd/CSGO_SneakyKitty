@@ -47,13 +47,13 @@ int main()
     load gui
 
     loop:
-        update connection status:
+        update connection status: //done
 
             if in game:
-                thd: update basic client info (local_player_index, client_state, net_channel, tick rate, curr tick)
-                thd: update player entity address array
+                thd: update basic client info (local_player_index, client_state, net_channel, tick rate, curr tick) //done
+                thd: update player entity address array //done
 
-                thd: update player entity info array
+                thd: update player entity info array 
                 thd: update player bone matrix array
                 thd: update player weapon info
                 thd: update player input info

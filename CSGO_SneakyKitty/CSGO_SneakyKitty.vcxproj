@@ -161,6 +161,7 @@
     <ClInclude Include="PlayerEntityAddress.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="UpdateClientInfo.h" />
+    <ClInclude Include="UpdatePlayerEntityInfo.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="weapon.h" />
   </ItemGroup>
@@ -181,6 +182,7 @@
     <ClCompile Include="PlayerEntityAddress.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="UpdateClientInfo.cpp" />
+    <ClCompile Include="UpdatePlayerEntityInfo.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="weapon.cpp" />
   </ItemGroup>
