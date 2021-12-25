@@ -13,6 +13,7 @@
 #include "Bhop.h"
 #include "Fakelag.h"
 #include "GlowESP.h"
+#include "RadarESP.h"
 
 int main()
 {
@@ -43,39 +44,37 @@ int main()
 
     //updating threads
     std::cout << "Launching info updating threads...\n";
-    std::thread UpdateClientInfoThread(UpdateClientInfo(), 5000);
-    std::thread UpdateEntityInfo(UpdateEntityInfo(), 1);
-    std::thread UpdateBoneMatrixInfoThread(UpdateBoneMatrixInfo(), 1);
-    std::thread UpdateWeaponInfo(UpdateWeaponInfo(), 8);
+    std::thread update_client_info_thd(UpdateClientInfo(), 5000);
+    std::thread update_entity_info_thd(UpdateEntityInfo(), 1);
+    std::thread update_bone_matrix_info_thd(UpdateBoneMatrixInfo(), 1);
+    std::thread update_weapon_info_thd(UpdateWeaponInfo(), 16);
 
-    UpdateClientInfoThread.detach();
-    UpdateEntityInfo.detach();
-    UpdateBoneMatrixInfoThread.detach();
-    UpdateWeaponInfo.detach();
+    update_client_info_thd.detach();
+    update_entity_info_thd.detach();
+    update_bone_matrix_info_thd.detach();
+    update_weapon_info_thd.detach();
     std::cout << "Info updating threads have detached\n";
 
 
     //features threads
     std::cout << "Launching features threads...\n";
-    std::thread FakelagThread(Fakelag(), 16);
-    std::thread RemoveFlashThread(RemoveFlash(), 16);
-    std::thread BhopThread(Bhop(), 16);
-    std::thread GlowThread(GlowESP(), 16);
-    FakelagThread.detach();
-    RemoveFlashThread.detach();
-    BhopThread.detach();
-    GlowThread.detach();
+    std::thread fakelag_thd(Fakelag(), 16);
+    std::thread remove_flash_thd(RemoveFlash(), 16);
+    std::thread bhop_thd(Bhop(), 16);
+    std::thread glow_esp_thd(GlowESP(), 16);
+    std::thread radar_esp_thd(RadarESP(), 16);
+    fakelag_thd.detach();
+    remove_flash_thd.detach();
+    bhop_thd.detach();
+    glow_esp_thd.detach();
+    radar_esp_thd.detach();
     std::cout << "Features threads have detached\n";
     std::cout << "Sneaky Kitty has loaded\nEnjoy your game!!!\n\a";
 
     /*
     
-    F10 Radar
     - third person  + desync
     [ aimbot mode  ] backtrack  \ global target
-
-
-
 
     */
 
@@ -110,6 +109,11 @@ int main()
                 game::toggle_mode[game::glow_esp_hotkey] += 1;
                 std::cout << '\a';
             }
+        }
+        else if (GetAsyncKeyState(game::radar_esp_hotkey))
+        {
+            game::toggle_mode[game::radar_esp_hotkey] ^= 1;
+            if (game::toggle_mode[game::radar_esp_hotkey] == 1) std::cout << '\a';
         }
 
         Sleep(500);

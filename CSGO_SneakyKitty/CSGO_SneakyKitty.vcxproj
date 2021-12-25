@@ -163,6 +163,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityAddress.h" />
     <ClInclude Include="Position.h" />
+    <ClInclude Include="RadarESP.h" />
     <ClInclude Include="RemoveFlash.h" />
     <ClInclude Include="UpdateBoneMatrixInfo.h" />
     <ClInclude Include="UpdateClientInfo.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityAddress.cpp" />
     <ClCompile Include="Position.cpp" />
+    <ClCompile Include="RadarESP.cpp" />
     <ClCompile Include="RemoveFlash.cpp" />
     <ClCompile Include="UpdateBoneMatrixInfo.cpp" />
     <ClCompile Include="UpdateClientInfo.cpp" />
