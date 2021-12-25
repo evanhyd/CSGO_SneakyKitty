@@ -21,9 +21,8 @@ void GlowESP::AdjustAmbientBrightness(float brightness)
     memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::model_ambient_min, encrypted_brightness);
 }
 
-void GlowESP::operator()(int update_period_ms)
+void GlowESP::operator()(int update_period_ms, float brightness, Cham enemy_model_color)
 {
-    constexpr Cham kOrange(255, 106, 0, 255);
     constexpr Cham kTransparent(255, 255, 255, 255);
 
     bool is_glow_forced = false;
@@ -55,7 +54,7 @@ void GlowESP::operator()(int update_period_ms)
         {
             if (!is_bright)
             {
-                this->AdjustAmbientBrightness(3.5f);
+                this->AdjustAmbientBrightness(brightness);
                 is_bright = true;
             }
         }
@@ -105,8 +104,8 @@ void GlowESP::operator()(int update_period_ms)
                 //enemy
                 else
                 {
-                    glow_list[glow_i].SetGlow(glow_style, game::player_entity_list[entity_i].health_);
-                    memory::WriteMem(module::csgo_proc_handle, game::player_entity_address_list[entity_i].GetAddress() + offsets::m_clrRender, kOrange);
+                    glow_list[glow_i].SetGlow(glow_style, game::player_entity_list[entity_i].GetHealth());
+                    memory::WriteMem(module::csgo_proc_handle, game::player_entity_address_list[entity_i].GetAddress() + offsets::m_clrRender, enemy_model_color);
                 }
 
                 memory::WriteMem(module::csgo_proc_handle, glow_manager[0] + sizeof(Glow) * glow_i, glow_list[glow_i]);

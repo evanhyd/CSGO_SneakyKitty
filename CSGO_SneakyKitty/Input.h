@@ -19,7 +19,7 @@ public:
 
 class Commands
 {
-	DWORD pad0_;
+	DWORD pad0_; //mysterious hash???
 
 public:
 	Commands0X4 cmd_0x4_;
@@ -67,7 +67,6 @@ public:
 	};
 
 	static constexpr int MULTIPLAYER_BACKUP = 150;
-	static constexpr int MAX_BACKTRACK_TICK = 12;
 
 
 private:
@@ -101,10 +100,5 @@ public:
 
 	DWORD pCommands;
 	DWORD pVerifiedCommands;
-
-	/*
-	static Input input;
-	static int curr_even_tick;
-	*/
 };
 

@@ -46,7 +46,7 @@ namespace game
     extern byte bhop_hotkey;
     extern byte glow_esp_hotkey;
     extern byte radar_esp_hotkey;
-    extern byte third_person_hotkey;
+    extern byte thirdperson_hotkey;
     extern byte desync_hotkey;
     extern byte aimbot_fire_mode_hotkey;
     extern byte aimbot_backtrack_hotkey;

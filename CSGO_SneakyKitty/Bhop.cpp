@@ -5,7 +5,6 @@
 #include "offsets.h"
 #include "memory.h"
 
-
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -22,7 +21,7 @@ void Bhop::operator()(int update_period_ms)
 
 
         
-        if ((game::player_entity_list[game::local_player_index].flag_ & Entity::FL_ONGROUND) && GetAsyncKeyState('V'))
+        if (game::player_entity_list[game::local_player_index] .IsOnGround()  && GetAsyncKeyState('V'))
         {
             memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::dwForceJump, 6);
         }

@@ -151,6 +151,7 @@
     <ClInclude Include="BoneMatrix.h" />
     <ClInclude Include="Cham.h" />
     <ClInclude Include="client.h" />
+    <ClInclude Include="Desync.h" />
     <ClInclude Include="GlowESP.h" />
     <ClInclude Include="Fakelag.h" />
     <ClInclude Include="game.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Position.h" />
     <ClInclude Include="RadarESP.h" />
     <ClInclude Include="RemoveFlash.h" />
+    <ClInclude Include="Thirdperson.h" />
     <ClInclude Include="UpdateBoneMatrixInfo.h" />
     <ClInclude Include="UpdateClientInfo.h" />
     <ClInclude Include="UpdateEntityInfo.h" />
@@ -178,6 +180,7 @@
     <ClCompile Include="BoneMatrix.cpp" />
     <ClCompile Include="Cham.cpp" />
     <ClCompile Include="client.cpp" />
+    <ClCompile Include="Desync.cpp" />
     <ClCompile Include="GlowESP.cpp" />
     <ClCompile Include="Fakelag.cpp" />
     <ClCompile Include="game.cpp" />
@@ -193,6 +196,7 @@
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="RadarESP.cpp" />
     <ClCompile Include="RemoveFlash.cpp" />
+    <ClCompile Include="Thirdperson.cpp" />
     <ClCompile Include="UpdateBoneMatrixInfo.cpp" />
     <ClCompile Include="UpdateClientInfo.cpp" />
     <ClCompile Include="UpdateEntityInfo.cpp" />

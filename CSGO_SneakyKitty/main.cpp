@@ -9,11 +9,14 @@
 #include "UpdateEntityInfo.h"
 #include "UpdateBoneMatrixInfo.h"
 #include "UpdateWeaponInfo.h"
+
 #include "RemoveFlash.h"
 #include "Bhop.h"
 #include "Fakelag.h"
 #include "GlowESP.h"
 #include "RadarESP.h"
+#include "Thirdperson.h"
+#include "Desync.h"
 
 int main()
 {
@@ -36,7 +39,8 @@ int main()
 
     std::cout << "Initializing weapon config tables...\n";
     weapon::InitIsGunTable();
-    weapon::InitConfigTypeTable();
+    weapon::InitIsGrenadeTable();
+    weapon::InitWeaponTypeTable();
     weapon::InitFOVTable();
     weapon::InitSmoothTable();
     std::cout << "Weapon config tables have loaded\n";
@@ -61,19 +65,21 @@ int main()
     std::thread fakelag_thd(Fakelag(), 16);
     std::thread remove_flash_thd(RemoveFlash(), 16);
     std::thread bhop_thd(Bhop(), 16);
-    std::thread glow_esp_thd(GlowESP(), 16);
-    std::thread radar_esp_thd(RadarESP(), 16);
+    std::thread glow_esp_thd(GlowESP(), 16, 3.5f, Cham(255, 106, 0, 255));
+    std::thread radar_esp_thd(RadarESP(), 32);
+    std::thread thirdperson_thd(Thirdperson(), 1000);
+    std::thread desync_thd(Desync(), 1, 33.0f);
     fakelag_thd.detach();
     remove_flash_thd.detach();
     bhop_thd.detach();
     glow_esp_thd.detach();
     radar_esp_thd.detach();
+    thirdperson_thd.detach();
+    desync_thd.detach();
     std::cout << "Features threads have detached\n";
     std::cout << "Sneaky Kitty has loaded\nEnjoy your game!!!\n\a";
 
     /*
-    
-    - third person  + desync
     [ aimbot mode  ] backtrack  \ global target
 
     */
@@ -114,6 +120,18 @@ int main()
         {
             game::toggle_mode[game::radar_esp_hotkey] ^= 1;
             if (game::toggle_mode[game::radar_esp_hotkey] == 1) std::cout << '\a';
+        }
+        else if (GetAsyncKeyState(game::thirdperson_hotkey))
+        {
+            game::toggle_mode[game::thirdperson_hotkey] = 1;
+            std::cout << '\a';
+        }
+        else if (GetAsyncKeyState(game::desync_hotkey))
+        {
+            game::toggle_mode[game::fakelag_hotkey] = 0;
+            game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
+            game::toggle_mode[game::desync_hotkey] ^= 1;
+            if (game::toggle_mode[game::desync_hotkey] == 1) std::cout << '\a';
         }
 
         Sleep(500);

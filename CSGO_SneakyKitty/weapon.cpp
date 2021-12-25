@@ -2,10 +2,41 @@
 #include <algorithm>
 
 
-bool weapon::kIsGunTable[kMaxWeaponNum] = {false};
-int weapon::kConfigTypeTable[kMaxWeaponNum] = { 0 };
-float weapon::kFOVTable[kConfigNum] = { 0 };
-float weapon::kSmoothTable[kConfigNum] = { 0 };
+bool weapon::kIsGunTable[kMaxWeaponNum] = {};
+bool weapon::kIsGrenadeTable[kMaxWeaponNum] = {};
+int weapon::kWeaponTypeTable[kMaxWeaponNum] = {};
+float weapon::kFOVTable[kMaxWeaponTypeNum] = {};
+float weapon::kSmoothTable[kMaxWeaponTypeNum] = {};
+
+bool weapon::IsC4(short weapon_def_index)
+{
+	return weapon_def_index == WEAPON_C4;
+}
+
+bool weapon::IsGun(short weapon_def_index)
+{
+	return kIsGunTable[weapon_def_index];
+}
+
+bool weapon::GetWeaponType(short weapon_def_index)
+{
+	return kWeaponTypeTable[weapon_def_index];
+}
+
+bool weapon::IsGrenade(short weapon_def_index)
+{
+	return kIsGrenadeTable[weapon_def_index];
+}
+
+bool weapon::GetFOV(short weapon_def_index)
+{
+	return kFOVTable[kWeaponTypeTable[weapon_def_index]];
+}
+
+bool weapon::GetSmooth(short weapon_def_index)
+{
+	return kSmoothTable[kWeaponTypeTable[weapon_def_index]];
+}
 
 void weapon::InitIsGunTable()
 {
@@ -42,61 +73,73 @@ void weapon::InitIsGunTable()
 	kIsGunTable[62] = false;
 }
 
-void weapon::InitConfigTypeTable()
+
+void weapon::InitIsGrenadeTable()
 {
-	std::fill_n(kConfigTypeTable, kMaxWeaponNum, kNonWeapon);
+	std::fill_n(kIsGrenadeTable, kMaxWeaponNum, false);
+	kIsGrenadeTable[WEAPON_FLASHBANG] = true;
+	kIsGrenadeTable[WEAPON_HEGRENADE] = true;
+	kIsGrenadeTable[WEAPON_SMOKEGRENADE] = true;
+	kIsGrenadeTable[WEAPON_MOLOTOV] = true;
+	kIsGrenadeTable[WEAPON_DECOY] = true;
+	kIsGrenadeTable[WEAPON_INCGRENADE] = true;
+}
+
+void weapon::InitWeaponTypeTable()
+{
+	std::fill_n(kWeaponTypeTable, kMaxWeaponNum, kNonWeapon);
 
 	//pistol
-	kConfigTypeTable[WEAPON_DEAGLE] = kPistol;
-	kConfigTypeTable[WEAPON_ELITE] = kPistol;
-	kConfigTypeTable[WEAPON_FIVESEVEN] = kPistol;
-	kConfigTypeTable[WEAPON_GLOCK] = kPistol;
-	kConfigTypeTable[WEAPON_TEC9] = kPistol;
-	kConfigTypeTable[WEAPON_HKP2000] = kPistol;
-	kConfigTypeTable[WEAPON_P250] = kPistol;
-	kConfigTypeTable[WEAPON_USP_SILENCER] = kPistol;
-	kConfigTypeTable[WEAPON_REVOLVER] = kPistol;
+	kWeaponTypeTable[WEAPON_DEAGLE] = kPistol;
+	kWeaponTypeTable[WEAPON_ELITE] = kPistol;
+	kWeaponTypeTable[WEAPON_FIVESEVEN] = kPistol;
+	kWeaponTypeTable[WEAPON_GLOCK] = kPistol;
+	kWeaponTypeTable[WEAPON_TEC9] = kPistol;
+	kWeaponTypeTable[WEAPON_HKP2000] = kPistol;
+	kWeaponTypeTable[WEAPON_P250] = kPistol;
+	kWeaponTypeTable[WEAPON_USP_SILENCER] = kPistol;
+	kWeaponTypeTable[WEAPON_REVOLVER] = kPistol;
 
 
 	//shotgun
-	kConfigTypeTable[WEAPON_XM1014] = kShotgun;
-	kConfigTypeTable[WEAPON_MAG7] = kShotgun;
-	kConfigTypeTable[WEAPON_SAWEDOFF] = kShotgun;
-	kConfigTypeTable[WEAPON_NOVA] = kShotgun;
+	kWeaponTypeTable[WEAPON_XM1014] = kShotgun;
+	kWeaponTypeTable[WEAPON_MAG7] = kShotgun;
+	kWeaponTypeTable[WEAPON_SAWEDOFF] = kShotgun;
+	kWeaponTypeTable[WEAPON_NOVA] = kShotgun;
 
 
 	//SMG
-	kConfigTypeTable[WEAPON_MAC10] = kSMG;
-	kConfigTypeTable[WEAPON_P90] = kSMG;
-	kConfigTypeTable[WEAPON_MP5] = kSMG;
-	kConfigTypeTable[WEAPON_UMP45] = kSMG;
-	kConfigTypeTable[WEAPON_BIZON] = kSMG;
-	kConfigTypeTable[WEAPON_MP7] = kSMG;
-	kConfigTypeTable[WEAPON_MP9] = kSMG;
+	kWeaponTypeTable[WEAPON_MAC10] = kSMG;
+	kWeaponTypeTable[WEAPON_P90] = kSMG;
+	kWeaponTypeTable[WEAPON_MP5] = kSMG;
+	kWeaponTypeTable[WEAPON_UMP45] = kSMG;
+	kWeaponTypeTable[WEAPON_BIZON] = kSMG;
+	kWeaponTypeTable[WEAPON_MP7] = kSMG;
+	kWeaponTypeTable[WEAPON_MP9] = kSMG;
 
 
 	//assault rifle
-	kConfigTypeTable[WEAPON_AK47] = kAssaultRifle;
-	kConfigTypeTable[WEAPON_FAMAS] = kAssaultRifle;
-	kConfigTypeTable[WEAPON_GALILAR] = kAssaultRifle;
-	kConfigTypeTable[WEAPON_SCAR20] = kAssaultRifle;
-	kConfigTypeTable[WEAPON_M4A1_SILENCER] = kAssaultRifle;
-	kConfigTypeTable[WEAPON_AUG] = kAssaultRifle;
-	kConfigTypeTable[WEAPON_G3SG1] = kAssaultRifle;
-	kConfigTypeTable[WEAPON_M4A1] = kAssaultRifle;
-	kConfigTypeTable[WEAPON_SG556] = kAssaultRifle;
-	kConfigTypeTable[WEAPON_CZ75A] = kAssaultRifle;
+	kWeaponTypeTable[WEAPON_AK47] = kAssaultRifle;
+	kWeaponTypeTable[WEAPON_FAMAS] = kAssaultRifle;
+	kWeaponTypeTable[WEAPON_GALILAR] = kAssaultRifle;
+	kWeaponTypeTable[WEAPON_SCAR20] = kAssaultRifle;
+	kWeaponTypeTable[WEAPON_M4A1_SILENCER] = kAssaultRifle;
+	kWeaponTypeTable[WEAPON_AUG] = kAssaultRifle;
+	kWeaponTypeTable[WEAPON_G3SG1] = kAssaultRifle;
+	kWeaponTypeTable[WEAPON_M4A1] = kAssaultRifle;
+	kWeaponTypeTable[WEAPON_SG556] = kAssaultRifle;
+	kWeaponTypeTable[WEAPON_CZ75A] = kAssaultRifle;
 
 
 	//sniper rifle
-	kConfigTypeTable[WEAPON_AWP] = kSniperRifle;
-	kConfigTypeTable[WEAPON_SSG08] = kSniperRifle;
+	kWeaponTypeTable[WEAPON_AWP] = kSniperRifle;
+	kWeaponTypeTable[WEAPON_SSG08] = kSniperRifle;
 
 
 
 	//machinegun
-	kConfigTypeTable[WEAPON_NEGEV] = kMachinegun;
-	kConfigTypeTable[WEAPON_M249] = kMachinegun;
+	kWeaponTypeTable[WEAPON_NEGEV] = kMachinegun;
+	kWeaponTypeTable[WEAPON_M249] = kMachinegun;
 }
 
 

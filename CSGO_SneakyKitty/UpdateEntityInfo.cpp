@@ -35,8 +35,8 @@ void UpdateEntityInfo::operator()(int update_period_ms)
 
             //check team, dormant, health
             game::player_entity_is_valid[i] = 
-                ((game::player_entity_list[i].team_ == Entity::kT || game::player_entity_list[i].team_ == Entity::kCT) &&
-                !game::player_entity_list[i].dormant_ && game::player_entity_list[i].health_ > 0);
+                ((game::player_entity_list[i].GetTeam() == Entity::kT || game::player_entity_list[i].GetTeam() == Entity::kCT) &&
+                !game::player_entity_list[i].IsDormant() && game::player_entity_list[i].GetHealth() > 0);
         }
 
 

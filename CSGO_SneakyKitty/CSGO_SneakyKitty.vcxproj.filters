@@ -88,6 +88,12 @@
     <Filter Include="Features\RadarESP">
       <UniqueIdentifier>{f81d7932-e186-4a88-bd6e-65b0ce198d8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features\Thirdperson">
+      <UniqueIdentifier>{98bd11a0-8d26-4423-8475-012c5749c400}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\Desync">
+      <UniqueIdentifier>{2f08219f-dd20-4140-97fe-21c7921c9a77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="module.cpp">
@@ -166,6 +172,12 @@
     <ClCompile Include="RadarESP.cpp">
       <Filter>Features\RadarESP</Filter>
     </ClCompile>
+    <ClCompile Include="Thirdperson.cpp">
+      <Filter>Features\Thirdperson</Filter>
+    </ClCompile>
+    <ClCompile Include="Desync.cpp">
+      <Filter>Features\Desync</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="module.h">
@@ -242,6 +254,12 @@
     </ClInclude>
     <ClInclude Include="RadarESP.h">
       <Filter>Features\RadarESP</Filter>
+    </ClInclude>
+    <ClInclude Include="Thirdperson.h">
+      <Filter>Features\Thirdperson</Filter>
+    </ClInclude>
+    <ClInclude Include="Desync.h">
+      <Filter>Features\Desync</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

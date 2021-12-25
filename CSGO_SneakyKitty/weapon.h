@@ -77,7 +77,7 @@ namespace weapon
 		WEAPON_REVOLVER
 	};
 
-	enum ConfigType : int
+	enum WeaponType : int
 	{
 		kNonWeapon,
 		kPistol,
@@ -93,17 +93,26 @@ namespace weapon
 	constexpr float kRecoilFactor = 2.0f;
 	constexpr float kRagebotFOV = 180.0f;
 	constexpr int kMaxWeaponNum = 65;
-	constexpr int kConfigNum = 7;
+	constexpr int kMaxWeaponTypeNum = 7;
 
 
 	extern bool kIsGunTable[kMaxWeaponNum];
-	extern int kConfigTypeTable[kMaxWeaponNum];
-	extern float kFOVTable[kConfigNum];
-	extern float kSmoothTable[kConfigNum];
+	extern bool kIsGrenadeTable[kMaxWeaponNum];
+	extern int kWeaponTypeTable[kMaxWeaponNum];
+	extern float kFOVTable[kMaxWeaponTypeNum];
+	extern float kSmoothTable[kMaxWeaponTypeNum];
 
+
+	bool IsC4(short weapon_def_index);
+	bool IsGun(short weapon_def_index);
+	bool IsGrenade(short weapon_def_index);
+	bool GetWeaponType(short weapon_def_index);
+	bool GetFOV(short weapon_def_index);
+	bool GetSmooth(short weapon_def_index);
 
 	void InitIsGunTable();
-	void InitConfigTypeTable();
+	void InitIsGrenadeTable();
+	void InitWeaponTypeTable();
 	void InitFOVTable();
 	void InitSmoothTable();
 }
