@@ -23,14 +23,14 @@ void UpdateEntityInfo::operator()(int update_period_ms)
         for (int i = 0; i < client::kMaxPlayerNum; ++i)
         {
             //address must not be null
-            if (game::player_entity_address_list[i].address_ == NULL)
+            if (game::player_entity_address_list[i].GetAddress() == NULL)
             {
                 game::player_entity_is_valid[i] = false;
-                break;
+                continue;
             }
 
             //read player entity info
-            memory::ReadMem(module::csgo_process_handle, game::player_entity_address_list[i].address_ + offsets::player_entity_struct_entry, game::player_entity_list[i]);
+            memory::ReadMem(module::csgo_proc_handle, game::player_entity_address_list[i].GetAddress() + offsets::player_entity_struct_entry, game::player_entity_list[i]);
 
 
             //check team, dormant, health

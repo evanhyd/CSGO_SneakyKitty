@@ -1,11 +1,17 @@
 #include "Angle.h"
+#include "Position.h"
 #include <cmath>
+
+
+Angle::Angle(const Vector3& vec) : Vector3(vec)
+{
+	//empty
+}
 
 Angle::Angle(float new_x, float new_y) : Vector3(new_x, new_y, 0.0f)
 {
 	//empty
 }
-
 
 float Angle::MagnitudeToCrosshair() const
 {
@@ -19,6 +25,8 @@ void Angle::Clamp()
 
 	while (this->y_ > 180.0f) this->y_ -= 360.0f;
 	while (this->y_ < -180.0f) this->y_ += 360.0f;
+
+	this->z_ = 0.0f;
 }
 
 int Angle::GetDirection() const
@@ -35,25 +43,30 @@ int Angle::GetDirection() const
 
 void Angle::PointTo(const Position& pos)
 {
-	
-}
-
-
-
-
-/*
-
-void Angle::SetToVector3(const Vector3& relativePos)
-{
 	//atan2 gives x_ in radians, where x_ in degrees -180 < x_ < 180
-	this->y = Angle::ToDegrees(atan2f(relativePos.y, relativePos.x));
+	this->y_ = Angle::ToDegrees(atan2f(pos.y_, pos.x_));
 
-	float hypotenuse = hypotf(relativePos.y, relativePos.x);
+
+	//flat ground hypotenuse
+	float hypotenuse = hypotf(pos.y_, pos.x_);
+
 
 	//x_ is pitch, and it is upside down
-	this->x = -Angle::ToDegrees(atan2f(relativePos.z, hypotenuse));
+	this->x_ = -Angle::ToDegrees(atan2f(pos.z_, hypotenuse));
 }
 
+
+float Angle::ToDegrees(float radians)
+{
+	return radians * kRadian;
+}
+
+float Angle::ToRadians(float degrees)
+{
+	return degrees / kRadian;
+}
+
+/*
 void Angle::ToClosestMultipoint(float radius)
 {
 
@@ -74,15 +87,7 @@ void Angle::ToClosestMultipoint(float radius)
 }
 
 
-float Angle::ToDegrees(float radians)
-{
-	return radians * 180.0f / PI;
-}
 
-float Angle::ToRadians(float degrees)
-{
-	return degrees * PI / 180.0f;
-}
 
 float Angle::CalcMultipointRadius(int bone_index, float distance)
 {

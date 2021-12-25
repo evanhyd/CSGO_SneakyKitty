@@ -33,8 +33,8 @@ byte game::radar_esp_hotkey = VK_F10;
 byte game::third_person_hotkey = VK_OEM_MINUS;
 byte game::desync_hotkey = VK_OEM_PLUS;
 byte game::aimbot_fire_mode_hotkey = VK_OEM_4;
-byte game::aimbot_target_mode_hotkey = VK_OEM_6;
-byte game::aimbot_backtrack_hotkey = VK_OEM_5;
+byte game::aimbot_backtrack_hotkey = VK_OEM_6;
+byte game::global_target_hotkey = VK_OEM_5;
 byte game::rcs_hotkey = 0;
 
-short game::feature_toggle[255] = {};
+short game::toggle_mode[255] = {};

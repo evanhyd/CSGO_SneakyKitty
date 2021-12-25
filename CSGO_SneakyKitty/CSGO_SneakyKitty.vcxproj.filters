@@ -76,6 +76,15 @@
     <Filter Include="Features\RemoveFlash">
       <UniqueIdentifier>{b5a5acb2-2225-443e-880b-0f81a4f30bc0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features\Bhop">
+      <UniqueIdentifier>{6535d8a9-c8ad-458c-9cef-5e65b9b5feeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\Fakelag">
+      <UniqueIdentifier>{ef7c239f-0b58-439e-b109-ce938f7af9e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\GlowESP">
+      <UniqueIdentifier>{241d6ab1-d115-4a2c-8e8c-a8dc7042ec9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="module.cpp">
@@ -142,6 +151,15 @@
     <ClCompile Include="RemoveFlash.cpp">
       <Filter>Features\RemoveFlash</Filter>
     </ClCompile>
+    <ClCompile Include="Bhop.cpp">
+      <Filter>Features\Bhop</Filter>
+    </ClCompile>
+    <ClCompile Include="Fakelag.cpp">
+      <Filter>Features\Fakelag</Filter>
+    </ClCompile>
+    <ClCompile Include="GlowESP.cpp">
+      <Filter>Features\GlowESP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="module.h">
@@ -206,6 +224,15 @@
     </ClInclude>
     <ClInclude Include="RemoveFlash.h">
       <Filter>Features\RemoveFlash</Filter>
+    </ClInclude>
+    <ClInclude Include="Bhop.h">
+      <Filter>Features\Bhop</Filter>
+    </ClInclude>
+    <ClInclude Include="Fakelag.h">
+      <Filter>Features\Fakelag</Filter>
+    </ClInclude>
+    <ClInclude Include="GlowESP.h">
+      <Filter>Features\GlowESP</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

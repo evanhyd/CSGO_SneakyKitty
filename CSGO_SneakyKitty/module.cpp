@@ -1,7 +1,7 @@
 #include "module.h"
 #include <TlHelp32.h>
 
-HANDLE module::csgo_process_handle = nullptr;
+HANDLE module::csgo_proc_handle = nullptr;
 DWORD module::csgo_process_id = NULL;
 DWORD module::client_dll = NULL;
 DWORD module::engine_dll = NULL;
@@ -22,7 +22,7 @@ void module::InitCSGOProcessHandle()
     GetWindowThreadProcessId(csgo_window_handle, &module::csgo_process_id);
 
     //obtain the process handle
-    module::csgo_process_handle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, module::csgo_process_id);
+    module::csgo_proc_handle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, module::csgo_process_id);
 }
 
 DWORD module::GetModuleBaseAddress(const std::string& module_name)

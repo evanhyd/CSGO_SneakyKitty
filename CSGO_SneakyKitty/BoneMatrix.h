@@ -38,6 +38,7 @@ public:
 	static constexpr int kUsefulBoneNum = 4;
 	static constexpr int kBoneBegin = kSpine;
 	static constexpr int kBoneEnd = kHead;
+	static constexpr float kPlayerRadius = 32.0f; //32 is half of a player's width
 	static constexpr float kBoneRadius[kMaxBoneNum] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 5.0f, 4.0f, 1.0f, 1.8f};
 };
 

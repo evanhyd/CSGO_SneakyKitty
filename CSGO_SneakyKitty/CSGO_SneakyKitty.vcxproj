@@ -147,9 +147,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Angle.h" />
+    <ClInclude Include="Bhop.h" />
     <ClInclude Include="BoneMatrix.h" />
     <ClInclude Include="Cham.h" />
     <ClInclude Include="client.h" />
+    <ClInclude Include="GlowESP.h" />
+    <ClInclude Include="Fakelag.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="GlobalVar.h" />
     <ClInclude Include="Glow.h" />
@@ -170,9 +173,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angle.cpp" />
+    <ClCompile Include="Bhop.cpp" />
     <ClCompile Include="BoneMatrix.cpp" />
     <ClCompile Include="Cham.cpp" />
     <ClCompile Include="client.cpp" />
+    <ClCompile Include="GlowESP.cpp" />
+    <ClCompile Include="Fakelag.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="GlobalVar.cpp" />
     <ClCompile Include="Glow.cpp" />

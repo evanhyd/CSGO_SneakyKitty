@@ -38,7 +38,7 @@ public:
 	};
 
 
-	DWORD GetEntityAddress() const;
+	DWORD GetAddress() const;
 	void SetGlow(int style, float new_red, float new_green, float new_blue, float new_alpha, bool render_occluded, bool render_unocculuded);
 	void SetGlow(int style, int health);
 };

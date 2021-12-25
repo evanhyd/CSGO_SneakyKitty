@@ -1,15 +1,17 @@
 #pragma once
 
+using byte = unsigned char;
+
 class Cham
 {
 public:
-	char red_;
-	char green_;
-	char blue_;
-	char alpha_;
+	byte red_;
+	byte green_;
+	byte blue_;
+	byte alpha_;
 
 	Cham() = default;
-	constexpr Cham(char new_red, char new_green, char new_blue, char new_alpha) : red_(new_red), green_(new_green), blue_(new_blue), alpha_(new_alpha)
+	constexpr Cham(byte new_red, byte new_green, byte new_blue, byte new_alpha) : red_(new_red), green_(new_green), blue_(new_blue), alpha_(new_alpha)
 	{
 		//empty
 	}

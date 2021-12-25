@@ -26,10 +26,10 @@ void UpdateBoneMatrixInfo::operator()(int update_period_ms)
 
             //obtain the bone matrix struct entry
             DWORD bone_matrix_struct_entry;
-            memory::ReadMem(module::csgo_process_handle, game::player_entity_address_list[i].address_ + offsets::m_dwBoneMatrix, bone_matrix_struct_entry);
+            memory::ReadMem(module::csgo_proc_handle, game::player_entity_address_list[i].GetAddress() + offsets::m_dwBoneMatrix, bone_matrix_struct_entry);
 
             //read the bone matrix starting from spine
-            memory::ReadMem(module::csgo_process_handle, bone_matrix_struct_entry + sizeof(BoneMatrix) * BoneMatrix::kBoneBegin, game::bone_matrix_list[i][BoneMatrix::kBoneBegin], sizeof(BoneMatrix) * BoneMatrix::kUsefulBoneNum);
+            memory::ReadMem(module::csgo_proc_handle, bone_matrix_struct_entry + sizeof(BoneMatrix) * BoneMatrix::kBoneBegin, game::bone_matrix_list[i][BoneMatrix::kBoneBegin], sizeof(BoneMatrix) * BoneMatrix::kUsefulBoneNum);
 
             //adjust skull position
             game::bone_matrix_list[i][BoneMatrix::kHead].z_ += 1.0f;

@@ -4,11 +4,15 @@
 #include "game.h"
 #include "module.h"
 #include "weapon.h"
+
 #include "UpdateClientInfo.h"
 #include "UpdateEntityInfo.h"
 #include "UpdateBoneMatrixInfo.h"
 #include "UpdateWeaponInfo.h"
 #include "RemoveFlash.h"
+#include "Bhop.h"
+#include "Fakelag.h"
+#include "GlowESP.h"
 
 int main()
 {
@@ -53,16 +57,22 @@ int main()
 
     //features threads
     std::cout << "Launching features threads...\n";
-    std::thread RemoveFlashThread(RemoveFlash(), 8);
+    std::thread FakelagThread(Fakelag(), 16);
+    std::thread RemoveFlashThread(RemoveFlash(), 16);
+    std::thread BhopThread(Bhop(), 16);
+    std::thread GlowThread(GlowESP(), 16);
+    FakelagThread.detach();
     RemoveFlashThread.detach();
+    BhopThread.detach();
+    GlowThread.detach();
     std::cout << "Features threads have detached\n";
     std::cout << "Sneaky Kitty has loaded\nEnjoy your game!!!\n\a";
 
     /*
     
-    F6 Fake Lag  F7 Remove Flash  F8 Bunny Hop  F9 ESP  F10 Radar
+    F10 Radar
     - third person  + desync
-    [ aimbot mode  ] aimbot target \ backtrack
+    [ aimbot mode  ] backtrack  \ global target
 
 
 
@@ -71,14 +81,41 @@ int main()
 
     while (true)
     {
-        if (GetAsyncKeyState(game::remove_flash_hotkey))
+        if (GetAsyncKeyState(game::fakelag_hotkey))
         {
-            game::feature_toggle[game::remove_flash_hotkey] ^= 1;
-            if (game::feature_toggle[game::remove_flash_hotkey] == 1) std::cout << '\a';
+            if (game::toggle_mode[game::fakelag_hotkey] == 3) game::toggle_mode[game::fakelag_hotkey] = 0;
+            else
+            {
+                game::toggle_mode[game::desync_hotkey] = 0;
+                game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
+                game::toggle_mode[game::fakelag_hotkey] += 1;
+                std::cout << '\a';
+            }
+        }
+        else if (GetAsyncKeyState(game::remove_flash_hotkey))
+        {
+            game::toggle_mode[game::remove_flash_hotkey] ^= 1;
+            if (game::toggle_mode[game::remove_flash_hotkey] == 1) std::cout << '\a';
+        }
+        else if (GetAsyncKeyState(game::bhop_hotkey))
+        {
+            game::toggle_mode[game::bhop_hotkey] ^= 1;
+            if (game::toggle_mode[game::bhop_hotkey] == 1) std::cout << '\a';
+        }
+        else if (GetAsyncKeyState(game::glow_esp_hotkey))
+        {
+            if (game::toggle_mode[game::glow_esp_hotkey] == 4) game::toggle_mode[game::glow_esp_hotkey] = 0;
+            else
+            {
+                game::toggle_mode[game::glow_esp_hotkey] += 1;
+                std::cout << '\a';
+            }
         }
 
         Sleep(500);
     }
+
+
     //UpdateClientInfoThread.
 
     /*

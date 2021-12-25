@@ -1,6 +1,6 @@
 #include "Glow.h"
 
-DWORD Glow::GetEntityAddress() const
+DWORD Glow::GetAddress() const
 {
 	return this->entity_address_;
 }
@@ -22,7 +22,6 @@ void Glow::SetGlow(int style, int health)
 {
 	float g = static_cast<float>(health) / 100.0f;
 	float r = 1.0f - g;
-
 
 	this->glow_style_ = style;
 	this->red_ = r;

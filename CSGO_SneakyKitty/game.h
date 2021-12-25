@@ -49,9 +49,9 @@ namespace game
     extern byte third_person_hotkey;
     extern byte desync_hotkey;
     extern byte aimbot_fire_mode_hotkey;
-    extern byte aimbot_target_mode_hotkey;
     extern byte aimbot_backtrack_hotkey;
+    extern byte global_target_hotkey;
     extern byte rcs_hotkey;
 
-    extern short feature_toggle[255];
+    extern short toggle_mode[255];
 }
