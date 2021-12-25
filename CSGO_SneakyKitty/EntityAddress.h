@@ -2,10 +2,10 @@
 #include <Windows.h>
 
 
-class PlayerEntityAddress
+class EntityAddress
 {
 public:
-	DWORD entity_address;
+	DWORD address_;
 
 private:
 	char pad0_[12];

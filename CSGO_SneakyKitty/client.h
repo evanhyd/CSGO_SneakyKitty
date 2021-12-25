@@ -15,6 +15,6 @@ namespace client
     };
 
     constexpr int kMaxPlayerNum = 32;
-    constexpr float kMaxLagCompensation = 200.0f; //200 ms
+    constexpr float kMaxLagCompensation = 0.2f; //200 ms
 }
 

@@ -2,7 +2,7 @@
 #include "offsets.h"
 #include "Vector3.h"
 
-class PlayerEntity
+class Entity
 {
 
 public:
@@ -75,20 +75,8 @@ public:
 	int spotted_by_mask_;
 
 
-	
+	Entity() = default;
 
-
-	/*static DWORD local_player;
-	static int local_player_index;
-	static int local_player_team;
-
-	static PlayerEntity player_entity_list[client::MAX_PLAYER];
-
-	static bool IsValidPlayerEntity(int entity_index);
-	static bool IsVisibleToSpectator(int being_spectated, int spectator);
-
-	static void PlayerEntityUpdate();*/
-
-
+	bool IsAlly(const Entity& entity);
 };
 

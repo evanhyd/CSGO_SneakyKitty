@@ -40,12 +40,6 @@
     <Filter Include="Structures\Input">
       <UniqueIdentifier>{7e805fb7-5d33-4c4e-a419-e75b212daae8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Structures\PlayerEntity">
-      <UniqueIdentifier>{f4089812-6fec-49ab-a0c6-bda7295576d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Structures\PlayerEntityAddress">
-      <UniqueIdentifier>{80a11768-b693-4673-b326-284ae19d0840}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources\weapon">
       <UniqueIdentifier>{2b20fe2b-176c-4456-b1f0-750f7c788251}</UniqueIdentifier>
     </Filter>
@@ -58,14 +52,29 @@
     <Filter Include="Resources\memory">
       <UniqueIdentifier>{95c83b27-b0f3-45b3-8575-b17f9f5909ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\game_info">
-      <UniqueIdentifier>{afd72625-f890-4016-a63b-2be2fc532c42}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Features\UpdateClientInfo">
       <UniqueIdentifier>{ed60bbbc-7e63-4c5b-883f-5bb9fa11bfeb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Features\UpdatePlayerEntityInfo">
+    <Filter Include="Resources\game">
+      <UniqueIdentifier>{afd72625-f890-4016-a63b-2be2fc532c42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\UpdateBoneMatrixInfo">
+      <UniqueIdentifier>{0cbd1b26-f361-409d-823e-d94ab1983b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\UpdateWeaponInfo">
+      <UniqueIdentifier>{a9cd9870-3a82-4d35-8df5-e1dafe559f7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\EntityAddress">
+      <UniqueIdentifier>{80a11768-b693-4673-b326-284ae19d0840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures\Entity">
+      <UniqueIdentifier>{f4089812-6fec-49ab-a0c6-bda7295576d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\UpdateEntityInfo">
       <UniqueIdentifier>{015c8163-0ffc-45e1-bbb5-28385c2e739d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\RemoveFlash">
+      <UniqueIdentifier>{b5a5acb2-2225-443e-880b-0f81a4f30bc0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,11 +111,11 @@
     <ClCompile Include="Input.cpp">
       <Filter>Structures\Input</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerEntity.cpp">
-      <Filter>Structures\PlayerEntity</Filter>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Structures\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerEntityAddress.cpp">
-      <Filter>Structures\PlayerEntityAddress</Filter>
+    <ClCompile Include="EntityAddress.cpp">
+      <Filter>Structures\EntityAddress</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="weapon.cpp">
@@ -115,14 +124,23 @@
     <ClCompile Include="memory.cpp">
       <Filter>Resources\memory</Filter>
     </ClCompile>
-    <ClCompile Include="game_info.cpp">
-      <Filter>Resources\game_info</Filter>
+    <ClCompile Include="game.cpp">
+      <Filter>Resources\game</Filter>
     </ClCompile>
     <ClCompile Include="UpdateClientInfo.cpp">
       <Filter>Features\UpdateClientInfo</Filter>
     </ClCompile>
-    <ClCompile Include="UpdatePlayerEntityInfo.cpp">
-      <Filter>Features\UpdatePlayerEntityInfo</Filter>
+    <ClCompile Include="UpdateEntityInfo.cpp">
+      <Filter>Features\UpdateEntityInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateBoneMatrixInfo.cpp">
+      <Filter>Features\UpdateBoneMatrixInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateWeaponInfo.cpp">
+      <Filter>Features\UpdateWeaponInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="RemoveFlash.cpp">
+      <Filter>Features\RemoveFlash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -159,11 +177,11 @@
     <ClInclude Include="Input.h">
       <Filter>Structures\Input</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerEntity.h">
-      <Filter>Structures\PlayerEntity</Filter>
+    <ClInclude Include="Entity.h">
+      <Filter>Structures\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerEntityAddress.h">
-      <Filter>Structures\PlayerEntityAddress</Filter>
+    <ClInclude Include="EntityAddress.h">
+      <Filter>Structures\EntityAddress</Filter>
     </ClInclude>
     <ClInclude Include="weapon.h">
       <Filter>Resources\weapon</Filter>
@@ -171,14 +189,23 @@
     <ClInclude Include="memory.h">
       <Filter>Resources\memory</Filter>
     </ClInclude>
-    <ClInclude Include="game_info.h">
-      <Filter>Resources\game_info</Filter>
+    <ClInclude Include="game.h">
+      <Filter>Resources\game</Filter>
     </ClInclude>
     <ClInclude Include="UpdateClientInfo.h">
       <Filter>Features\UpdateClientInfo</Filter>
     </ClInclude>
-    <ClInclude Include="UpdatePlayerEntityInfo.h">
-      <Filter>Features\UpdatePlayerEntityInfo</Filter>
+    <ClInclude Include="UpdateEntityInfo.h">
+      <Filter>Features\UpdateEntityInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateBoneMatrixInfo.h">
+      <Filter>Features\UpdateBoneMatrixInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateWeaponInfo.h">
+      <Filter>Features\UpdateWeaponInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="RemoveFlash.h">
+      <Filter>Features\RemoveFlash</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

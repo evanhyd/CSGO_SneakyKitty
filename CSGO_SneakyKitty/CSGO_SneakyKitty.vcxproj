@@ -150,18 +150,21 @@
     <ClInclude Include="BoneMatrix.h" />
     <ClInclude Include="Cham.h" />
     <ClInclude Include="client.h" />
-    <ClInclude Include="game_info.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="GlobalVar.h" />
     <ClInclude Include="Glow.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="memory.h" />
     <ClInclude Include="module.h" />
     <ClInclude Include="offsets.h" />
-    <ClInclude Include="PlayerEntity.h" />
-    <ClInclude Include="PlayerEntityAddress.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityAddress.h" />
     <ClInclude Include="Position.h" />
+    <ClInclude Include="RemoveFlash.h" />
+    <ClInclude Include="UpdateBoneMatrixInfo.h" />
     <ClInclude Include="UpdateClientInfo.h" />
-    <ClInclude Include="UpdatePlayerEntityInfo.h" />
+    <ClInclude Include="UpdateEntityInfo.h" />
+    <ClInclude Include="UpdateWeaponInfo.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="weapon.h" />
   </ItemGroup>
@@ -170,7 +173,7 @@
     <ClCompile Include="BoneMatrix.cpp" />
     <ClCompile Include="Cham.cpp" />
     <ClCompile Include="client.cpp" />
-    <ClCompile Include="game_info.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="GlobalVar.cpp" />
     <ClCompile Include="Glow.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -178,11 +181,14 @@
     <ClCompile Include="memory.cpp" />
     <ClCompile Include="module.cpp" />
     <ClCompile Include="offsets.cpp" />
-    <ClCompile Include="PlayerEntity.cpp" />
-    <ClCompile Include="PlayerEntityAddress.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityAddress.cpp" />
     <ClCompile Include="Position.cpp" />
+    <ClCompile Include="RemoveFlash.cpp" />
+    <ClCompile Include="UpdateBoneMatrixInfo.cpp" />
     <ClCompile Include="UpdateClientInfo.cpp" />
-    <ClCompile Include="UpdatePlayerEntityInfo.cpp" />
+    <ClCompile Include="UpdateEntityInfo.cpp" />
+    <ClCompile Include="UpdateWeaponInfo.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="weapon.cpp" />
   </ItemGroup>

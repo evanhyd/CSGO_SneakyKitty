@@ -92,12 +92,12 @@ namespace weapon
 
 	constexpr float kRecoilFactor = 2.0f;
 	constexpr float kRagebotFOV = 180.0f;
-	constexpr int kWeaponNum = 65;
+	constexpr int kMaxWeaponNum = 65;
 	constexpr int kConfigNum = 7;
 
 
-	extern bool kIsGunTable[kWeaponNum];
-	extern int kConfigTypeTable[kWeaponNum];
+	extern bool kIsGunTable[kMaxWeaponNum];
+	extern int kConfigTypeTable[kMaxWeaponNum];
 	extern float kFOVTable[kConfigNum];
 	extern float kSmoothTable[kConfigNum];
 
@@ -106,10 +106,4 @@ namespace weapon
 	void InitConfigTypeTable();
 	void InitFOVTable();
 	void InitSmoothTable();
-
-
-	/*void WeaponUpdate();*/
-	/*extern int current_weapon_entity_index;
-	extern DWORD current_weapon_entity_address;
-	extern short current_weapon_def_index;*/
 }

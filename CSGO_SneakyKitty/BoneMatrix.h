@@ -24,6 +24,8 @@ public:
 
 	enum DefinitionIndex : int
 	{
+		//kStomach = 3,
+		//kLowerSpine,
 		kSpine = 5,
 		kChest,
 		kNeck,
@@ -32,12 +34,10 @@ public:
 
 	explicit operator Position() const;
 
-	/*
-	static constexpr int MAX_BONE = 4;
-	static constexpr float BONE_RADIUS[4] = { 5.0f, 4.0f, 1.0f, 1.8f };
-	static Bone bone_list[client::MAX_PLAYER][Bone::MAX_BONE];
-
-	static void UpdateEntityBones();
-	*/
+	static constexpr int kMaxBoneNum = 9;
+	static constexpr int kUsefulBoneNum = 4;
+	static constexpr int kBoneBegin = kSpine;
+	static constexpr int kBoneEnd = kHead;
+	static constexpr float kBoneRadius[kMaxBoneNum] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 5.0f, 4.0f, 1.0f, 1.8f};
 };
 

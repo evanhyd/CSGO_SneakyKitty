@@ -2,14 +2,14 @@
 #include <algorithm>
 
 
-bool weapon::kIsGunTable[kWeaponNum] = {false};
-int weapon::kConfigTypeTable[kWeaponNum] = { 0 };
+bool weapon::kIsGunTable[kMaxWeaponNum] = {false};
+int weapon::kConfigTypeTable[kMaxWeaponNum] = { 0 };
 float weapon::kFOVTable[kConfigNum] = { 0 };
 float weapon::kSmoothTable[kConfigNum] = { 0 };
 
 void weapon::InitIsGunTable()
 {
-	std::fill_n(kIsGunTable, kWeaponNum, true);
+	std::fill_n(kIsGunTable, kMaxWeaponNum, true);
 	kIsGunTable[0] = false;
 	kIsGunTable[5] = false;
 	kIsGunTable[6] = false;
@@ -44,7 +44,7 @@ void weapon::InitIsGunTable()
 
 void weapon::InitConfigTypeTable()
 {
-	std::fill_n(kConfigTypeTable, kWeaponNum, kNonWeapon);
+	std::fill_n(kConfigTypeTable, kMaxWeaponNum, kNonWeapon);
 
 	//pistol
 	kConfigTypeTable[WEAPON_DEAGLE] = kPistol;
@@ -122,31 +122,3 @@ void weapon::InitSmoothTable()
 	kSmoothTable[kSniperRifle] = 1.0f;
 	kSmoothTable[kMachinegun] = 4.0f;
 }
-
-//int weapon::current_weapon_entity_index = weapon::DefinitionIndex::WEAPON_INVALID;
-//DWORD weapon::current_weapon_entity_address = NULL;
-//short weapon::current_weapon_def_index = weapon::DefinitionIndex::WEAPON_INVALID;
-
-
-//void weapon::WeaponUpdate()
-//{
-//	while (true)
-//	{
-//		if (client::connection_status != client::ConnectionState::FULLY_CONNECTED)
-//		{
-//			Sleep(3000);
-//			continue;
-//		}
-//
-//		rM(PlayerEntity::local_player + m_hActiveWeapon, weapon::current_weapon_entity_index);
-//		//only keep the first 3 bytes
-//		weapon::current_weapon_entity_index &= 0xFFF;
-//
-//		//note: this is entity, so we may be anble to render it
-//		rM(module::client_dll + dwEntityList + (weapon::current_weapon_entity_index - 1) * 0x10, weapon::current_weapon_entity_address);
-//
-//		rM(weapon::current_weapon_entity_address + m_iItemDefinitionIndex, weapon::current_weapon_def_index);
-//
-//		this_thread::sleep_for(chrono::milliseconds(8));
-//	}
-//}

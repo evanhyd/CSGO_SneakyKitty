@@ -156,7 +156,7 @@ namespace offsets
 
 
 	//subtract 1 fix padding
-	constexpr DWORD player_entity_entry = m_bDormant - 1;
+	constexpr DWORD player_entity_struct_entry = m_bDormant - 1;
 	constexpr DWORD dwGlowObjectManager_size = dwGlowObjectManager + 0xc;
 }
 
