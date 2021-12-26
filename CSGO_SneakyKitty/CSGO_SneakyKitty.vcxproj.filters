@@ -4,9 +4,6 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{f7cb96ef-1852-4f53-b98f-f87833974643}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GUI">
-      <UniqueIdentifier>{0ecdb0f0-5a1d-4fa3-8991-d0e29ca6691a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Features">
       <UniqueIdentifier>{d4cc911b-c792-4792-95cd-dfc0f9445550}</UniqueIdentifier>
     </Filter>
@@ -103,6 +100,9 @@
     <Filter Include="Features\UpdateInputInfo">
       <UniqueIdentifier>{d79b320e-84c2-4272-9bbb-c34eac7dbf8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="user_interface">
+      <UniqueIdentifier>{0ecdb0f0-5a1d-4fa3-8991-d0e29ca6691a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="module.cpp">
@@ -196,6 +196,9 @@
     <ClCompile Include="UpdateInputInfo.cpp">
       <Filter>Features\UpdateInputInfo</Filter>
     </ClCompile>
+    <ClCompile Include="user_interface.cpp">
+      <Filter>user_interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="module.h">
@@ -287,6 +290,9 @@
     </ClInclude>
     <ClInclude Include="UpdateInputInfo.h">
       <Filter>Features\UpdateInputInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="user_interface.h">
+      <Filter>user_interface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

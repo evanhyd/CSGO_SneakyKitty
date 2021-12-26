@@ -20,6 +20,9 @@
 #include "Desync.h"
 #include "Aimbot.h"
 
+#include "user_interface.h"
+#include <string>
+
 int main()
 {
     std::cout << "Waiting for CSGO...\n";
@@ -61,7 +64,7 @@ int main()
     update_bone_matrix_info_thd.detach();
     update_weapon_info_thd.detach();
     update_input_info.detach();
-    std::cout << "Info updating threads have detached\n";
+    std::cout << "Client has updated the game info\n";
 
 
     //features threads
@@ -81,89 +84,29 @@ int main()
     radar_esp_thd.detach();
     thirdperson_thd.detach();
     desync_thd.detach();
-    std::cout << "Features threads have detached\n";
+    std::cout << "Cheats features have loaded\n";
+
+
+    std::cout << "Initializing GUI...";
+    std::thread GUI_thd(user_interface::GUI);
+    GUI_thd.detach();
+    std::cout << "User Interface has been created\n";
+
     std::cout << "Sneaky Kitty has loaded\nEnjoy your game!!!\n\a";
 
+    HWND csgo_console = FindWindowA("Valve001", NULL);
+    COPYDATASTRUCT message;
+    message.dwData = 0;
 
+    std::string command;
     while (true)
     {
-        if (GetAsyncKeyState(game::fakelag_hotkey))
-        {
-            if (game::toggle_mode[game::fakelag_hotkey] == 3) game::toggle_mode[game::fakelag_hotkey] = 0;
-            else
-            {
-                game::toggle_mode[game::desync_hotkey] = 0;
-                game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
-                game::toggle_mode[game::fakelag_hotkey] += 1;
-                std::cout << '\a';
-            }
-        }
-        else if (GetAsyncKeyState(game::remove_flash_hotkey))
-        {
-            game::toggle_mode[game::remove_flash_hotkey] ^= 1;
-            if (game::toggle_mode[game::remove_flash_hotkey] == 1) std::cout << '\a';
-        }
-        else if (GetAsyncKeyState(game::bhop_hotkey))
-        {
-            game::toggle_mode[game::bhop_hotkey] ^= 1;
-            if (game::toggle_mode[game::bhop_hotkey] == 1) std::cout << '\a';
-        }
-        else if (GetAsyncKeyState(game::glow_esp_hotkey))
-        {
-            if (game::toggle_mode[game::glow_esp_hotkey] == 4) game::toggle_mode[game::glow_esp_hotkey] = 0;
-            else
-            {
-                game::toggle_mode[game::glow_esp_hotkey] += 1;
-                std::cout << '\a';
-            }
-        }
-        else if (GetAsyncKeyState(game::radar_esp_hotkey))
-        {
-            game::toggle_mode[game::radar_esp_hotkey] ^= 1;
-            if (game::toggle_mode[game::radar_esp_hotkey] == 1) std::cout << '\a';
-        }
-        else if (GetAsyncKeyState(game::thirdperson_hotkey))
-        {
-            game::toggle_mode[game::thirdperson_hotkey] = 1;
-            std::cout << '\a';
-        }
-        else if (GetAsyncKeyState(game::desync_hotkey))
-        {
-            game::toggle_mode[game::fakelag_hotkey] = 0;
-            game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
-            game::toggle_mode[game::desync_hotkey] ^= 1;
-            if (game::toggle_mode[game::desync_hotkey] == 1) std::cout << '\a';
-        }
-        else if (GetAsyncKeyState(game::aimbot_fire_hotkey))
-        {
-            if (game::toggle_mode[game::aimbot_fire_hotkey] == 3)
-            {
-                game::toggle_mode[game::aimbot_fire_hotkey] = 0;
-                game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
-            }
-            else
-            {
-                game::toggle_mode[game::aimbot_fire_hotkey] += 1;
-                std::cout << '\a';
-            }
-        }
-        else if (GetAsyncKeyState(game::aimbot_backtrack_hotkey))
-        {
-            if (game::toggle_mode[game::aimbot_fire_hotkey] != 0)
-            {
-                game::toggle_mode[game::fakelag_hotkey] = 0;
-                game::toggle_mode[game::desync_hotkey] = 0;
-                game::toggle_mode[game::aimbot_backtrack_hotkey] ^= 1;
-                if (game::toggle_mode[game::aimbot_backtrack_hotkey]) std::cout << '\a';
-            }
-        }
-        else if (GetAsyncKeyState(game::global_target_hotkey))
-        {
-            game::toggle_mode[game::global_target_hotkey] ^= 1;
-            if (game::toggle_mode[game::global_target_hotkey]) std::cout << '\a';
-        }
+        std::cout << ">> ";
+        std::getline(std::cin, command);
 
-        Sleep(500);
+        message.cbData = strlen(command.c_str()) + 1;
+        message.lpData = (void*)(command.c_str());
+        SendMessageA(csgo_console, WM_COPYDATA, 0, reinterpret_cast<LPARAM>(&message));
     }
 
 }

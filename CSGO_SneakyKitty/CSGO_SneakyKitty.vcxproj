@@ -159,6 +159,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="GlobalVar.h" />
     <ClInclude Include="Glow.h" />
+    <ClInclude Include="user_interface.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="memory.h" />
     <ClInclude Include="module.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="GlobalVar.cpp" />
     <ClCompile Include="Glow.cpp" />
+    <ClCompile Include="user_interface.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="memory.cpp" />
