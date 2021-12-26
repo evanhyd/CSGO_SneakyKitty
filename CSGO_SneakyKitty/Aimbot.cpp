@@ -68,7 +68,7 @@ void Aimbot::operator()(int update_period_ms)
 
         if (weapon::IsGun(game::curr_weapon_def_index))
         {
-            float closest_fov = 181.0f;
+            bool has_target = false;
 
             //obtain the fov setting
             float fov_limit = (game::toggle_mode[game::aimbot_fire_hotkey] == 1 ? weapon::GetFOV(game::curr_weapon_def_index) : weapon::kRagebotFOV);
@@ -89,7 +89,7 @@ void Aimbot::operator()(int update_period_ms)
 
 
             //calculate the maximum backtrack tick
-            int max_backtrack_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_);
+            int max_backtrack_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 1;
             backtrack_tick = -1;
 
 
@@ -155,10 +155,11 @@ void Aimbot::operator()(int update_period_ms)
 
 
                     float curr_fov = difference.FOVMagnitude();
-                    if (curr_fov < fov_limit && curr_fov < closest_fov)
+                    if (curr_fov < fov_limit)
                     {
+                        has_target = true;
                         closest = difference;
-                        closest_fov = curr_fov;
+                        fov_limit = curr_fov;
                     }
                 }
             }
@@ -181,16 +182,15 @@ void Aimbot::operator()(int update_period_ms)
                     float curr_fov = difference.FOVMagnitude();
 
                     //choose the smallest one
-                    if (curr_fov < fov_limit && curr_fov < closest_fov)
+                    if (curr_fov < fov_limit)
                     {
-                        closest = difference;
-                        closest_fov = curr_fov;
                         backtrack_tick = backtrack_candidate.first;
+                        fov_limit = curr_fov;
                     }
                 }
             }
 
-            if (closest_fov == 181.0f) continue;
+            if (!has_target) continue;
 
             //smooth the aimbot
             if (game::toggle_mode[game::aimbot_fire_hotkey] == 1) closest /= weapon::GetSmooth(game::curr_weapon_def_index);
