@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="Aimbot.h" />
     <ClInclude Include="Angle.h" />
+    <ClInclude Include="Backtrack.h" />
     <ClInclude Include="Bhop.h" />
     <ClInclude Include="BoneMatrix.h" />
     <ClInclude Include="Cham.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="UpdateBoneMatrixInfo.h" />
     <ClInclude Include="UpdateClientInfo.h" />
     <ClInclude Include="UpdateEntityInfo.h" />
+    <ClInclude Include="UpdateInputInfo.h" />
     <ClInclude Include="UpdateWeaponInfo.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="weapon.h" />
@@ -178,6 +180,7 @@
   <ItemGroup>
     <ClCompile Include="Aimbot.cpp" />
     <ClCompile Include="Angle.cpp" />
+    <ClCompile Include="Backtrack.cpp" />
     <ClCompile Include="Bhop.cpp" />
     <ClCompile Include="BoneMatrix.cpp" />
     <ClCompile Include="Cham.cpp" />
@@ -202,6 +205,7 @@
     <ClCompile Include="UpdateBoneMatrixInfo.cpp" />
     <ClCompile Include="UpdateClientInfo.cpp" />
     <ClCompile Include="UpdateEntityInfo.cpp" />
+    <ClCompile Include="UpdateInputInfo.cpp" />
     <ClCompile Include="UpdateWeaponInfo.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="weapon.cpp" />

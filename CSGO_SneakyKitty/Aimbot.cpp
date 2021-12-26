@@ -7,7 +7,7 @@
 #include "Angle.h"
 #include "Position.h"
 #include "weapon.h"
-#include "GlobalVar.h"
+#include "Backtrack.h"
 
 #include <iostream>
 #include <thread>
@@ -28,6 +28,7 @@ bool Aimbot::QualifyAimbotRule(int bone_i)
 
 void Aimbot::operator()(int update_period_ms)
 {
+    //enemy pos - local player pos
     Position relative;
 
     //bullet = crosshair_angle + recoil_factor * recoil_angle
@@ -43,6 +44,11 @@ void Aimbot::operator()(int update_period_ms)
     //tick, angle
     std::deque<std::pair<int, Angle>> backtrack_angles;
     bool has_cleared_backtrack_history = true;
+
+    int curr_tick = 0;
+    int backtrack_tick = 0;
+    std::thread backtrack_thd(Backtrack(), 1, std::ref(curr_tick), std::ref(backtrack_tick));
+    backtrack_thd.detach();
     
 
     while (true)
@@ -81,12 +87,13 @@ void Aimbot::operator()(int update_period_ms)
                 bullet += recoil * weapon::kRecoilFactor;
             }
 
-            
-            //read the current tick just like reading the globalvar struct
-            int curr_tick = 0, backtrack_tick = -1, max_backtrack_tick = client::kMaxLagCompensation / game::server_info.interval_per_tick_ - 2;
-            memory::ReadMem(module::csgo_proc_handle, module::engine_dll + offsets::dwGlobalVars + 28, curr_tick);
+
+            //calculate the maximum backtrack tick
+            int max_backtrack_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_);
+            backtrack_tick = -1;
 
 
+            //aimbot 
             for (int entity_i = 0; entity_i < client::kMaxPlayerNum; ++entity_i)
             {
                 //filter out invalid entity 
@@ -183,12 +190,7 @@ void Aimbot::operator()(int update_period_ms)
                 }
             }
 
-            std::clog << curr_tick << '\n';
-            std::clog <<"back: " << backtrack_tick << '\n';
-
             if (closest_fov == 181.0f) continue;
-
-            if(backtrack_tick != -1) memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwGlobalVars + 28, backtrack_tick);
 
             //smooth the aimbot
             if (game::toggle_mode[game::aimbot_fire_hotkey] == 1) closest /= weapon::GetSmooth(game::curr_weapon_def_index);

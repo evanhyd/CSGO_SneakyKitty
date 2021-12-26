@@ -25,6 +25,13 @@ short game::curr_weapon_def_index = 0;
 
 
 
+Input game::input;
+int game::last_outgoing_cmd_num = 0;
+DWORD game::curr_cmd_address = NULL;
+DWORD game::curr_verified_cmd_address = NULL;
+
+
+
 byte game::fakelag_hotkey = VK_F6;
 byte game::remove_flash_hotkey = VK_F7;
 byte game::bhop_hotkey = VK_F8;

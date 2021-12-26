@@ -9,6 +9,7 @@
 #include "UpdateEntityInfo.h"
 #include "UpdateBoneMatrixInfo.h"
 #include "UpdateWeaponInfo.h"
+#include "UpdateInputInfo.h"
 
 #include "RemoveFlash.h"
 #include "Bhop.h"
@@ -53,11 +54,13 @@ int main()
     std::thread update_entity_info_thd(UpdateEntityInfo(), 1);
     std::thread update_bone_matrix_info_thd(UpdateBoneMatrixInfo(), 1);
     std::thread update_weapon_info_thd(UpdateWeaponInfo(), 16);
+    std::thread update_input_info(UpdateInputInfo(), 1);
 
     update_client_info_thd.detach();
     update_entity_info_thd.detach();
     update_bone_matrix_info_thd.detach();
     update_weapon_info_thd.detach();
+    update_input_info.detach();
     std::cout << "Info updating threads have detached\n";
 
 
@@ -81,10 +84,6 @@ int main()
     std::cout << "Features threads have detached\n";
     std::cout << "Sneaky Kitty has loaded\nEnjoy your game!!!\n\a";
 
-    /*
-    [ aimbot mode  ] backtrack  \ global target
-
-    */
 
     while (true)
     {
@@ -152,6 +151,8 @@ int main()
         {
             if (game::toggle_mode[game::aimbot_fire_hotkey] != 0)
             {
+                game::toggle_mode[game::fakelag_hotkey] = 0;
+                game::toggle_mode[game::desync_hotkey] = 0;
                 game::toggle_mode[game::aimbot_backtrack_hotkey] ^= 1;
                 if (game::toggle_mode[game::aimbot_backtrack_hotkey]) std::cout << '\a';
             }

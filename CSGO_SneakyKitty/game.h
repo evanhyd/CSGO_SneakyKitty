@@ -6,6 +6,7 @@
 #include "EntityAddress.h"
 #include "Entity.h"
 #include "BoneMatrix.h"
+#include "Input.h"
 
 namespace game
 {
@@ -33,6 +34,13 @@ namespace game
     extern int curr_weapon_entity_index;
     extern DWORD curr_weapon_entity_address;
     extern short curr_weapon_def_index;
+
+    
+    //input info
+    extern Input input;
+    extern int last_outgoing_cmd_num;
+    extern DWORD curr_cmd_address;
+    extern DWORD curr_verified_cmd_address;
 
 
     //hot key

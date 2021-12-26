@@ -97,6 +97,12 @@
     <Filter Include="Features\Aimbot">
       <UniqueIdentifier>{7f714fb5-72f6-4f1f-a7a9-cb14c87151e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features\Backtrack">
+      <UniqueIdentifier>{5a54df5f-599f-4016-8be0-b7c0f5af655b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\UpdateInputInfo">
+      <UniqueIdentifier>{d79b320e-84c2-4272-9bbb-c34eac7dbf8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="module.cpp">
@@ -184,6 +190,12 @@
     <ClCompile Include="Aimbot.cpp">
       <Filter>Features\Aimbot</Filter>
     </ClCompile>
+    <ClCompile Include="Backtrack.cpp">
+      <Filter>Features\Backtrack</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateInputInfo.cpp">
+      <Filter>Features\UpdateInputInfo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="module.h">
@@ -269,6 +281,12 @@
     </ClInclude>
     <ClInclude Include="Aimbot.h">
       <Filter>Features\Aimbot</Filter>
+    </ClInclude>
+    <ClInclude Include="Backtrack.h">
+      <Filter>Features\Backtrack</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateInputInfo.h">
+      <Filter>Features\UpdateInputInfo</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
