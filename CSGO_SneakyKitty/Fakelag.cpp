@@ -52,8 +52,11 @@ void Fakelag::operator()(int update_period_ms)
 		case 1:
 			for (int i = 0; i < client::kMaxPlayerNum; ++i)
 			{
+				//filter out invalid entity
 				if (!game::player_entity_is_valid[i]) continue;
-				if (!game::toggle_mode[game::global_target_hotkey] && game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[i])) continue;
+
+				//check global target mode and team
+				if (game::toggle_mode[game::global_target_hotkey] == 0 && game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[i])) continue;
 
 
 				//calculate the aimbot angle for the enemy
@@ -82,7 +85,7 @@ void Fakelag::operator()(int update_period_ms)
 
 
 				//if the enemy crosshair is too close to the player
-				if (enemy_difference_angle.MagnitudeToCrosshair() < danger_difference_angle) this->ChokePackets(max_choke_tick);
+				if (enemy_difference_angle.FOVMagnitude() < danger_difference_angle) this->ChokePackets(max_choke_tick);
 
 			}
 			break;

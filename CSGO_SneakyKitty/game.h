@@ -32,12 +32,7 @@ namespace game
     //player weapon
     extern int curr_weapon_entity_index;
     extern DWORD curr_weapon_entity_address;
-    extern short curr_weapon_definition_index;
-
-
-    //player input
-
-
+    extern short curr_weapon_def_index;
 
 
     //hot key
@@ -48,7 +43,7 @@ namespace game
     extern byte radar_esp_hotkey;
     extern byte thirdperson_hotkey;
     extern byte desync_hotkey;
-    extern byte aimbot_fire_mode_hotkey;
+    extern byte aimbot_fire_hotkey;
     extern byte aimbot_backtrack_hotkey;
     extern byte global_target_hotkey;
     extern byte rcs_hotkey;

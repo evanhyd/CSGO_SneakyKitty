@@ -43,7 +43,7 @@ void UpdateEntityInfo::operator()(int update_period_ms)
         //update team
         for (int i = 0; i < client::kMaxPlayerNum; ++i)
         {
-            game::player_entity_is_visible[i] = (game::player_entity_is_valid[i] && (game::player_entity_list[i].spotted_by_mask_ >> game::local_player_index & 1));
+            game::player_entity_is_visible[i] = (game::player_entity_is_valid[i] && (game::player_entity_list[i].GetSpottedMask() >> game::local_player_index & 1));
         }
 
 

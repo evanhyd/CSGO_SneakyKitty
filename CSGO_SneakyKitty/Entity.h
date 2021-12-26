@@ -1,6 +1,7 @@
 #pragma once
 #include "offsets.h"
 #include "Vector3.h"
+#include "Position.h"
 
 class Entity
 {
@@ -42,16 +43,18 @@ private:
 	char pad2_[offsets::m_iHealth - offsets::m_iTeamNum - sizeof(team_)];
 	int health_; //256
 	int flag_;
-	Vector3 view_offset_;
+	Position view_offset_;
 	Vector3 velocity_;//275
 	char pad3_[offsets::m_vecOrigin - offsets::m_vecVelocity - sizeof(velocity_)];
-	Vector3 origin_;//312
+	Position origin_;//312
 	char pad4_[offsets::m_bSpotted - offsets::m_vecOrigin - sizeof(origin_)];
 	bool spotted_;
 	char pad5_[offsets::m_bSpottedByMask - offsets::m_bSpotted - sizeof(spotted_)];
+	int spotted_by_mask_;
+
+
 public:
 
-	int spotted_by_mask_;
 
 
 	Entity() = default;
@@ -71,8 +74,13 @@ public:
 	bool IsDormant() const;
 	int GetHealth() const;
 	int GetTeam() const;
+	int GetSpottedMask() const;
+	const Position& GetOrigin() const;
+	float GetViewOffsetZ() const;
 
 	bool IsAlive() const;
-	bool IsAlly(const Entity& entity);
+	bool IsDead() const;
+	bool IsEnemy(const Entity& entity) const;
+	bool IsAlly(const Entity& entity) const;
 };
 

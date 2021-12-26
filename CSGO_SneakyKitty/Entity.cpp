@@ -60,13 +60,36 @@ int Entity::GetTeam() const
 {
     return this->team_;
 }
+int Entity::GetSpottedMask() const
+{
+    return this->spotted_by_mask_;
+}
+const Position& Entity::GetOrigin() const
+{
+    return this->origin_;
+}
+float Entity::GetViewOffsetZ() const
+{
+    return this->view_offset_.z_;
+}
+
 
 bool Entity::IsAlive() const
 {
     return this->health_ > 0;
 }
 
-bool Entity::IsAlly(const Entity& entity)
+bool Entity::IsDead() const
 {
-    return this->team_ == entity.team_;
+    return !this->IsAlive();
+}
+
+bool Entity::IsEnemy(const Entity& entity) const
+{
+    return this->team_ != entity.team_;
+}
+
+bool Entity::IsAlly(const Entity& entity) const
+{
+    return !this->IsEnemy(entity);
 }

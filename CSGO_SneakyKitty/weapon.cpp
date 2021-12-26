@@ -12,28 +12,23 @@ bool weapon::IsC4(short weapon_def_index)
 {
 	return weapon_def_index == WEAPON_C4;
 }
-
 bool weapon::IsGun(short weapon_def_index)
 {
 	return kIsGunTable[weapon_def_index];
 }
-
-bool weapon::GetWeaponType(short weapon_def_index)
-{
-	return kWeaponTypeTable[weapon_def_index];
-}
-
 bool weapon::IsGrenade(short weapon_def_index)
 {
 	return kIsGrenadeTable[weapon_def_index];
 }
-
-bool weapon::GetFOV(short weapon_def_index)
+int weapon::GetWeaponType(short weapon_def_index)
+{
+	return kWeaponTypeTable[weapon_def_index];
+}
+float weapon::GetFOV(short weapon_def_index)
 {
 	return kFOVTable[kWeaponTypeTable[weapon_def_index]];
 }
-
-bool weapon::GetSmooth(short weapon_def_index)
+float weapon::GetSmooth(short weapon_def_index)
 {
 	return kSmoothTable[kWeaponTypeTable[weapon_def_index]];
 }

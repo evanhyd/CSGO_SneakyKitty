@@ -17,6 +17,7 @@
 #include "RadarESP.h"
 #include "Thirdperson.h"
 #include "Desync.h"
+#include "Aimbot.h"
 
 int main()
 {
@@ -69,6 +70,7 @@ int main()
     std::thread radar_esp_thd(RadarESP(), 32);
     std::thread thirdperson_thd(Thirdperson(), 1000);
     std::thread desync_thd(Desync(), 1, 33.0f);
+    std::thread aimbot_thd(Aimbot(), 1);
     fakelag_thd.detach();
     remove_flash_thd.detach();
     bhop_thd.detach();
@@ -133,37 +135,34 @@ int main()
             game::toggle_mode[game::desync_hotkey] ^= 1;
             if (game::toggle_mode[game::desync_hotkey] == 1) std::cout << '\a';
         }
+        else if (GetAsyncKeyState(game::aimbot_fire_hotkey))
+        {
+            if (game::toggle_mode[game::aimbot_fire_hotkey] == 3)
+            {
+                game::toggle_mode[game::aimbot_fire_hotkey] = 0;
+                game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
+            }
+            else
+            {
+                game::toggle_mode[game::aimbot_fire_hotkey] += 1;
+                std::cout << '\a';
+            }
+        }
+        else if (GetAsyncKeyState(game::aimbot_backtrack_hotkey))
+        {
+            if (game::toggle_mode[game::aimbot_fire_hotkey] != 0)
+            {
+                game::toggle_mode[game::aimbot_backtrack_hotkey] ^= 1;
+                if (game::toggle_mode[game::aimbot_backtrack_hotkey]) std::cout << '\a';
+            }
+        }
+        else if (GetAsyncKeyState(game::global_target_hotkey))
+        {
+            game::toggle_mode[game::global_target_hotkey] ^= 1;
+            if (game::toggle_mode[game::global_target_hotkey]) std::cout << '\a';
+        }
 
         Sleep(500);
     }
 
-
-    //UpdateClientInfoThread.
-
-    /*
-    
-    load gui
-
-    loop:
-        update connection status: //done
-
-            if in game:
-                thd: update basic client info (local_player_index, client_state, net_channel, tick rate, curr tick) //done
-                thd: update player entity address array //done
-
-                thd: update player entity info array  //done
-                thd: update player bone matrix array //done
-                thd: update player weapon info //done
-
-                thd: update player input info
-
-
-                thd: check hotkey activation
-                         toggle cheat features
-
-        
-            else:
-                turn off all the features
-    
-    */
 }

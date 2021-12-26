@@ -20,7 +20,7 @@ BoneMatrix game::bone_matrix_list[client::kMaxPlayerNum][BoneMatrix::kMaxBoneNum
 
 int game::curr_weapon_entity_index = 0;
 DWORD game::curr_weapon_entity_address = NULL;
-short game::curr_weapon_definition_index = 0;
+short game::curr_weapon_def_index = 0;
 
 
 
@@ -32,7 +32,7 @@ byte game::glow_esp_hotkey = VK_F9;
 byte game::radar_esp_hotkey = VK_F10;
 byte game::thirdperson_hotkey = VK_OEM_MINUS;
 byte game::desync_hotkey = VK_OEM_PLUS;
-byte game::aimbot_fire_mode_hotkey = VK_OEM_4;
+byte game::aimbot_fire_hotkey = VK_OEM_4;
 byte game::aimbot_backtrack_hotkey = VK_OEM_6;
 byte game::global_target_hotkey = VK_OEM_5;
 byte game::rcs_hotkey = 0;

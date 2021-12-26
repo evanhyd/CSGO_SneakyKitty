@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Aimbot.h" />
     <ClInclude Include="Angle.h" />
     <ClInclude Include="Bhop.h" />
     <ClInclude Include="BoneMatrix.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Aimbot.cpp" />
     <ClCompile Include="Angle.cpp" />
     <ClCompile Include="Bhop.cpp" />
     <ClCompile Include="BoneMatrix.cpp" />

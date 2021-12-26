@@ -33,9 +33,9 @@ void UpdateWeaponInfo::operator()(int update_period_ms)
         memory::ReadMem(module::csgo_proc_handle, module::client_dll + offsets::dwEntityList + (game::curr_weapon_entity_index - 1) * sizeof(EntityAddress), game::curr_weapon_entity_address);
 
         //normalize the weapon definition index range
-        short temp_curr_weapon_definition_index;
-        memory::ReadMem(module::csgo_proc_handle, game::curr_weapon_entity_address + offsets::m_iItemDefinitionIndex, temp_curr_weapon_definition_index);
-        game::curr_weapon_definition_index = (temp_curr_weapon_definition_index < weapon::kMaxWeaponNum ? temp_curr_weapon_definition_index : 0);
+        short temp_curr_weapon_def_index;
+        memory::ReadMem(module::csgo_proc_handle, game::curr_weapon_entity_address + offsets::m_iItemDefinitionIndex, temp_curr_weapon_def_index);
+        game::curr_weapon_def_index = (temp_curr_weapon_def_index < weapon::kMaxWeaponNum ? temp_curr_weapon_def_index : 0);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
     }

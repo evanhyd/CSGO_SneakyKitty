@@ -94,6 +94,9 @@
     <Filter Include="Features\Desync">
       <UniqueIdentifier>{2f08219f-dd20-4140-97fe-21c7921c9a77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features\Aimbot">
+      <UniqueIdentifier>{7f714fb5-72f6-4f1f-a7a9-cb14c87151e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="module.cpp">
@@ -178,6 +181,9 @@
     <ClCompile Include="Desync.cpp">
       <Filter>Features\Desync</Filter>
     </ClCompile>
+    <ClCompile Include="Aimbot.cpp">
+      <Filter>Features\Aimbot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="module.h">
@@ -260,6 +266,9 @@
     </ClInclude>
     <ClInclude Include="Desync.h">
       <Filter>Features\Desync</Filter>
+    </ClInclude>
+    <ClInclude Include="Aimbot.h">
+      <Filter>Features\Aimbot</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

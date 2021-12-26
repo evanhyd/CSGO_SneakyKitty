@@ -106,9 +106,9 @@ namespace weapon
 	bool IsC4(short weapon_def_index);
 	bool IsGun(short weapon_def_index);
 	bool IsGrenade(short weapon_def_index);
-	bool GetWeaponType(short weapon_def_index);
-	bool GetFOV(short weapon_def_index);
-	bool GetSmooth(short weapon_def_index);
+	int GetWeaponType(short weapon_def_index);
+	float GetFOV(short weapon_def_index);
+	float GetSmooth(short weapon_def_index);
 
 	void InitIsGunTable();
 	void InitIsGrenadeTable();

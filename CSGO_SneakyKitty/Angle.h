@@ -25,7 +25,7 @@ public:
     
     //misc
     void Clamp();
-    float MagnitudeToCrosshair() const;
+    float FOVMagnitude() const;
     int GetDirection() const;
     void PointTo(const Position& pos);
 

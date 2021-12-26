@@ -13,7 +13,7 @@ Angle::Angle(float new_x, float new_y) : Vector3(new_x, new_y, 0.0f)
 	//empty
 }
 
-float Angle::MagnitudeToCrosshair() const
+float Angle::FOVMagnitude() const
 {
 	return hypotf(this->x_, this->y_);
 }
