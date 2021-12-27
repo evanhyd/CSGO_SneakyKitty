@@ -12,12 +12,13 @@
 #include <chrono>
 
 
-void Backtrack::operator()(int update_period_ms, int& curr_tick, int& backtrack_tick)
+void Backtrack::operator()(int update_period_ms, int& curr_tick, int& backtrack_tick, bool& fire_mode)
 {
     Commands0X4 commands_0x4;
 
     while (true)
     {
+        
         if (game::connection_state != client::kFullyConnected || game::toggle_mode[game::aimbot_backtrack_hotkey] == 0)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(5000));
@@ -60,7 +61,10 @@ void Backtrack::operator()(int update_period_ms, int& curr_tick, int& backtrack_
         if (cpy_backtrack_tick != -1)
         {
             commands_0x4.tick_count_ = cpy_backtrack_tick;
+            //commands_0x4.buttons_mask_ |= Input::IN_ATTACK;
             if (is_crouching) commands_0x4.buttons_mask_ |= Input::IN_DUCK;
+
+            backtrack_tick = -1;
 
             memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
             memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, commands_0x4);

@@ -28,6 +28,7 @@ int main()
     std::cout << "Waiting for CSGO...\n";
 
     module::InitCSGOProcessHandle();
+    module::InitCSGOConsoleWindow();
 
     do
     {
@@ -39,20 +40,18 @@ int main()
         module::engine_dll = module::GetModuleBaseAddress("engine.dll");
     } while (module::client_dll == NULL);
 
-    std::cout << "Successfully obtained the process handle\n";
 
 
-    std::cout << "Initializing weapon config tables...\n";
+    std::cout << "Initializing weapon configs...\n";
     weapon::InitIsGunTable();
     weapon::InitIsGrenadeTable();
     weapon::InitWeaponTypeTable();
     weapon::InitFOVTable();
     weapon::InitSmoothTable();
-    std::cout << "Weapon config tables have loaded\n";
 
 
     //updating threads
-    std::cout << "Launching info updating threads...\n";
+    std::cout << "Initializing client info...\n";
     std::thread update_client_info_thd(UpdateClientInfo(), 5000);
     std::thread update_entity_info_thd(UpdateEntityInfo(), 1);
     std::thread update_bone_matrix_info_thd(UpdateBoneMatrixInfo(), 1);
@@ -64,11 +63,10 @@ int main()
     update_bone_matrix_info_thd.detach();
     update_weapon_info_thd.detach();
     update_input_info.detach();
-    std::cout << "Client has updated the game info\n";
 
 
     //features threads
-    std::cout << "Launching features threads...\n";
+    std::cout << "Initializing features...\n";
     std::thread fakelag_thd(Fakelag(), 16);
     std::thread remove_flash_thd(RemoveFlash(), 16);
     std::thread bhop_thd(Bhop(), 16);
@@ -84,29 +82,31 @@ int main()
     radar_esp_thd.detach();
     thirdperson_thd.detach();
     desync_thd.detach();
-    std::cout << "Cheats features have loaded\n";
 
 
     std::cout << "Initializing GUI...";
     std::thread GUI_thd(user_interface::GUI);
     GUI_thd.detach();
-    std::cout << "User Interface has been created\n";
 
     std::cout << "Sneaky Kitty has loaded\nEnjoy your game!!!\n\a";
 
-    HWND csgo_console = FindWindowA("Valve001", NULL);
-    COPYDATASTRUCT message;
-    message.dwData = 0;
 
     std::string command;
     while (true)
     {
-        std::cout << ">> ";
-        std::getline(std::cin, command);
+        try
+        {
+            std::cout << ">> ";
+            std::getline(std::cin, command);
 
-        message.cbData = strlen(command.c_str()) + 1;
-        message.lpData = (void*)(command.c_str());
-        SendMessageA(csgo_console, WM_COPYDATA, 0, reinterpret_cast<LPARAM>(&message));
+            if (command[0] == '?') user_interface::SendConsoleCommand(command.substr(1));
+            else if (command[0] == '/') user_interface::SendBuiltInCommand(command.substr(1));
+            else user_interface::AdjustConfig(command);
+        }
+        catch (std::exception& error)
+        {
+            std::cerr << error.what() << '\n';
+        }
     }
 
 }

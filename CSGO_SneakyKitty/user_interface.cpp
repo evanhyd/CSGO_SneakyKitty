@@ -1,10 +1,76 @@
 #include "user_interface.h"
 
 #include "game.h"
+#include "module.h"
+#include "memory.h"
+#include "offsets.h"
 
+#include <cstdio>
 #include <iostream>
 #include <thread>
 #include <chrono>
+
+void user_interface::SendConsoleCommand(const std::string& command)
+{
+    COPYDATASTRUCT message;
+    message.dwData = 0;
+    message.lpData = (void*)(command.c_str());
+    message.cbData = strlen(command.c_str()) + 1;
+    SendMessageA(module::csgo_console_window, WM_COPYDATA, 0, reinterpret_cast<LPARAM>(&message));
+}
+
+void user_interface::SendBuiltInCommand(const std::string& command)
+{
+    if (command == "connect") memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);
+    else if (command == "buy all pistol")
+    {
+        SendConsoleCommand("buy hkp2000");
+        SendConsoleCommand("buy usp_silencer");
+        SendConsoleCommand("buy elite");
+        SendConsoleCommand("buy p250");
+        SendConsoleCommand("buy tec9");
+        SendConsoleCommand("buy fn57");
+        SendConsoleCommand("buy deagle");
+        SendConsoleCommand("buy glock");
+        SendConsoleCommand("buy hkp2000");
+        SendConsoleCommand("buy usp_silencer");
+        SendConsoleCommand("buy elite");
+        SendConsoleCommand("buy p250");
+        SendConsoleCommand("buy tec9");
+        SendConsoleCommand("buy fn57");
+        SendConsoleCommand("buy deagle");
+        SendConsoleCommand("buy glock");
+    }
+    else if (command == "drop all")
+    {
+        SendConsoleCommand("drop");
+        SendConsoleCommand("drop");
+    }
+    else if (command == "update voice")
+    {
+        SendConsoleCommand("voice_inputfromfile 0");
+        SendConsoleCommand("voice_recordtofile 0");
+
+        std::remove("C:\\Users\\evanh\\works\\gaming\\steam\\steamapps\\common\\Counter-Strike Global Offensive\\voice_input.wav");
+        int res = std::rename("C:\\Users\\evanh\\works\\gaming\\steam\\steamapps\\common\\Counter-Strike Global Offensive\\voice_decompressed.wav",
+            "C:\\Users\\evanh\\works\\gaming\\steam\\steamapps\\common\\Counter-Strike Global Offensive\\voice_input.wav");
+    }
+    else if (command.find("record voice") != std::string::npos)
+    {
+        SendConsoleCommand("voice_inputfromfile 0");
+        SendConsoleCommand("voice_recordtofile 1");
+    }
+    else if (command.find("play voice") != std::string::npos)
+    {
+        SendConsoleCommand("voice_recordtofile 0");
+        SendConsoleCommand("voice_inputfromfile 1");
+    }
+}
+
+void user_interface::AdjustConfig(const std::string& command)
+{
+
+}
 
 void user_interface::GUI()
 {

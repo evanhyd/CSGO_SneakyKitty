@@ -45,9 +45,10 @@ void Aimbot::operator()(int update_period_ms)
     std::deque<std::pair<int, Angle>> backtrack_angles;
     bool has_cleared_backtrack_history = true;
 
+    bool fire_mode = false;
     int curr_tick = 0;
     int backtrack_tick = 0;
-    std::thread backtrack_thd(Backtrack(), 1, std::ref(curr_tick), std::ref(backtrack_tick));
+    std::thread backtrack_thd(Backtrack(), 1, std::ref(curr_tick), std::ref(backtrack_tick), std::ref(fire_mode));
     backtrack_thd.detach();
     
 
@@ -90,7 +91,6 @@ void Aimbot::operator()(int update_period_ms)
 
             //calculate the maximum backtrack tick
             int max_backtrack_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 1;
-            backtrack_tick = -1;
 
 
             //aimbot 
@@ -157,9 +157,9 @@ void Aimbot::operator()(int update_period_ms)
                     float curr_fov = difference.FOVMagnitude();
                     if (curr_fov < fov_limit)
                     {
-                        has_target = true;
                         closest = difference;
                         fov_limit = curr_fov;
+                        has_target = true;
                     }
                 }
             }
@@ -182,10 +182,12 @@ void Aimbot::operator()(int update_period_ms)
                     float curr_fov = difference.FOVMagnitude();
 
                     //choose the smallest one
-                    if (curr_fov < fov_limit)
+                    if (curr_fov < fov_limit * 1.25)
                     {
                         backtrack_tick = backtrack_candidate.first;
+                        closest = difference;
                         fov_limit = curr_fov;
+                        has_target = true;
                     }
                 }
             }
@@ -199,7 +201,10 @@ void Aimbot::operator()(int update_period_ms)
             crosshair += closest;
             crosshair.Clamp();
 
-            if (GetAsyncKeyState(0x01) & 1 << 15) memory::WriteMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, crosshair);
+            if (GetAsyncKeyState(0x01) & 1 << 15)
+            {
+                memory::WriteMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, crosshair);
+            }
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));

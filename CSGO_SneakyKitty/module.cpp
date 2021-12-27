@@ -2,6 +2,7 @@
 #include <TlHelp32.h>
 
 HANDLE module::csgo_proc_handle = nullptr;
+HWND module::csgo_console_window = nullptr; //csgo console window
 DWORD module::csgo_process_id = NULL;
 DWORD module::client_dll = NULL;
 DWORD module::engine_dll = NULL;
@@ -23,6 +24,14 @@ void module::InitCSGOProcessHandle()
 
     //obtain the process handle
     module::csgo_proc_handle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, module::csgo_process_id);
+}
+
+void module::InitCSGOConsoleWindow()
+{
+    do
+    {
+        csgo_console_window = FindWindowA("Valve001", NULL);
+    } while (csgo_console_window == nullptr);
 }
 
 DWORD module::GetModuleBaseAddress(const std::string& module_name)
