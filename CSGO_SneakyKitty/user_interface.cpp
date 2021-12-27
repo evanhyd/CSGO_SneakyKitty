@@ -22,7 +22,7 @@ void user_interface::SendConsoleCommand(const std::string& command)
 void user_interface::SendBuiltInCommand(const std::string& command)
 {
     if (command == "connect") memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);
-    else if (command == "buy all pistol")
+    else if (command == "buy all pistols")
     {
         SendConsoleCommand("buy hkp2000");
         SendConsoleCommand("buy usp_silencer");
