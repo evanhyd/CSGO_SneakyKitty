@@ -32,6 +32,7 @@ void user_interface::SendBuiltInCommand(const std::string& command)
         SendConsoleCommand("buy fn57");
         SendConsoleCommand("buy deagle");
         SendConsoleCommand("buy glock");
+
         SendConsoleCommand("buy hkp2000");
         SendConsoleCommand("buy usp_silencer");
         SendConsoleCommand("buy elite");

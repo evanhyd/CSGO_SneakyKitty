@@ -102,16 +102,22 @@ void Aimbot::operator()(int update_period_ms)
                 //filter out local player
                 if (entity_i == game::local_player_index) continue;
 
-                //check global targe mode
-                if (game::toggle_mode[game::global_target_hotkey] == 0)
-                {
-                    //filter out ally
-                    if (game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[entity_i])) continue;
 
-                    //check visibility and rage setting
-                    if ((game::player_entity_list[entity_i].GetSpottedMask() >> game::local_player_index & 1) == 0) continue;
+                //filter out ally
+                if (game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[entity_i]))
+                {
+                    //check global targe mode
+                    if (game::toggle_mode[game::global_target_hotkey] == 0) continue;
+                }
+                else
+                //check visibility
+                if ((game::player_entity_list[entity_i].GetSpottedMask() >> game::local_player_index & 1) == 0)
+                {
+                    //check rage setting
+                    if (game::toggle_mode[game::aimbot_fire_hotkey] == 1) continue;
                 }
 
+                
 
                 for (int bone_i = BoneMatrix::kBoneBegin; bone_i <= BoneMatrix::kBoneEnd; ++bone_i)
                 {
