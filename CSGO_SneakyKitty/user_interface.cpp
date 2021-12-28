@@ -21,7 +21,26 @@ void user_interface::SendConsoleCommand(const std::string& command)
 
 void user_interface::SendBuiltInCommand(const std::string& command)
 {
-    if (command == "connect") memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);
+    if (command == "help")
+    {
+        std::cout << "Fakelag F6 (adaptive, C for lag, all time)\n";
+        std::cout << "Remove Flash F7\n";
+        std::cout << "Bhop F8\n";
+        std::cout << "Glow ESP F9 (fullybody, inline, fullbody flickering, inline flickering)\n";
+        std::cout << "Radar ESP F10\n";
+        std::cout << "Thirdperson -\n";
+        std::cout << "Desync Antiaim +\n";
+        std::cout << "Aimbot [ (legit, rage1, rage2)\n";
+        std::cout << "Backtrack (requires aimbot)\n";
+        std::cout << "Global Target \\\n";
+
+        std::cout << "\n\nBuilt-in commands:\n";
+        std::cout << "/connect\n";
+        std::cout << "/record voice (K to record)\n";
+        std::cout << "/update voice\n";
+        std::cout << "/play voice (K to play)\n";
+    }
+    else if (command == "connect") memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);
     else if (command == "buy all pistols")
     {
         SendConsoleCommand("buy hkp2000");
