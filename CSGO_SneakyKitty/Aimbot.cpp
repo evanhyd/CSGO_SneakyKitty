@@ -92,7 +92,6 @@ void Aimbot::operator()(int update_period_ms)
             //calculate the maximum backtrack tick
             int max_backtrack_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 1;
 
-
             //aimbot 
             for (int entity_i = 0; entity_i < client::kMaxPlayerNum; ++entity_i)
             {

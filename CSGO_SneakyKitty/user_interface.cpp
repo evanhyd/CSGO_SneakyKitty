@@ -35,10 +35,11 @@ void user_interface::SendBuiltInCommand(const std::string& command)
         std::cout << "Global Target \\\n";
 
         std::cout << "\n\nBuilt-in commands:\n";
-        std::cout << "/connect\n";
+        std::cout << "/connect (fix the connection issue)\n";
         std::cout << "/record voice (K to record)\n";
         std::cout << "/update voice\n";
         std::cout << "/play voice (K to play)\n";
+        std::cout << "/expose\n";
     }
     else if (command == "connect") memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);
     else if (command == "buy all pistols")
@@ -84,6 +85,23 @@ void user_interface::SendBuiltInCommand(const std::string& command)
     {
         SendConsoleCommand("voice_recordtofile 0");
         SendConsoleCommand("voice_inputfromfile 1");
+    }
+    else if (command.find("expose") != std::string::npos)
+    {
+
+        for (int i = 0; i < client::kMaxPlayerNum; ++i)
+        {
+            if (!game::player_entity_is_valid[i]) continue;
+
+            if (game::player_entity_list[game::local_player_index].IsEnemy(game::player_entity_list[i]))
+            {
+                char location[20] = "";
+                memory::ReadMem(module::csgo_proc_handle, game::player_entity_address_list[i].GetAddress() + offsets::m_szLastPlaceName, location);
+
+                SendConsoleCommand("say_team Enemy Health: " + std::to_string(game::player_entity_list[i].GetHealth()) + " Location: " + location);
+                Sleep(1000);
+            }
+        }
     }
 }
 
