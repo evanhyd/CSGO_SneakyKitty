@@ -98,10 +98,36 @@ void user_interface::SendBuiltInCommand(const std::string& command)
                 char location[20] = "";
                 memory::ReadMem(module::csgo_proc_handle, game::player_entity_address_list[i].GetAddress() + offsets::m_szLastPlaceName, location);
 
-                SendConsoleCommand("say_team Enemy Health: " + std::to_string(game::player_entity_list[i].GetHealth()) + " Location: " + location);
+                SendConsoleCommand
+                (
+                    "say_team Enemy Health: " + std::to_string(game::player_entity_list[i].GetHealth()) +
+                    " Location: " + location
+                );
                 Sleep(1000);
             }
         }
+    }
+    else if (command.find("set angle pitch") != std::string::npos)
+    {
+        float angle = std::stof(command.substr(sizeof("set angle pitch")));
+        angle = std::clamp(angle, Angle::LOWER_PITCH, Angle::UPPER_PITCH);
+
+        memory::WriteMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, angle);
+    }
+    else if (command.find("set angle yaw") != std::string::npos)
+    {
+        float angle = std::stof(command.substr(sizeof("set angle yaw")));
+        angle = std::clamp(angle, Angle::LOWER_YAW, Angle::UPPER_YAW);
+
+        memory::WriteMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles + 0x4, angle);
+    }
+    else if (command.find("set angle roll") != std::string::npos)
+    {
+    //positive hitbox to the right side
+        float angle = std::stof(command.substr(sizeof("set angle roll")));
+        angle = std::clamp(angle, Angle::LOWER_ROLL, Angle::UPPER_ROLL);
+
+        memory::WriteMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles + 0x8, angle);
     }
 }
 

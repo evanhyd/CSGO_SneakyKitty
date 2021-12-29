@@ -19,6 +19,7 @@ public:
         kSouth
     };
 
+
     Angle() = default;
     Angle(const Vector3 & vec);
     Angle(float new_x, float new_y);
@@ -29,18 +30,18 @@ public:
     int GetDirection() const;
     void PointTo(const Position& pos);
 
+
+
+    static constexpr float LOWER_PITCH = -89.0f;
+    static constexpr float UPPER_PITCH = 89.0f;
+    static constexpr float LOWER_YAW = -180.0f;
+    static constexpr float UPPER_YAW = 180.0f;
+    static constexpr float LOWER_ROLL = -45.0f;
+    static constexpr float UPPER_ROLL = 45.0f;
     static constexpr float kPi = 3.1415926535f;
     static constexpr float kRadian = 57.2957795130f;
     static float ToDegrees(float radians);
     static float ToRadians(float degrees);
 
-    /*
-
-	void ToClosestMultipoint(float radius);
-
-	
-	static float CalcMultipointRadius(int bone_index, float distance);
-    */
-    
 };
 

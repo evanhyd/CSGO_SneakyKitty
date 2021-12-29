@@ -15,7 +15,8 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
 {
     Commands0X4 commands_0x4;
     bool micromovement_direction = false;
-    float real_angle = 119.0f;
+    float real_angle_y = 119.0f;
+    float real_angle_z = Angle::UPPER_ROLL;
 
     while (true)
     {
@@ -38,13 +39,15 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
         }
         else if (GetAsyncKeyState('A') & 1 << 15)
         {
-            real_angle = -119.0f;
+            real_angle_y = -119.0f;
+            real_angle_z = Angle::UPPER_ROLL;
             std::this_thread::sleep_for(std::chrono::milliseconds(80));
             continue;
         }
         else if (GetAsyncKeyState('D') & 1 << 15)
         {
-            real_angle = 119.0f;
+            real_angle_y = 119.0f;
+            real_angle_z = Angle::LOWER_ROLL;
             std::this_thread::sleep_for(std::chrono::milliseconds(80));
             continue;
         }
@@ -86,25 +89,19 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
 
 
         //micromovement and desync
-        if (!is_crouching)
-        {
-            commands_0x4.side_move_ = (micromovement_direction = !micromovement_direction) ? 1.1f : -1.1f;
-            commands_0x4.view_angles_.y_ -= 119.0f;
-            real_angle = -119.0f;
-        }
-        else
-        {
-            commands_0x4.side_move_ = (micromovement_direction = !micromovement_direction) ? 3.0f : -3.0f;
-            commands_0x4.view_angles_.y_ += real_angle;
-        }
+        if (!is_crouching) commands_0x4.side_move_ = (micromovement_direction = !micromovement_direction) ? 1.1f : -1.1f;
+        else commands_0x4.side_move_ = (micromovement_direction = !micromovement_direction) ? 3.3f : -3.3f;
+
+        commands_0x4.view_angles_.y_ += real_angle_y;
+        commands_0x4.view_angles_.z_ = real_angle_z;
         commands_0x4.view_angles_.Clamp();
 
 
         //fakewalk
         if (fakewalk_magnitude != 0.0f)
         {
-            commands_0x4.forward_move_ = fakewalk_magnitude * sinf(Angle::ToRadians(-real_angle));
-            commands_0x4.side_move_ = fakewalk_magnitude * cosf(Angle::ToRadians(-real_angle));
+            commands_0x4.forward_move_ = fakewalk_magnitude * sinf(Angle::ToRadians(-real_angle_y));
+            commands_0x4.side_move_ = fakewalk_magnitude * cosf(Angle::ToRadians(-real_angle_y));
         }
 
 

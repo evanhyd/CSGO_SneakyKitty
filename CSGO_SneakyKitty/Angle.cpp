@@ -1,6 +1,7 @@
 #include "Angle.h"
 #include "Position.h"
 #include <cmath>
+#include <algorithm>
 
 
 Angle::Angle(const Vector3& vec) : Vector3(vec)
@@ -20,13 +21,12 @@ float Angle::FOVMagnitude() const
 
 void Angle::Clamp()
 {
-	if (this->x_ > 89.0f) this->x_ = 89.0f;
-	if (this->x_ < -89.0f) this->x_ = -89.0f;
+	this->x_ = std::clamp(this->x_, LOWER_PITCH, UPPER_PITCH);
 
-	while (this->y_ > 180.0f) this->y_ -= 360.0f;
-	while (this->y_ < -180.0f) this->y_ += 360.0f;
+	while (this->y_ > UPPER_YAW) this->y_ -= 360.0f;
+	while (this->y_ < LOWER_YAW) this->y_ += 360.0f;
 
-	this->z_ = 0.0f;
+	this->z_ = std::clamp(this->z_, LOWER_ROLL, UPPER_ROLL);
 }
 
 int Angle::GetDirection() const
