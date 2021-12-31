@@ -52,6 +52,7 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
             continue;
         }
 
+
         bool is_crouching = ((GetAsyncKeyState(VK_CONTROL) & 1 << 15) ? true : false);
 
         float fakewalk_magnitude = 0.0f;
@@ -89,11 +90,23 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
 
 
         //micromovement and desync
-        if (!is_crouching) commands_0x4.side_move_ = (micromovement_direction = !micromovement_direction) ? 1.1f : -1.1f;
-        else commands_0x4.side_move_ = (micromovement_direction = !micromovement_direction) ? 3.3f : -3.3f;
+        if (!is_crouching)
+        {
+            commands_0x4.side_move_ = (micromovement_direction = !micromovement_direction) ? 1.1f : -1.1f;
 
-        commands_0x4.view_angles_.y_ += real_angle_y;
-        commands_0x4.view_angles_.z_ = real_angle_z;
+            commands_0x4.view_angles_.y_ += -119.0f;
+            commands_0x4.view_angles_.z_ = Angle::UPPER_ROLL;
+
+            real_angle_y = -119.0f;
+        }
+        else
+        {
+            commands_0x4.side_move_ = (micromovement_direction = !micromovement_direction) ? 3.3f : -3.3f;
+
+            commands_0x4.view_angles_.y_ += real_angle_y;
+            commands_0x4.view_angles_.z_ = real_angle_z;
+        }
+
         commands_0x4.view_angles_.Clamp();
 
 

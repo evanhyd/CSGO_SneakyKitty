@@ -21,7 +21,7 @@ void Bhop::operator()(int update_period_ms)
 
 
         
-        if (game::player_entity_list[game::local_player_index] .IsOnGround()  && GetAsyncKeyState('V'))
+        if (GetAsyncKeyState('V'))
         {
             memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::dwForceJump, 6);
         }
