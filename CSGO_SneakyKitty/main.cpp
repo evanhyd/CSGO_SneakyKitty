@@ -85,6 +85,7 @@ int main()
 
 
     std::cout << "Initializing GUI...";
+    user_interface::InitUserInterface();
     std::thread GUI_thd(user_interface::GUI);
     GUI_thd.detach();
 
@@ -101,7 +102,8 @@ int main()
 
             if (command[0] == '?') user_interface::SendConsoleCommand(command.substr(1));
             else if (command[0] == '/') user_interface::SendBuiltInCommand(command.substr(1));
-            else user_interface::AdjustConfig(command);
+            else std::cout << "Invalid Prefix\a"<<std::endl;
+
         }
         catch (std::exception& error)
         {
