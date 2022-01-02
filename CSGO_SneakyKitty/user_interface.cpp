@@ -29,6 +29,7 @@ void user_interface::InitUserInterface()
 
 
     command_map.insert({ "help", CHelp });
+    command_map.insert({ "status", CStatus});
     command_map.insert({ "connect", CConnect });
     command_map.insert({ "buy_all_pistols", CBuyAllPistols});
     command_map.insert({ "drop_all", CDropAll});
@@ -219,6 +220,25 @@ int user_interface::CHelp(std::stringstream& ss)
     std::cout << "/play voice (K to play)\n";
     std::cout << "/expose\n";
     std::cout << "/set angle [pitch/yaw/roll] [angle in degree]\n";
+
+    std::cout << std::endl;
+
+    return 0;
+}
+
+int user_interface::CStatus(std::stringstream& ss)
+{
+    std::cout << "Toggle Status\n";
+    std::cout << "fakelag: " << game::toggle_mode[game::fakelag_hotkey] <<'\n';
+    std::cout << "remove_flash: " << game::toggle_mode[game::remove_flash_hotkey] <<'\n';
+    std::cout << "bhop: " << game::toggle_mode[game::bhop_hotkey] <<'\n';
+    std::cout << "glow_esp: " << game::toggle_mode[game::glow_esp_hotkey] <<'\n';
+    std::cout << "radar_esp: " << game::toggle_mode[game::radar_esp_hotkey] <<'\n';
+    std::cout << "thirdperson: " << game::toggle_mode[game::thirdperson_hotkey] <<'\n';
+    std::cout << "desync: " << game::toggle_mode[game::desync_hotkey] <<'\n';
+    std::cout << "aimbot: " << game::toggle_mode[game::aimbot_fire_hotkey] <<'\n';
+    std::cout << "backtrack: " << game::toggle_mode[game::aimbot_backtrack_hotkey] <<'\n';
+    std::cout << "global target: " << game::toggle_mode[game::global_target_hotkey] <<'\n';
 
     std::cout << std::endl;
 

@@ -24,6 +24,7 @@ namespace user_interface
     int HGlobalTarget(std::stringstream& ss);
 
     int CHelp(std::stringstream& ss);
+    int CStatus(std::stringstream& ss);
     int CConnect(std::stringstream& ss);
     int CBuyAllPistols(std::stringstream& ss);
     int CDropAll(std::stringstream& ss);
