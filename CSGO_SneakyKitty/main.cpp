@@ -86,8 +86,6 @@ int main()
 
     std::cout << "Initializing GUI...";
     user_interface::InitUserInterface();
-    std::thread GUI_thd(user_interface::GUI);
-    GUI_thd.detach();
 
     std::cout << "Sneaky Kitty has loaded\nEnjoy your game!!!\n\a";
 

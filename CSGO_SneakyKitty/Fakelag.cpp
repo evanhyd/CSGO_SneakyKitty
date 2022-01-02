@@ -43,7 +43,7 @@ void Fakelag::operator()(int update_period_ms)
             continue;
         }
 
-		int max_choke_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 1;
+		int max_choke_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 2;
 
 
 		//anti-trigger

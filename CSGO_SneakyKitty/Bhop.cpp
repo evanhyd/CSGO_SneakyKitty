@@ -11,6 +11,14 @@
 
 void Bhop::operator()(int update_period_ms)
 {
+    /*INPUT input;
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_WHEEL;
+    input.mi.time = NULL;
+    input.mi.mouseData = 20;*/
+
+
+
     while (true)
     {
         if (game::connection_state != client::kFullyConnected || game::toggle_mode[game::bhop_hotkey] == 0)
@@ -24,6 +32,8 @@ void Bhop::operator()(int update_period_ms)
         if (GetAsyncKeyState('V'))
         {
             memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::dwForceJump, 6);
+            //SendInput(1, &input, sizeof(INPUT));
+            
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));

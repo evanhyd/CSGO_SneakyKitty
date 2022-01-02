@@ -9,11 +9,25 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <fstream>
+#include <algorithm>
 
 std::unordered_map <std::string, std::function<int(std::stringstream&)>> user_interface::command_map;
 
 void user_interface::InitUserInterface()
 {
+    command_map.insert({ "fakelag", HFakeLag });
+    command_map.insert({ "remove_flash", HRemoveFlash});
+    command_map.insert({ "bhop", HBhop});
+    command_map.insert({ "glow_esp", HGlowESP});
+    command_map.insert({ "radar_esp", HRadarESP});
+    command_map.insert({ "thirdperson", HThirdperson});
+    command_map.insert({ "desync", HDesync});
+    command_map.insert({ "aimbot", HAimbot});
+    command_map.insert({ "backtrack", HBacktrack});
+    command_map.insert({ "global_target", HGlobalTarget});
+
+
     command_map.insert({ "help", CHelp });
     command_map.insert({ "connect", CConnect });
     command_map.insert({ "buy_all_pistols", CBuyAllPistols});
@@ -21,92 +35,9 @@ void user_interface::InitUserInterface()
     command_map.insert({ "update_voice", CUpdateVoice});
     command_map.insert({ "record_voice", CRecordVoice});
     command_map.insert({ "play_voice", CPlayVoice});
-    command_map.insert({ "sest_angle", CSetAngle});
-}
-
-
-void user_interface::GUI()
-{
-    while (true)
-    {
-        if (GetAsyncKeyState(game::fakelag_hotkey))
-        {
-            if (game::toggle_mode[game::fakelag_hotkey] == 3) game::toggle_mode[game::fakelag_hotkey] = 0;
-            else
-            {
-                game::toggle_mode[game::desync_hotkey] = 0;
-                game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
-                game::toggle_mode[game::fakelag_hotkey] += 1;
-                std::cout << '\a';
-            }
-        }
-        else if (GetAsyncKeyState(game::remove_flash_hotkey))
-        {
-            game::toggle_mode[game::remove_flash_hotkey] ^= 1;
-            if (game::toggle_mode[game::remove_flash_hotkey] == 1) std::cout << '\a';
-        }
-        else if (GetAsyncKeyState(game::bhop_hotkey))
-        {
-            game::toggle_mode[game::bhop_hotkey] ^= 1;
-            if (game::toggle_mode[game::bhop_hotkey] == 1) std::cout << '\a';
-        }
-        else if (GetAsyncKeyState(game::glow_esp_hotkey))
-        {
-            if (game::toggle_mode[game::glow_esp_hotkey] == 4) game::toggle_mode[game::glow_esp_hotkey] = 0;
-            else
-            {
-                game::toggle_mode[game::glow_esp_hotkey] += 1;
-                std::cout << '\a';
-            }
-        }
-        else if (GetAsyncKeyState(game::radar_esp_hotkey))
-        {
-            game::toggle_mode[game::radar_esp_hotkey] ^= 1;
-            if (game::toggle_mode[game::radar_esp_hotkey] == 1) std::cout << '\a';
-        }
-        else if (GetAsyncKeyState(game::thirdperson_hotkey))
-        {
-            game::toggle_mode[game::thirdperson_hotkey] = 1;
-            std::cout << '\a';
-        }
-        else if (GetAsyncKeyState(game::desync_hotkey))
-        {
-            game::toggle_mode[game::fakelag_hotkey] = 0;
-            game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
-            game::toggle_mode[game::desync_hotkey] ^= 1;
-            if (game::toggle_mode[game::desync_hotkey] == 1) std::cout << '\a';
-        }
-        else if (GetAsyncKeyState(game::aimbot_fire_hotkey))
-        {
-            if (game::toggle_mode[game::aimbot_fire_hotkey] == 3)
-            {
-                game::toggle_mode[game::aimbot_fire_hotkey] = 0;
-                game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
-            }
-            else
-            {
-                game::toggle_mode[game::aimbot_fire_hotkey] += 1;
-                std::cout << '\a';
-            }
-        }
-        else if (GetAsyncKeyState(game::aimbot_backtrack_hotkey))
-        {
-            if (game::toggle_mode[game::aimbot_fire_hotkey] != 0)
-            {
-                game::toggle_mode[game::fakelag_hotkey] = 0;
-                game::toggle_mode[game::desync_hotkey] = 0;
-                game::toggle_mode[game::aimbot_backtrack_hotkey] ^= 1;
-                if (game::toggle_mode[game::aimbot_backtrack_hotkey]) std::cout << '\a';
-            }
-        }
-        else if (GetAsyncKeyState(game::global_target_hotkey))
-        {
-            game::toggle_mode[game::global_target_hotkey] ^= 1;
-            if (game::toggle_mode[game::global_target_hotkey]) std::cout << '\a';
-        }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    }
+    command_map.insert({ "set_angle", CSetAngle});
+    command_map.insert({ "record_pos", CRecordPos });
+    command_map.insert({ "spam_key", CSpamE });
 }
 
 
@@ -132,19 +63,153 @@ void user_interface::SendBuiltInCommand(const std::string& command_line)
 }
 
 
+
+
+int user_interface::HFakeLag(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(3));
+
+    if (mode != 0)
+    {
+        game::toggle_mode[game::desync_hotkey] = 0;
+        game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
+        std::cout << '\a';
+    }
+    game::toggle_mode[game::fakelag_hotkey] = mode;
+
+    return 0;
+}
+int user_interface::HRemoveFlash(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(1));
+
+    if (mode != 0) std::cout << '\a';
+    game::toggle_mode[game::remove_flash_hotkey] = mode;
+
+    return 0;
+}
+int user_interface::HBhop(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(1));
+
+    if (mode != 0) std::cout << '\a';
+    game::toggle_mode[game::bhop_hotkey] = mode;
+
+    return 0;
+}
+int user_interface::HGlowESP(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(4));
+
+    if (mode != 0) std::cout << '\a';
+    game::toggle_mode[game::glow_esp_hotkey] = mode;
+
+    return 0;
+}
+int user_interface::HRadarESP(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(1));
+
+    if (mode != 0) std::cout << '\a';
+    game::toggle_mode[game::radar_esp_hotkey] = mode;
+
+    return 0;
+}
+int user_interface::HThirdperson(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(1));
+
+    if (mode != 0) std::cout << '\a';
+    game::toggle_mode[game::thirdperson_hotkey] = mode;
+
+    return 0;
+}
+int user_interface::HDesync(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(1));
+
+    if (mode != 0)
+    {
+        game::toggle_mode[game::fakelag_hotkey] = 0;
+        game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
+        std::cout << '\a';
+    }
+    game::toggle_mode[game::desync_hotkey] = mode;
+
+    return 0;
+}
+int user_interface::HAimbot(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(3));
+
+    if (mode != 0) std::cout << '\a';
+    else game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
+
+    game::toggle_mode[game::aimbot_fire_hotkey] = mode;
+
+    return 0;
+}
+int user_interface::HBacktrack(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(1));
+
+    if (game::toggle_mode[game::aimbot_fire_hotkey] != 0)
+    {
+        if (mode != 0)
+        {
+            game::toggle_mode[game::fakelag_hotkey] = 0;
+            game::toggle_mode[game::desync_hotkey] = 0;
+            std::cout << '\a';
+        }
+        game::toggle_mode[game::aimbot_backtrack_hotkey] = mode;
+    }
+
+    return 0;
+}
+int user_interface::HGlobalTarget(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(1));
+
+    if (mode != 0) std::cout << '\a';
+    game::toggle_mode[game::global_target_hotkey] = mode;
+
+    return 0;
+}
+
+
 int user_interface::CHelp(std::stringstream& ss)
 {
-    std::cout << "Hot keys:\n";
-    std::cout << "Fakelag F6 (adaptive, C for lag, all time)\n";
-    std::cout << "Remove Flash F7\n";
-    std::cout << "Bhop F8\n";
-    std::cout << "Glow ESP F9 (fullybody, inline, fullbody flickering, inline flickering)\n";
-    std::cout << "Radar ESP F10\n";
-    std::cout << "Thirdperson -\n";
-    std::cout << "Desync Antiaim +\n";
-    std::cout << "Aimbot [ (legit, rage1, rage2)\n";
-    std::cout << "Backtrack (requires aimbot)\n";
-    std::cout << "Global Target \\ \n";
+    std::cout << "Features:\n";
+    std::cout << "/fakelag (adaptive, C for lag, all time)\n";
+    std::cout << "/remove_flash\n";
+    std::cout << "/bhop\n";
+    std::cout << "/glow_esp (fullybody, inline, fullbody flickering, inline flickering)\n";
+    std::cout << "/radar_esp\n";
+    std::cout << "/thirdperson\n";
+    std::cout << "/desync\n";
+    std::cout << "/aimbot(legit, rage1, rage2)\n";
+    std::cout << "/backtrack(requires aimbot)\n";
+    std::cout << "/global target\n";
 
 
     std::cout << "\n\nBuilt-in commands:\n";
@@ -260,5 +325,50 @@ int user_interface::CSetAngle(std::stringstream& ss)
     angle.Clamp();
 
     memory::WriteMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, angle);
+    return 0;
+}
+
+int user_interface::CRecordPos(std::stringstream& ss)
+{
+    std::string file_name;
+    ss >> file_name;
+
+    std::ofstream file(file_name, std::ofstream::app);
+    if (!file.is_open()) file.open(file_name, std::ofstream::trunc);
+
+    file << game::player_entity_list[game::local_player_index].GetOrigin().x_ << ' '
+        << game::player_entity_list[game::local_player_index].GetOrigin().y_ << ' '
+        << game::player_entity_list[game::local_player_index].GetOrigin().z_ << '\n';
+
+    file.close();
+
+    return 0;
+}
+
+int user_interface::CSpamE(std::stringstream& ss)
+{
+    //char key;
+    //int num;
+    //ss >> key >> num;
+
+    //Sleep(3000);
+
+    //INPUT input;
+    //input.type = INPUT_KEYBOARD;
+    //input.ki.wScan = 0;
+    //input.ki.dwExtraInfo = 0;
+    //input.ki.wVk = key;
+    //input.ki.time = 1000;
+
+
+    //for (int i = 0; i < num; ++i)
+    //{
+    //    input.ki.dwFlags = 0;
+    //    SendInput(1, &input, sizeof(INPUT));
+    //    //input.ki.dwFlags = KEYEVENTF_KEYUP;
+    //    //SendInput(1, &input, sizeof(INPUT));
+    //}
+    
+
     return 0;
 }

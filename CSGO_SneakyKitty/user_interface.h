@@ -7,11 +7,21 @@
 namespace user_interface
 {
     void InitUserInterface();
-    void GUI();
 
 
     void SendConsoleCommand(const std::string& command_line);
     void SendBuiltInCommand(const std::string& command_line);
+
+    int HFakeLag(std::stringstream& ss);
+    int HRemoveFlash(std::stringstream& ss);
+    int HBhop(std::stringstream& ss);
+    int HGlowESP(std::stringstream& ss);
+    int HRadarESP(std::stringstream& ss);
+    int HThirdperson(std::stringstream& ss);
+    int HDesync(std::stringstream& ss);
+    int HAimbot(std::stringstream& ss);
+    int HBacktrack(std::stringstream& ss);
+    int HGlobalTarget(std::stringstream& ss);
 
     int CHelp(std::stringstream& ss);
     int CConnect(std::stringstream& ss);
@@ -22,6 +32,8 @@ namespace user_interface
     int CPlayVoice(std::stringstream& ss);
     int CExpose(std::stringstream& ss);
     int CSetAngle(std::stringstream& ss);
+    int CRecordPos(std::stringstream& ss);
+    int CSpamE(std::stringstream& ss);
 
 
     extern std::unordered_map <std::string, std::function<int(std::stringstream&)>> command_map;
