@@ -25,6 +25,17 @@
 
 int main()
 {
+    std::cout <<"Microsoft Windows [Version 10.0.19042.1415]\n(c)Microsoft Corporation.All rights reserved.\n";
+
+    std::string pass;
+    while (true)
+    {
+        std::cout << "\nC:\\Users\\evanh>";
+        std::cin >> pass;
+        if (pass == "SE26") break;
+    }
+    system("cls");
+
     std::cout << "Waiting for CSGO...\n";
 
     module::InitCSGOProcessHandle();
