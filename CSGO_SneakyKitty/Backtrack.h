@@ -2,6 +2,6 @@
 class Backtrack
 {
 public:
-    void operator()(int update_period_ms, int& current_tick, int& backtrack_tick, bool& fire_mode);
+    void operator()(int update_period_ms, int& current_tick, int& backtrack_tick);
 };
 

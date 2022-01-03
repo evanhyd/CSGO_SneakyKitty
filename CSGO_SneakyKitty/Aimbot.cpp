@@ -45,10 +45,9 @@ void Aimbot::operator()(int update_period_ms)
     std::deque<std::pair<int, Angle>> backtrack_angles;
     bool has_cleared_backtrack_history = true;
 
-    bool fire_mode = false;
     int curr_tick = 0;
     int backtrack_tick = 0;
-    std::thread backtrack_thd(Backtrack(), 1, std::ref(curr_tick), std::ref(backtrack_tick), std::ref(fire_mode));
+    std::thread backtrack_thd(Backtrack(), 1, std::ref(curr_tick), std::ref(backtrack_tick));
     backtrack_thd.detach();
     
 
@@ -98,13 +97,13 @@ void Aimbot::operator()(int update_period_ms)
                 //filter out invalid entity 
                 if (!game::player_entity_is_valid[entity_i]) continue;
 
-                //filter out local player
-                if (entity_i == game::local_player_index) continue;
-
 
                 //filter out ally
                 if (game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[entity_i]))
                 {
+                    //filter out local player
+                    if (entity_i == game::local_player_index) continue;
+
                     //check global targe mode
                     if (game::toggle_mode[game::global_target_hotkey] == 0) continue;
                 }
@@ -115,12 +114,13 @@ void Aimbot::operator()(int update_period_ms)
                     //check rage setting
                     if (game::toggle_mode[game::aimbot_fire_hotkey] == 1) continue;
                 }
-
                 
 
                 for (int bone_i = BoneMatrix::kBoneBegin; bone_i <= BoneMatrix::kBoneEnd; ++bone_i)
                 {
+                    //check weapon aiming type
                     if (!this->QualifyAimbotRule(bone_i)) continue;
+
 
                     //calculate the relative enemy position with local playe as origin
                     relative = Position(game::bone_matrix_list[entity_i][bone_i]) - game::player_entity_list[game::local_player_index].GetOrigin();
@@ -141,6 +141,7 @@ void Aimbot::operator()(int update_period_ms)
                     //calculate the difference between the exact and the bullet
                     difference = exact - bullet;
                     difference.Clamp();
+
 
                     //calculate multipoint radius
                     float dist_to_enemy = relative.MagnitudeToOrigin();
@@ -187,7 +188,7 @@ void Aimbot::operator()(int update_period_ms)
                     float curr_fov = difference.FOVMagnitude();
 
                     //choose the smallest one
-                    if (curr_fov < fov_limit * 1.25)
+                    if (curr_fov < fov_limit * 1.20)
                     {
                         backtrack_tick = backtrack_candidate.first;
                         closest = difference;

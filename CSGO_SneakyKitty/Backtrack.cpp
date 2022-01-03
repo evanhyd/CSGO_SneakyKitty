@@ -12,7 +12,7 @@
 #include <chrono>
 
 
-void Backtrack::operator()(int update_period_ms, int& curr_tick, int& backtrack_tick, bool& fire_mode)
+void Backtrack::operator()(int update_period_ms, int& curr_tick, int& backtrack_tick)
 {
     Commands0X4 commands_0x4;
 
@@ -27,7 +27,7 @@ void Backtrack::operator()(int update_period_ms, int& curr_tick, int& backtrack_
 
         if (GetAsyncKeyState('W') & 1 << 15 || GetAsyncKeyState('S') & 1 << 15 || GetAsyncKeyState('A') & 1 << 15 || GetAsyncKeyState('D') & 1 << 15)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(80));
+            std::this_thread::sleep_for(std::chrono::milliseconds(40));
             continue;
         }
 
@@ -60,14 +60,17 @@ void Backtrack::operator()(int update_period_ms, int& curr_tick, int& backtrack_
         int cpy_backtrack_tick = backtrack_tick;
         if (cpy_backtrack_tick != -1)
         {
-            commands_0x4.tick_count_ = cpy_backtrack_tick;
-            //commands_0x4.buttons_mask_ |= Input::IN_ATTACK;
-            if (is_crouching) commands_0x4.buttons_mask_ |= Input::IN_DUCK;
+            //activate if this weapon shoots this tick
+            if (commands_0x4.buttons_mask_ & Input::IN_ATTACK)
+            {
+                commands_0x4.tick_count_ = cpy_backtrack_tick;
+                backtrack_tick = -1;
 
-            backtrack_tick = -1;
+                if (is_crouching) commands_0x4.buttons_mask_ |= Input::IN_DUCK;
 
-            memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
-            memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, commands_0x4);
+                memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
+                memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, commands_0x4);
+            }
         }
 
         memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);
