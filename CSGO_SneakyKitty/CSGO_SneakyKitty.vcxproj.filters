@@ -103,6 +103,9 @@
     <Filter Include="user_interface">
       <UniqueIdentifier>{0ecdb0f0-5a1d-4fa3-8991-d0e29ca6691a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Structures\BackTrackCandidate">
+      <UniqueIdentifier>{f1589bc1-6818-4aa0-bd71-a3e71256cdd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="module.cpp">
@@ -199,6 +202,9 @@
     <ClCompile Include="user_interface.cpp">
       <Filter>user_interface</Filter>
     </ClCompile>
+    <ClCompile Include="BacktrackCandidate.cpp">
+      <Filter>Structures\BackTrackCandidate</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="module.h">
@@ -293,6 +299,9 @@
     </ClInclude>
     <ClInclude Include="user_interface.h">
       <Filter>user_interface</Filter>
+    </ClInclude>
+    <ClInclude Include="BacktrackCandidate.h">
+      <Filter>Structures\BackTrackCandidate</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

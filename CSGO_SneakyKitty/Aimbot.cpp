@@ -8,6 +8,7 @@
 #include "Position.h"
 #include "weapon.h"
 #include "Backtrack.h"
+#include "BacktrackCandidate.h"
 
 #include <iostream>
 #include <thread>
@@ -29,6 +30,7 @@ bool Aimbot::QualifyAimbotRule(int bone_i)
 void Aimbot::operator()(int update_period_ms)
 {
     //enemy pos - local player pos
+    Position enemy;
     Position relative;
 
     //bullet = crosshair_angle + recoil_factor * recoil_angle
@@ -41,9 +43,10 @@ void Aimbot::operator()(int update_period_ms)
     Angle difference;
     Angle closest;
 
-    //tick, angle
-    std::deque<std::pair<int, Angle>> backtrack_angles;
+
     bool has_cleared_backtrack_history = true;
+    std::deque<BacktrackCandidate> history;
+
 
     int curr_tick = 0;
     int backtrack_tick = 0;
@@ -57,7 +60,7 @@ void Aimbot::operator()(int update_period_ms)
         {
             if (!has_cleared_backtrack_history)
             {
-                backtrack_angles.clear();
+                history.clear();
                 has_cleared_backtrack_history = true;
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(5000));
@@ -68,9 +71,8 @@ void Aimbot::operator()(int update_period_ms)
 
         if (weapon::IsGun(game::curr_weapon_def_index))
         {
+            //reset the lower bound, obtain the weapon fov
             bool has_target = false;
-
-            //obtain the fov setting
             float fov_limit = (game::toggle_mode[game::aimbot_fire_hotkey] == 1 ? weapon::GetFOV(game::curr_weapon_def_index) : weapon::kRagebotFOV);
 
 
@@ -91,51 +93,53 @@ void Aimbot::operator()(int update_period_ms)
             //calculate the maximum backtrack tick
             int max_backtrack_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 1;
 
+
             //aimbot 
-            for (int entity_i = 0; entity_i < client::kMaxPlayerNum; ++entity_i)
+            for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
             {
                 //filter out invalid entity 
-                if (!game::player_entity_is_valid[entity_i]) continue;
+                if (!game::player_entity_is_valid[entity_id]) continue;
 
 
                 //filter out ally
-                if (game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[entity_i]))
+                if (game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[entity_id]))
                 {
                     //filter out local player
-                    if (entity_i == game::local_player_index) continue;
+                    if (entity_id == game::local_player_index) continue;
 
                     //check global targe mode
                     if (game::toggle_mode[game::global_target_hotkey] == 0) continue;
                 }
                 else
                 //check visibility
-                if ((game::player_entity_list[entity_i].GetSpottedMask() >> game::local_player_index & 1) == 0)
+                if ((game::player_entity_list[entity_id].GetSpottedMask() >> game::local_player_index & 1) == 0)
                 {
                     //check rage setting
                     if (game::toggle_mode[game::aimbot_fire_hotkey] == 1) continue;
                 }
                 
 
-                for (int bone_i = BoneMatrix::kBoneBegin; bone_i <= BoneMatrix::kBoneEnd; ++bone_i)
+                for (int bone_id = BoneMatrix::kBoneBegin; bone_id <= BoneMatrix::kBoneEnd; ++bone_id)
                 {
                     //check weapon aiming type
-                    if (!this->QualifyAimbotRule(bone_i)) continue;
+                    if (!this->QualifyAimbotRule(bone_id)) continue;
 
 
                     //calculate the relative enemy position with local playe as origin
-                    relative = Position(game::bone_matrix_list[entity_i][bone_i]) - game::player_entity_list[game::local_player_index].GetOrigin();
+                    enemy = Position(game::bone_matrix_list[entity_id][bone_id]);
+
+
+                    //add to the backtrack candidates
+                    if (game::toggle_mode[game::aimbot_backtrack_hotkey] == 1) history.emplace_back(curr_tick, bone_id, enemy);
 
 
                     //bullets shoot from player's eyes, subtract the relative height
+                    relative = enemy - game::player_entity_list[game::local_player_index].GetOrigin();
                     relative.z_ -= game::player_entity_list[game::local_player_index].GetViewOffsetZ();
 
 
                     //calculate the exact aimbot angle
                     exact.PointTo(relative);
-
-
-                    //add to the backtrack candidates
-                    if (game::toggle_mode[game::aimbot_backtrack_hotkey] == 1) backtrack_angles.push_back({ curr_tick, exact });
 
 
                     //calculate the difference between the exact and the bullet
@@ -145,7 +149,7 @@ void Aimbot::operator()(int update_period_ms)
 
                     //calculate multipoint radius
                     float dist_to_enemy = relative.MagnitudeToOrigin();
-                    float multipoint_radius = Angle::ToDegrees(atan2f(BoneMatrix::kBoneRadius[bone_i], dist_to_enemy));
+                    float multipoint_radius = Angle::ToDegrees(atan2f(BoneMatrix::kBoneRadius[bone_id], dist_to_enemy));
 
 
                     //calculate the multipoint based on the radius
@@ -173,24 +177,38 @@ void Aimbot::operator()(int update_period_ms)
 
             if (game::toggle_mode[game::aimbot_backtrack_hotkey] == 1)
             {
-                while (!backtrack_angles.empty())
+                //remove old ticks
+                while (!history.empty())
                 {
-                    if (curr_tick - backtrack_angles.front().first > max_backtrack_tick) backtrack_angles.pop_front();
+                    if (curr_tick - history.front().GetTick() > max_backtrack_tick) history.pop_front();
                     else break;
                 }
 
-                for (const auto& backtrack_candidate : backtrack_angles)
+                //select the best backtrack tick
+                for (const auto& candidate : history)
                 {
-                    difference = backtrack_candidate.second - bullet;
+                    relative = candidate.GetPos() - game::player_entity_list[game::local_player_index].GetOrigin();
+                    relative.z_ -= game::player_entity_list[game::local_player_index].GetViewOffsetZ();
+                    exact.PointTo(relative);
+                    difference = exact - bullet;
                     difference.Clamp();
 
-                    //calculate the fov
-                    float curr_fov = difference.FOVMagnitude();
+                    float dist_to_enemy = relative.MagnitudeToOrigin();
+                    float multipoint_radius = Angle::ToDegrees(atan2f(BoneMatrix::kBoneRadius[candidate.GetBoneID()], dist_to_enemy));
+
+                    float increased_yaw = difference.y_ + multipoint_radius;
+                    if (increased_yaw > 180.0f) increased_yaw -= 360.0f;
+                    float decreased_yaw = difference.y_ - multipoint_radius;
+                    if (decreased_yaw < -180.0f) decreased_yaw += 360.0f;
+                    if (abs(increased_yaw) < abs(difference.y_) && abs(increased_yaw) < abs(decreased_yaw)) difference.y_ = increased_yaw;
+                    else if (abs(decreased_yaw) < abs(difference.y_) && abs(decreased_yaw) < abs(increased_yaw)) difference.y_ = decreased_yaw;
+
 
                     //choose the smallest one
-                    if (curr_fov < fov_limit * 1.20)
+                    float curr_fov = difference.FOVMagnitude();
+                    if (curr_fov < fov_limit)
                     {
-                        backtrack_tick = backtrack_candidate.first;
+                        backtrack_tick = candidate.GetTick();
                         closest = difference;
                         fov_limit = curr_fov;
                         has_target = true;
