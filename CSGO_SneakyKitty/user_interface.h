@@ -35,6 +35,7 @@ namespace user_interface
     int CSetAngle(std::stringstream& ss);
     int CRecordPos(std::stringstream& ss);
     int CSpamE(std::stringstream& ss);
+    int CInGameConfig(std::stringstream& ss);
 
 
     extern std::unordered_map <std::string, std::function<int(std::stringstream&)>> command_map;

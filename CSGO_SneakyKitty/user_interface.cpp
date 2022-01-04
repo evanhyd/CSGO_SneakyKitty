@@ -39,6 +39,7 @@ void user_interface::InitUserInterface()
     command_map.insert({ "set_angle", CSetAngle});
     command_map.insert({ "record_pos", CRecordPos });
     command_map.insert({ "spam_key", CSpamE });
+    command_map.insert({ "in_game_config", CInGameConfig });
 }
 
 
@@ -389,6 +390,20 @@ int user_interface::CSpamE(std::stringstream& ss)
     //    //SendInput(1, &input, sizeof(INPUT));
     //}
     
+
+    return 0;
+}
+
+
+int user_interface::CInGameConfig(std::stringstream& ss)
+{
+    SendConsoleCommand("viewmodel_fov 68");
+    SendConsoleCommand("viewmodel_offset_x 0");
+    SendConsoleCommand("viewmodel_offset_y 2");
+    SendConsoleCommand("viewmodel_offset_z -2");
+    SendConsoleCommand("viewmodel_recoil 0");
+    SendConsoleCommand("cl_showpos 1");
+    SendConsoleCommand("net_graph 1");
 
     return 0;
 }
