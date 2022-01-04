@@ -365,11 +365,6 @@ int user_interface::CRadio(std::stringstream& ss)
     std::u8string radio_message = u8"playerchatwheel . \"";
     std::string word;
 
-    //title
-    ss >> word;
-    radio_message.append(std::u8string(word.begin(), word.end()));
-    radio_message.append(kNewLine);
-
     while (ss >> word)
     {
         //just in case
@@ -390,6 +385,7 @@ int user_interface::CRadio(std::stringstream& ss)
             else if (word == "@purple") radio_message.push_back(kPurple);
             else if (word == "@medium_red") radio_message.push_back(kMediumRed);
             else if (word == "@gold") radio_message.push_back(kGold);
+            else if (word == "@new_line") radio_message.append(kNewLine);
             else return 1;
         }
         else radio_message += std::u8string(word.begin(), word.end()) + u8" ";
