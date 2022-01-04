@@ -6,7 +6,7 @@
 
 namespace user_interface
 {
-    enum ChatColor : char
+    enum ChatColor : char8_t
     {
         kNull,
         kWhite,
@@ -26,16 +26,19 @@ namespace user_interface
         kGold
     };
 
-    constexpr wchar_t kNewLine = 0x2029;
+    const std::u8string kNewLine = u8"\x2029";//char8_t doens't work, not sure why
 
 
 
     void InitUserInterface();
 
-    void SendConsoleCommand(const std::wstring& command_line);
-    void SendConsoleCommand(const std::string& command_line);
-    void SendBuiltInCommand(const std::string& command_line);
 
+    void SendConsoleCommand(const std::string& command_line);
+    void SendConsoleCommand(const std::u8string& command_line);
+
+
+
+    void SendBuiltInCommand(const std::string& command_line);
     int HFakeLag(std::stringstream& ss);
     int HRemoveFlash(std::stringstream& ss);
     int HBhop(std::stringstream& ss);

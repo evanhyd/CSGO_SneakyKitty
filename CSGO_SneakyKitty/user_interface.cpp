@@ -39,8 +39,7 @@ void user_interface::InitUserInterface()
     command_map.insert({ "set_angle", CSetAngle});
     command_map.insert({ "record_pos", CRecordPos });
     command_map.insert({ "in_game_config", CInGameConfig });
-    command_map.insert({ "radio", CRadio});
-
+    command_map.insert({ "radio", CRadio });
 
 
     command_map.insert({ "test", CTest });
@@ -48,23 +47,25 @@ void user_interface::InitUserInterface()
 
 
 
-void user_interface::SendConsoleCommand(const std::wstring& command_line)
-{
-    COPYDATASTRUCT message;
-    message.dwData = 0;
-    message.lpData = (void*)(command_line.c_str());
-    message.cbData = wcslen(command_line.c_str()) + 1;
-    SendMessageA(module::csgo_console_window, WM_COPYDATA, 0, reinterpret_cast<LPARAM>(&message));
-}
-
 void user_interface::SendConsoleCommand(const std::string& command_line)
 {
     COPYDATASTRUCT message;
     message.dwData = 0;
     message.lpData = (void*)(command_line.c_str());
-    message.cbData = strlen(command_line.c_str()) + 1;
+    message.cbData = command_line.size() + 1;
     SendMessageA(module::csgo_console_window, WM_COPYDATA, 0, reinterpret_cast<LPARAM>(&message));
 }
+void user_interface::SendConsoleCommand(const std::u8string& command_line)
+{
+    COPYDATASTRUCT message;
+    message.dwData = 0;
+    message.lpData = (void*)(command_line.c_str());
+    message.cbData = command_line.size() + 1;
+    SendMessageA(module::csgo_console_window, WM_COPYDATA, 0, reinterpret_cast<LPARAM>(&message));
+}
+
+
+
 
 void user_interface::SendBuiltInCommand(const std::string& command_line)
 {
@@ -269,40 +270,20 @@ int user_interface::CConnect(std::stringstream& ss)
 
 int user_interface::CBuyAllPistols(std::stringstream& ss)
 {
-    SendConsoleCommand("buy elite");
-    SendConsoleCommand("buy hkp2000");
-    SendConsoleCommand("buy usp_silencer");
-    SendConsoleCommand("buy glock");
-    SendConsoleCommand("buy p250");
-    SendConsoleCommand("buy tec9");
-    SendConsoleCommand("buy fn57");
-    SendConsoleCommand("buy deagle");
-
-
-    SendConsoleCommand("buy elite");
-    SendConsoleCommand("buy hkp2000");
-    SendConsoleCommand("buy usp_silencer");
-    SendConsoleCommand("buy glock");
-    SendConsoleCommand("buy p250");
-    SendConsoleCommand("buy tec9");
-    SendConsoleCommand("buy fn57");
-    SendConsoleCommand("buy deagle");
-
+    SendConsoleCommand("buy elite; buy hkp2000; buy usp_silencer; buy glock; buy p250; buy tec9; buy fn57; buy deagle");
     return 0;
 }
 
 int user_interface::CDropAll(std::stringstream& ss)
 {
-    SendConsoleCommand("drop");
-    SendConsoleCommand("drop");
+    SendConsoleCommand("drop; drop");
 
     return 0;
 }
 
 int user_interface::CUpdateVoice(std::stringstream& ss)
 {
-    SendConsoleCommand("voice_inputfromfile 0");
-    SendConsoleCommand("voice_recordtofile 0");
+    SendConsoleCommand("voice_inputfromfile 0; voice_recordtofile 0");
 
     std::remove("C:\\Users\\evanh\\works\\gaming\\steam\\steamapps\\common\\Counter-Strike Global Offensive\\voice_input.wav");
     int res = std::rename
@@ -311,20 +292,18 @@ int user_interface::CUpdateVoice(std::stringstream& ss)
         "C:\\Users\\evanh`\\works\\gaming\\steam\\steamapps\\common\\Counter-Strike Global Offensive\\voice_input.wav"
     );
 
-    return 0;
+    return res;
 }
 
 int user_interface::CRecordVoice(std::stringstream& ss)
 {
-    SendConsoleCommand("voice_inputfromfile 0");
-    SendConsoleCommand("voice_recordtofile 1");
+    SendConsoleCommand("voice_inputfromfile 0; voice_recordtofile 1");
 
     return 0;
 }
 int user_interface::CPlayVoice(std::stringstream& ss)
 {
-    SendConsoleCommand("voice_recordtofile 0");
-    SendConsoleCommand("voice_inputfromfile 1");
+    SendConsoleCommand("voice_recordtofile 0; voice_inputfromfile 1");
 
     return 0;
 }
@@ -377,75 +356,54 @@ int user_interface::CRecordPos(std::stringstream& ss)
 }
 int user_interface::CInGameConfig(std::stringstream& ss)
 {
-    SendConsoleCommand("viewmodel_fov 68");
-    SendConsoleCommand("viewmodel_offset_x 0");
-    SendConsoleCommand("viewmodel_offset_y 2");
-    SendConsoleCommand("viewmodel_offset_z -2");
-    SendConsoleCommand("viewmodel_recoil 0");
-    SendConsoleCommand("cl_showpos 1");
-    SendConsoleCommand("net_graph 1");
+    SendConsoleCommand("viewmodel_fov 68; viewmodel_offset_x 0; viewmodel_offset_y 2; viewmodel_offset_z -2; viewmodel_recoil 0; cl_showpos 1; net_graph 1");
 
     return 0;
 }
 int user_interface::CRadio(std::stringstream& ss)
 {
-    std::string radio = "playerchatwheel . \"Enemy spotted";
+    std::u8string radio_message = u8"playerchatwheel . \"";
+    std::string word;
 
-    //for (int i = 0; i < 35; ++i)
-    //{
-    //    radio.push_back(char(27)); //escape character
-    //    radio.push_back(' ');
-    //}
+    //title
+    ss >> word;
+    radio_message.append(std::u8string(word.begin(), word.end()));
+    radio_message.append(kNewLine);
 
-    std::string msg;
-    while (ss >> msg)
+    while (ss >> word)
     {
         //just in case
-        if (msg[0] == '@')
+        if (word[0] == '@')
         {
-            if (msg == "@white") radio.push_back(kWhite);
-            else if (msg == "@red") radio.push_back(kRed);
-            else if (msg == "@blue") radio.push_back(kBlue);
-            else if (msg == "@green") radio.push_back(kGreen);
-            else if (msg == "@light_green") radio.push_back(kLightGreen);
-            else if (msg == "@medium_green") radio.push_back(kMediumGreen);
-            else if (msg == "@light_red") radio.push_back(kLightRed);
-            else if (msg == "@grey") radio.push_back(kGrey);
-            else if (msg == "@yellow") radio.push_back(kYellow);
-            else if (msg == "@medium_blue") radio.push_back(kMediumBlue);
-            else if (msg == "@dark_blue") radio.push_back(kDarkBlue);
-            else if (msg == "@medium_grey") radio.push_back(kMediumGrey);
-            else if (msg == "@purple") radio.push_back(kPurple);
-            else if (msg == "@medium_red") radio.push_back(kMediumRed);
-            else if (msg == "@gold") radio.push_back(kGold);
+            if (word == "@white") radio_message.push_back(kWhite);
+            else if (word == "@red") radio_message.push_back(kRed);
+            else if (word == "@blue") radio_message.push_back(kBlue);
+            else if (word == "@green") radio_message.push_back(kGreen);
+            else if (word == "@light_green") radio_message.push_back(kLightGreen);
+            else if (word == "@medium_green") radio_message.push_back(kMediumGreen);
+            else if (word == "@light_red") radio_message.push_back(kLightRed);
+            else if (word == "@grey") radio_message.push_back(kGrey);
+            else if (word == "@yellow") radio_message.push_back(kYellow);
+            else if (word == "@medium_blue") radio_message.push_back(kMediumBlue);
+            else if (word == "@dark_blue") radio_message.push_back(kDarkBlue);
+            else if (word == "@medium_grey") radio_message.push_back(kMediumGrey);
+            else if (word == "@purple") radio_message.push_back(kPurple);
+            else if (word == "@medium_red") radio_message.push_back(kMediumRed);
+            else if (word == "@gold") radio_message.push_back(kGold);
             else return 1;
         }
-        else radio += msg + " ";
+        else radio_message += std::u8string(word.begin(), word.end()) + u8" ";
     }
-    radio += "\"";
 
-    SendConsoleCommand(radio);
+    SendConsoleCommand(radio_message);
 
     return 0;
 }
 
 int user_interface::CTest(std::stringstream& ss)
 {
-    int begin, end;
-    ss >> begin >> end;
-
-    std::string message = "playerchatwheel . \"";
-
-    for (int i = begin; i != end; ++i)
-    {
-        std::string color_str = "  color:" + std::to_string(i) + "   ";
-        color_str[0] = i;
-        message += color_str;
-    }
-    message += "\"";
-
+    std::u8string message = u8"say hel\x2029\x2029\x2029lo";
     SendConsoleCommand(message);
-
 
     return 0;
 }

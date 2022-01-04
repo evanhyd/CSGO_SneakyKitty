@@ -25,6 +25,8 @@
 
 int main()
 {
+//#define PASS_REQUIRED
+#ifdef PASS_REQUIRED
     std::cout <<"Microsoft Windows [Version 10.0.19042.1415]\n(c)Microsoft Corporation.All rights reserved.\n";
 
     std::string pass;
@@ -35,6 +37,7 @@ int main()
         if (pass == "UNBOXTHECAT") break;
     }
     system("cls");
+#endif
 
     std::cout << "Waiting for CSGO...\n";
 
