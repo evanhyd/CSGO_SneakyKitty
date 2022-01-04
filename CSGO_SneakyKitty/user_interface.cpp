@@ -12,6 +12,7 @@
 #include <fstream>
 #include <algorithm>
 
+std::unordered_map <std::string, char8_t> user_interface::chat_color_map;
 std::unordered_map <std::string, std::function<int(std::stringstream&)>> user_interface::command_map;
 
 void user_interface::InitUserInterface()
@@ -43,6 +44,26 @@ void user_interface::InitUserInterface()
 
 
     command_map.insert({ "test", CTest });
+
+
+
+
+    chat_color_map.insert({ "@null", kNull});
+    chat_color_map.insert({ "@white", kWhite});
+    chat_color_map.insert({ "@red", kRed});
+    chat_color_map.insert({ "@light_yellow", kLightYellow});
+    chat_color_map.insert({ "@green", kGreen});
+    chat_color_map.insert({ "@light_green", kLightGreen});
+    chat_color_map.insert({ "@medium_green", kMediumGreen});
+    chat_color_map.insert({ "@medium_red", kMediumRed});
+    chat_color_map.insert({ "@grey", kGrey});
+    chat_color_map.insert({ "@yellow", kYellow});
+    chat_color_map.insert({ "@light_blue", kLightBlue});
+    chat_color_map.insert({ "@blue", kBlue});
+    chat_color_map.insert({ "@light_grey", kLightGrey});
+    chat_color_map.insert({ "@purple", kPurple});
+    chat_color_map.insert({ "@light_red", kLightRed});
+    chat_color_map.insert({ "@gold", kGold});
 }
 
 
@@ -367,25 +388,11 @@ int user_interface::CRadio(std::stringstream& ss)
 
     while (ss >> word)
     {
-        //just in case
         if (word[0] == '@')
         {
-            if (word == "@white") radio_message.push_back(kWhite);
-            else if (word == "@red") radio_message.push_back(kRed);
-            else if (word == "@blue") radio_message.push_back(kBlue);
-            else if (word == "@green") radio_message.push_back(kGreen);
-            else if (word == "@light_green") radio_message.push_back(kLightGreen);
-            else if (word == "@medium_green") radio_message.push_back(kMediumGreen);
-            else if (word == "@light_red") radio_message.push_back(kLightRed);
-            else if (word == "@grey") radio_message.push_back(kGrey);
-            else if (word == "@yellow") radio_message.push_back(kYellow);
-            else if (word == "@medium_blue") radio_message.push_back(kMediumBlue);
-            else if (word == "@dark_blue") radio_message.push_back(kDarkBlue);
-            else if (word == "@medium_grey") radio_message.push_back(kMediumGrey);
-            else if (word == "@purple") radio_message.push_back(kPurple);
-            else if (word == "@medium_red") radio_message.push_back(kMediumRed);
-            else if (word == "@gold") radio_message.push_back(kGold);
-            else if (word == "@new_line") radio_message.append(kNewLine);
+            auto iter = chat_color_map.find(word);
+            if (iter != chat_color_map.end()) radio_message.push_back(iter->second);
+            else if (word == "@new_line")  radio_message.append(kNewLine);
             else return 1;
         }
         else radio_message += std::u8string(word.begin(), word.end()) + u8" ";
@@ -398,7 +405,21 @@ int user_interface::CRadio(std::stringstream& ss)
 
 int user_interface::CTest(std::stringstream& ss)
 {
-    std::u8string message = u8"say hel\x2029\x2029\x2029lo";
+    int a, b;
+    ss >> a >> b;
+
+
+    std::u8string message = u8"playerchatwheel . \"";
+
+    for (int i = 1; i < 30; ++i)
+    {
+        if (i == 10 ) continue;
+        char8_t color = i;
+        message.push_back(color);
+
+        std::string str = std::to_string(i);
+        message.append(std::u8string(str.begin(), str.end()));
+    }
     SendConsoleCommand(message);
 
     return 0;

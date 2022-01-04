@@ -11,22 +11,25 @@ namespace user_interface
         kNull,
         kWhite,
         kRed,
-        kBlue,
+        kLightYellow,
         kGreen,
         kLightGreen,
         kMediumGreen,
-        kLightRed,
+        kMediumRed,
         kGrey,
         kYellow,
-        kMediumBlue = 11,
-        kDarkBlue,
-        kMediumGrey,
+        kLightBlue = 11,
+        kBlue,
+        kLightGrey,
         kPurple,
-        kMediumRed,
+        kLightRed,
         kGold
     };
 
-    const std::u8string kNewLine = u8"\x2029";//char8_t doens't work, not sure why
+    const std::u8string kNewLine = u8"\x2029";//it seems required two char8_t
+
+    extern std::unordered_map <std::string, char8_t> chat_color_map;
+    extern std::unordered_map <std::string, std::function<int(std::stringstream&)>> command_map;
 
 
 
@@ -68,5 +71,4 @@ namespace user_interface
     int CTest(std::stringstream& ss);
 
 
-    extern std::unordered_map <std::string, std::function<int(std::stringstream&)>> command_map;
 }
