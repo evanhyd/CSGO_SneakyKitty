@@ -6,9 +6,33 @@
 
 namespace user_interface
 {
+    enum ChatColor : char
+    {
+        kNull,
+        kWhite,
+        kRed,
+        kBlue,
+        kGreen,
+        kLightGreen,
+        kMediumGreen,
+        kLightRed,
+        kGrey,
+        kYellow,
+        kMediumBlue = 11,
+        kDarkBlue,
+        kMediumGrey,
+        kPurple,
+        kMediumRed,
+        kGold
+    };
+
+    constexpr wchar_t kNewLine = 0x2029;
+
+
+
     void InitUserInterface();
 
-
+    void SendConsoleCommand(const std::wstring& command_line);
     void SendConsoleCommand(const std::string& command_line);
     void SendBuiltInCommand(const std::string& command_line);
 
@@ -34,8 +58,11 @@ namespace user_interface
     int CExpose(std::stringstream& ss);
     int CSetAngle(std::stringstream& ss);
     int CRecordPos(std::stringstream& ss);
-    int CSpamE(std::stringstream& ss);
     int CInGameConfig(std::stringstream& ss);
+    int CRadio(std::stringstream& ss);
+
+
+    int CTest(std::stringstream& ss);
 
 
     extern std::unordered_map <std::string, std::function<int(std::stringstream&)>> command_map;

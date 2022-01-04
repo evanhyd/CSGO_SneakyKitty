@@ -1,5 +1,6 @@
-#include <iostream>
+﻿#include <iostream>
 #include <thread>
+#include <string>
 
 #include "game.h"
 #include "module.h"
@@ -21,7 +22,6 @@
 #include "Aimbot.h"
 
 #include "user_interface.h"
-#include <string>
 
 int main()
 {
@@ -32,7 +32,7 @@ int main()
     {
         std::cout << "\nC:\\Users\\evanh>";
         std::cin >> pass;
-        if (pass == "SE26") break;
+        if (pass == "UNBOXTHECAT") break;
     }
     system("cls");
 
@@ -99,7 +99,6 @@ int main()
     user_interface::InitUserInterface();
 
     std::cout << "Sneaky Kitty has loaded\nEnjoy your game!!!\n\a";
-
 
     std::string command;
     while (true)

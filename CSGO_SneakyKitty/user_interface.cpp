@@ -38,11 +38,24 @@ void user_interface::InitUserInterface()
     command_map.insert({ "play_voice", CPlayVoice});
     command_map.insert({ "set_angle", CSetAngle});
     command_map.insert({ "record_pos", CRecordPos });
-    command_map.insert({ "spam_key", CSpamE });
     command_map.insert({ "in_game_config", CInGameConfig });
+    command_map.insert({ "radio", CRadio});
+
+
+
+    command_map.insert({ "test", CTest });
 }
 
 
+
+void user_interface::SendConsoleCommand(const std::wstring& command_line)
+{
+    COPYDATASTRUCT message;
+    message.dwData = 0;
+    message.lpData = (void*)(command_line.c_str());
+    message.cbData = wcslen(command_line.c_str()) + 1;
+    SendMessageA(module::csgo_console_window, WM_COPYDATA, 0, reinterpret_cast<LPARAM>(&message));
+}
 
 void user_interface::SendConsoleCommand(const std::string& command_line)
 {
@@ -337,8 +350,6 @@ int user_interface::CExpose(std::stringstream& ss)
 
     return 0;
 }
-
-
 int user_interface::CSetAngle(std::stringstream& ss)
 {
     Angle angle;
@@ -348,7 +359,6 @@ int user_interface::CSetAngle(std::stringstream& ss)
     memory::WriteMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, angle);
     return 0;
 }
-
 int user_interface::CRecordPos(std::stringstream& ss)
 {
     std::string file_name;
@@ -365,36 +375,6 @@ int user_interface::CRecordPos(std::stringstream& ss)
 
     return 0;
 }
-
-int user_interface::CSpamE(std::stringstream& ss)
-{
-    //char key;
-    //int num;
-    //ss >> key >> num;
-
-    //Sleep(3000);
-
-    //INPUT input;
-    //input.type = INPUT_KEYBOARD;
-    //input.ki.wScan = 0;
-    //input.ki.dwExtraInfo = 0;
-    //input.ki.wVk = key;
-    //input.ki.time = 1000;
-
-
-    //for (int i = 0; i < num; ++i)
-    //{
-    //    input.ki.dwFlags = 0;
-    //    SendInput(1, &input, sizeof(INPUT));
-    //    //input.ki.dwFlags = KEYEVENTF_KEYUP;
-    //    //SendInput(1, &input, sizeof(INPUT));
-    //}
-    
-
-    return 0;
-}
-
-
 int user_interface::CInGameConfig(std::stringstream& ss)
 {
     SendConsoleCommand("viewmodel_fov 68");
@@ -404,6 +384,68 @@ int user_interface::CInGameConfig(std::stringstream& ss)
     SendConsoleCommand("viewmodel_recoil 0");
     SendConsoleCommand("cl_showpos 1");
     SendConsoleCommand("net_graph 1");
+
+    return 0;
+}
+int user_interface::CRadio(std::stringstream& ss)
+{
+    std::string radio = "playerchatwheel . \"Enemy spotted";
+
+    //for (int i = 0; i < 35; ++i)
+    //{
+    //    radio.push_back(char(27)); //escape character
+    //    radio.push_back(' ');
+    //}
+
+    std::string msg;
+    while (ss >> msg)
+    {
+        //just in case
+        if (msg[0] == '@')
+        {
+            if (msg == "@white") radio.push_back(kWhite);
+            else if (msg == "@red") radio.push_back(kRed);
+            else if (msg == "@blue") radio.push_back(kBlue);
+            else if (msg == "@green") radio.push_back(kGreen);
+            else if (msg == "@light_green") radio.push_back(kLightGreen);
+            else if (msg == "@medium_green") radio.push_back(kMediumGreen);
+            else if (msg == "@light_red") radio.push_back(kLightRed);
+            else if (msg == "@grey") radio.push_back(kGrey);
+            else if (msg == "@yellow") radio.push_back(kYellow);
+            else if (msg == "@medium_blue") radio.push_back(kMediumBlue);
+            else if (msg == "@dark_blue") radio.push_back(kDarkBlue);
+            else if (msg == "@medium_grey") radio.push_back(kMediumGrey);
+            else if (msg == "@purple") radio.push_back(kPurple);
+            else if (msg == "@medium_red") radio.push_back(kMediumRed);
+            else if (msg == "@gold") radio.push_back(kGold);
+            else return 1;
+        }
+        else radio += msg + " ";
+    }
+    radio += "\"";
+
+    SendConsoleCommand(radio);
+
+    return 0;
+}
+
+int user_interface::CTest(std::stringstream& ss)
+{
+    int begin, end;
+    ss >> begin >> end;
+
+    std::string message = "playerchatwheel . \"";
+
+    for (int i = begin; i != end; ++i)
+    {
+        std::string color_str = "  color:" + std::to_string(i) + "   ";
+        color_str[0] = i;
+        message += color_str;
+    }
+    message += "\"";
+
+    SendConsoleCommand(message);
+
 
     return 0;
 }
