@@ -423,8 +423,8 @@ int user_interface::CExpose(std::stringstream& ss)
 
             SendConsoleCommand
             (
-                "say_team Enemy Health: " + std::to_string(game::player_entity_list[i].GetHealth()) +
-                " Location: " + location
+                "say_team Enemy HP: " + std::to_string(game::player_entity_list[i].GetHealth()) +
+                " Loc: " + location
             );
             Sleep(1000);
         }
@@ -459,7 +459,7 @@ int user_interface::CRecordPos(std::stringstream& ss)
 }
 int user_interface::CInGameConfig(std::stringstream& ss)
 {
-    SendConsoleCommand("viewmodel_fov 68; viewmodel_offset_x 0; viewmodel_offset_y 2; viewmodel_offset_z -2; viewmodel_recoil 0; cl_showpos 1; net_graph 1");
+    SendConsoleCommand("viewmodel_fov 68; viewmodel_offset_x 2.5; viewmodel_offset_y 2; viewmodel_offset_z -2; viewmodel_recoil 0; cl_showpos 1; net_graph 1");
 
     return 0;
 }
@@ -515,8 +515,12 @@ int user_interface::CFakeUnbox(std::stringstream& ss)
     std::string word;
 
     //player name
-    ss >> word;
-    fake_unbox_message.append(std::u8string(word.begin(), word.end()));
+    std::string player_name;
+    while (ss >> word)
+    {
+        player_name.append(word + ' ');
+    }
+    fake_unbox_message.append(std::u8string(player_name.begin(), player_name.end()));
     fake_unbox_message.push_back(ChatColor::kWhite);
     fake_unbox_message.append(u8" has opened a container and found: ");
 
