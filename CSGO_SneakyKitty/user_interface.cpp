@@ -489,8 +489,12 @@ int user_interface::CRadio(std::stringstream& ss)
 
 int user_interface::CFakeBan(std::stringstream& ss)
 {
-    std::string player_name;
-    ss >> player_name;
+    std::string player_name, word;
+
+    while (ss >> word)
+    {
+        player_name.append(word + ' ');
+    }
 
     std::u8string fake_ban_message = u8"playerchatwheel . \"In position";
     fake_ban_message.append(kNewLine);
