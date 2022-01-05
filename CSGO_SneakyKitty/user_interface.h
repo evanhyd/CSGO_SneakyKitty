@@ -27,12 +27,22 @@ namespace user_interface
     };
 
     const std::u8string kNewLine = u8"\x2029";//it seems required two char8_t
-
     extern std::unordered_map <std::string, char8_t> chat_color_map;
+
+
+    enum SkinRarity : int
+    {
+        kCommon,
+        kRare,
+        kEpic,
+        kLegendary,
+        kMythic
+    };
+    extern std::vector<std::u8string> skin_lists[5];
+
+
+
     extern std::unordered_map <std::string, std::function<int(std::stringstream&)>> command_map;
-
-
-
     void InitUserInterface();
 
 
