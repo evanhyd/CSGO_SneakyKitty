@@ -66,6 +66,8 @@ namespace user_interface
     int CRecordPos(std::stringstream& ss);
     int CInGameConfig(std::stringstream& ss);
     int CRadio(std::stringstream& ss);
+    int CFakeBan(std::stringstream& ss);
+    int CFakeUnbox(std::stringstream& ss);
 
 
     int CTest(std::stringstream& ss);

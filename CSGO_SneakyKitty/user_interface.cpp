@@ -41,6 +41,8 @@ void user_interface::InitUserInterface()
     command_map.insert({ "record_pos", CRecordPos });
     command_map.insert({ "in_game_config", CInGameConfig });
     command_map.insert({ "radio", CRadio });
+    command_map.insert({ "fake_ban", CFakeBan });
+    command_map.insert({ "fake_unbox", CFakeUnbox});
 
 
     command_map.insert({ "test", CTest });
@@ -403,9 +405,82 @@ int user_interface::CRadio(std::stringstream& ss)
     return 0;
 }
 
+
+
+int user_interface::CFakeBan(std::stringstream& ss)
+{
+    std::string player_name;
+    ss >> player_name;
+
+    std::u8string fake_ban_message = u8"playerchatwheel . \"In position";
+    fake_ban_message.append(kNewLine);
+    fake_ban_message.push_back(ChatColor::kRed);
+    fake_ban_message.append(std::u8string(player_name.begin(), player_name.end()) + u8" has been permanently banned from official CS:GO servers.\"");
+
+
+    SendConsoleCommand(fake_ban_message);
+
+    return 0;
+}
+int user_interface::CFakeUnbox(std::stringstream& ss)
+{
+    std::u8string fake_unbox_message = u8"playerchatwheel . \"In position";
+    fake_unbox_message.append(kNewLine);
+    fake_unbox_message.push_back(ChatColor::kLightYellow);
+
+    std::string word;
+
+    //player name
+    ss >> word;
+    fake_unbox_message.append(std::u8string(word.begin(), word.end()));
+
+    //color
+    fake_unbox_message.push_back(ChatColor::kWhite);
+    fake_unbox_message.append(u8" has opened a container and found: ");
+
+    //color
+    ss >> word;
+    auto iter = chat_color_map.find(word);
+    if (iter != chat_color_map.end()) fake_unbox_message.push_back(iter->second);
+    else return 1;
+
+    //skin name
+    while (ss >> word)
+    {
+        fake_unbox_message.append(std::u8string(word.begin(), word.end()));
+        fake_unbox_message.push_back(' ');
+    }
+
+    SendConsoleCommand(fake_unbox_message);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 int user_interface::CTest(std::stringstream& ss)
 {
-    int a, b;
+    /*int a, b;
     ss >> a >> b;
 
 
@@ -420,7 +495,7 @@ int user_interface::CTest(std::stringstream& ss)
         std::string str = std::to_string(i);
         message.append(std::u8string(str.begin(), str.end()));
     }
-    SendConsoleCommand(message);
+    SendConsoleCommand(message);*/
 
     return 0;
 }
