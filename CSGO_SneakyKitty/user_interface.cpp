@@ -32,7 +32,7 @@ void user_interface::InitUserInterface()
     chat_color_map.insert({ "@light_blue", kLightBlue });
     chat_color_map.insert({ "@blue", kBlue });
     chat_color_map.insert({ "@light_grey", kLightGrey });
-    chat_color_map.insert({ "@purple", kPurple });
+    chat_color_map.insert({ "@pink", kPink });
     chat_color_map.insert({ "@light_red", kLightRed });
     chat_color_map.insert({ "@gold", kGold });
 
@@ -41,6 +41,7 @@ void user_interface::InitUserInterface()
 
 
 
+    srand(time(NULL));
     //Operation Riptide Case
     skin_lists[kCommon].push_back(u8"AUG | Plague");
     skin_lists[kCommon].push_back(u8"Dual Berettas | Tread");
@@ -135,6 +136,7 @@ void user_interface::InitUserInterface()
     command_map.insert({ "update_voice", CUpdateVoice});
     command_map.insert({ "record_voice", CRecordVoice});
     command_map.insert({ "play_voice", CPlayVoice});
+    command_map.insert({ "expose", CExpose});
     command_map.insert({ "set_angle", CSetAngle});
     command_map.insert({ "record_pos", CRecordPos });
     command_map.insert({ "in_game_config", CInGameConfig });
@@ -515,28 +517,27 @@ int user_interface::CFakeUnbox(std::stringstream& ss)
     fake_unbox_message.append(u8" has opened a container and found: ");
 
 
-    srand(time(NULL));
     float rng = static_cast<float>(rand()) / RAND_MAX;
 
     int rarity_index;
     char8_t rarity_color;
 
-    if (rng > 0.968)
+    if (rng > 0.9974f)
     {
         rarity_index = kMythic;
         rarity_color = kYellow;
     }
-    else if (rng > 0.9654)
+    else if (rng > 0.9936f)
     {
         rarity_index = kLegendary;
         rarity_color = kRed;
     }
-    else if (rng > 0.991)
+    else if (rng > 0.968f)
     {
         rarity_index = kEpic;
-        rarity_color = kPurple;
+        rarity_color = kPink;
     }
-    else if (rng > 0.959)
+    else if (rng > 0.8402f)
     {
         rarity_index = kRare;
         rarity_color = kBlue;

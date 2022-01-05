@@ -21,7 +21,7 @@ namespace user_interface
         kLightBlue = 11,
         kBlue,
         kLightGrey,
-        kPurple,
+        kPink,
         kLightRed,
         kGold
     };
