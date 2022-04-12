@@ -70,7 +70,7 @@ public:
 
 
 private:
-	char pad0_[0xc0];
+	char pad0_[0xA4 + 8];
 
 public:
 	bool camera_intercepts_with_mouse_;
