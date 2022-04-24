@@ -39,6 +39,11 @@ int main()
     system("cls");
 #endif
 
+
+    std::cout << "Fetching game resources...\n";
+    offsets::UpdateOffsets();
+
+
     std::cout << "Waiting for CSGO...\n";
 
     module::InitCSGOProcessHandle();
@@ -53,7 +58,6 @@ int main()
     {
         module::engine_dll = module::GetModuleBaseAddress("engine.dll");
     } while (module::client_dll == NULL);
-
 
 
     std::cout << "Initializing weapon configs...\n";

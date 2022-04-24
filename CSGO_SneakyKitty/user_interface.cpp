@@ -214,7 +214,7 @@ int user_interface::HGlobalTarget(std::stringstream& ss)
 }
 
 
-int user_interface::CHelp(std::stringstream& ss)
+int user_interface::CHelp([[maybe_unused]]std::stringstream& ss)
 {
     std::cout << "Features:\n";
     std::cout << "/fakelag (adaptive, C for lag, all time)\n";
@@ -250,7 +250,7 @@ int user_interface::CHelp(std::stringstream& ss)
     return 0;
 }
 
-int user_interface::CStatus(std::stringstream& ss)
+int user_interface::CStatus([[maybe_unused]] std::stringstream& ss)
 {
     std::cout << "Toggle Status\n";
 
@@ -270,7 +270,7 @@ int user_interface::CStatus(std::stringstream& ss)
     return 0;
 }
 
-int user_interface::CConnect(std::stringstream& ss)
+int user_interface::CConnect([[maybe_unused]] std::stringstream& ss)
 {
     memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);
     std::cout << "Reconnected" << std::endl;
@@ -278,20 +278,20 @@ int user_interface::CConnect(std::stringstream& ss)
     return 0;
 }
 
-int user_interface::CBuyAllPistols(std::stringstream& ss)
+int user_interface::CBuyAllPistols([[maybe_unused]] std::stringstream& ss)
 {
     SendConsoleCommand("buy elite; buy hkp2000; buy usp_silencer; buy glock; buy p250; buy tec9; buy fn57; buy deagle");
     return 0;
 }
 
-int user_interface::CDropAll(std::stringstream& ss)
+int user_interface::CDropAll([[maybe_unused]] std::stringstream& ss)
 {
     SendConsoleCommand("drop; drop");
 
     return 0;
 }
 
-int user_interface::CUpdateVoice(std::stringstream& ss)
+int user_interface::CUpdateVoice([[maybe_unused]] std::stringstream& ss)
 {
     SendConsoleCommand("voice_inputfromfile 0; voice_recordtofile 0");
 
@@ -305,19 +305,19 @@ int user_interface::CUpdateVoice(std::stringstream& ss)
     return res;
 }
 
-int user_interface::CRecordVoice(std::stringstream& ss)
+int user_interface::CRecordVoice([[maybe_unused]] std::stringstream& ss)
 {
     SendConsoleCommand("voice_inputfromfile 0; voice_recordtofile 1");
 
     return 0;
 }
-int user_interface::CPlayVoice(std::stringstream& ss)
+int user_interface::CPlayVoice([[maybe_unused]] std::stringstream& ss)
 {
     SendConsoleCommand("voice_recordtofile 0; voice_inputfromfile 1");
 
     return 0;
 }
-int user_interface::CExpose(std::stringstream& ss)
+int user_interface::CExpose([[maybe_unused]] std::stringstream& ss)
 {
     for (int i = 0; i < client::kMaxPlayerNum; ++i)
     {
@@ -364,7 +364,7 @@ int user_interface::CRecordPos(std::stringstream& ss)
 
     return 0;
 }
-int user_interface::CInGameConfig(std::stringstream& ss)
+int user_interface::CInGameConfig([[maybe_unused]] std::stringstream& ss)
 {
     SendConsoleCommand("viewmodel_fov 68; viewmodel_offset_x 2.5; viewmodel_offset_y 2; viewmodel_offset_z -2; viewmodel_recoil 0; cl_showpos 1; net_graph 1");
 
@@ -376,7 +376,7 @@ int user_interface::CInGameConfig(std::stringstream& ss)
 
 
 
-int user_interface::CTest(std::stringstream& ss)
+int user_interface::CTest([[maybe_unused]] std::stringstream& ss)
 {
     /*int a, b;
     ss >> a >> b;

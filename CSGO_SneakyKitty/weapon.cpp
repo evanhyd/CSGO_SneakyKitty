@@ -142,7 +142,7 @@ void weapon::InitWeaponTypeTable()
 void weapon::InitFOVTable()
 {
 	kFOVTable[kNonWeapon] = 1000.0f;
-	kFOVTable[kPistol] = 1.6f;
+	kFOVTable[kPistol] = 2.0f;
 	kFOVTable[kShotgun] = 2.0f;
 	kFOVTable[kSMG] = 1.7f;
 	kFOVTable[kAssaultRifle] = 1.6f;
@@ -153,10 +153,10 @@ void weapon::InitFOVTable()
 void weapon::InitSmoothTable()
 {
 	kSmoothTable[kNonWeapon] = 170.0f;
-	kSmoothTable[kPistol] = 2.0f;
+	kSmoothTable[kPistol] = 1.8f;
 	kSmoothTable[kShotgun] = 4.0f;
-	kSmoothTable[kSMG] = 4.0f;
+	kSmoothTable[kSMG] = 3.8f;
 	kSmoothTable[kAssaultRifle] = 3.5f;
 	kSmoothTable[kSniperRifle] = 1.0f;
-	kSmoothTable[kMachinegun] = 4.0f;
+	kSmoothTable[kMachinegun] = 3.8f;
 }

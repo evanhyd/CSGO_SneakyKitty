@@ -38,18 +38,18 @@ private:
 	//padding
 	char pad0_;
 	bool dormant_;//237
-	char pad1_[offsets::m_iTeamNum - offsets::m_bDormant - sizeof(dormant_)];
+	char pad1_[0xF4 - 0xED - sizeof(dormant_)]; //m_iTeamNum - m_bDormant - sizeof(dormant_)
 	int team_; //244
-	char pad2_[offsets::m_iHealth - offsets::m_iTeamNum - sizeof(team_)];
+	char pad2_[0x100 - 0xF4 - sizeof(team_)]; //m_iHealth - m_iTeamNum - sizeof(team_)
 	int health_; //256
 	int flag_;
 	Position view_offset_;
-	Vector3 velocity_;//275
-	char pad3_[offsets::m_vecOrigin - offsets::m_vecVelocity - sizeof(velocity_)];
-	Position origin_;//312
-	char pad4_[offsets::m_bSpotted - offsets::m_vecOrigin - sizeof(origin_)];
+	Vector3 velocity_; //275
+	char pad3_[0x138 - 0x114 - sizeof(velocity_)]; //m_vecOrigin - m_vecVelocity - sizeof(velocity_)
+	Position origin_; //312
+	char pad4_[0x93D - 0x138 - sizeof(origin_)]; //m_bSpotted - m_vecOrigin - sizeof(origin_)
 	bool spotted_;
-	char pad5_[offsets::m_bSpottedByMask - offsets::m_bSpotted - sizeof(spotted_)];
+	char pad5_[0x980 - 0x93D - sizeof(spotted_)]; //m_bSpottedByMask - m_bSpotted - sizeof(spotted_)
 	int spotted_by_mask_;
 
 
