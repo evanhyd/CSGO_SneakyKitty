@@ -1,5 +1,5 @@
 #include "Entity.h"
-
+#include "game.h"
 
 bool Entity::IsOnGround() const
 {
@@ -92,4 +92,9 @@ bool Entity::IsEnemy(const Entity& entity) const
 bool Entity::IsAlly(const Entity& entity) const
 {
     return !this->IsEnemy(entity);
+}
+
+bool Entity::SpottedBy(int entity_id, int observer_id)
+{
+    return (game::player_entity_list[entity_id].GetSpottedMask() >> observer_id & 1);
 }

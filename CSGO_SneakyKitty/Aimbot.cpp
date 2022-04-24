@@ -112,7 +112,7 @@ void Aimbot::operator()(int update_period_ms)
                 }
                 else
                 //check visibility
-                if ((game::player_entity_list[entity_id].GetSpottedMask() >> game::local_player_index & 1) == 0)
+                if (!Entity::SpottedBy(entity_id, game::local_player_index))
                 {
                     //check legit aimbot mode
                     if (game::toggle_mode[game::aimbot_fire_hotkey] == 1) continue;

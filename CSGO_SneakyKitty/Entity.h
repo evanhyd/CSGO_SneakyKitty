@@ -82,5 +82,7 @@ public:
 	bool IsDead() const;
 	bool IsEnemy(const Entity& entity) const;
 	bool IsAlly(const Entity& entity) const;
+
+	static bool SpottedBy(int entity_id, int observer_id);
 };
 
