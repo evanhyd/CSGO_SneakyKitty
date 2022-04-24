@@ -230,12 +230,20 @@ int user_interface::CHelp(std::stringstream& ss)
 
 
     std::cout << "\n\nBuilt-in commands:\n";
+    std::cout << "/help\n";
+    std::cout << "/status\n";
+    std::cout << "/in_game_config\n";
     std::cout << "/connect (fix the connection issue)\n";
+
     std::cout << "/record voice (K to record)\n";
     std::cout << "/update voice\n";
     std::cout << "/play voice (K to play)\n";
+
+    std::cout << "/record_pos\n";
     std::cout << "/expose\n";
-    std::cout << "/set angle [pitch/yaw/roll] [angle in degree]\n";
+    std::cout << "/set_angle [pitch/yaw/roll] [angle in degree]\n";
+    std::cout << "/buy_all_pistols\n";
+    std::cout << "/drop_all\n";
 
     std::cout << std::endl;
 
@@ -245,16 +253,17 @@ int user_interface::CHelp(std::stringstream& ss)
 int user_interface::CStatus(std::stringstream& ss)
 {
     std::cout << "Toggle Status\n";
-    std::cout << "fakelag: " << game::toggle_mode[game::fakelag_hotkey] <<'\n';
-    std::cout << "remove_flash: " << game::toggle_mode[game::remove_flash_hotkey] <<'\n';
-    std::cout << "bhop: " << game::toggle_mode[game::bhop_hotkey] <<'\n';
-    std::cout << "glow_esp: " << game::toggle_mode[game::glow_esp_hotkey] <<'\n';
-    std::cout << "radar_esp: " << game::toggle_mode[game::radar_esp_hotkey] <<'\n';
-    std::cout << "thirdperson: " << game::toggle_mode[game::thirdperson_hotkey] <<'\n';
-    std::cout << "desync: " << game::toggle_mode[game::desync_hotkey] <<'\n';
-    std::cout << "aimbot: " << game::toggle_mode[game::aimbot_fire_hotkey] <<'\n';
-    std::cout << "backtrack: " << game::toggle_mode[game::aimbot_backtrack_hotkey] <<'\n';
-    std::cout << "global target: " << game::toggle_mode[game::global_target_hotkey] <<'\n';
+
+    if(game::toggle_mode[game::fakelag_hotkey]) std::cout << "fakelag: " << game::toggle_mode[game::fakelag_hotkey] <<'\n';
+    if(game::toggle_mode[game::remove_flash_hotkey]) std::cout << "remove_flash: " << game::toggle_mode[game::remove_flash_hotkey] <<'\n';
+    if (game::toggle_mode[game::bhop_hotkey]) std::cout << "bhop: " << game::toggle_mode[game::bhop_hotkey] <<'\n';
+    if (game::toggle_mode[game::glow_esp_hotkey]) std::cout << "glow_esp: " << game::toggle_mode[game::glow_esp_hotkey] <<'\n';
+    if (game::toggle_mode[game::radar_esp_hotkey]) std::cout << "radar_esp: " << game::toggle_mode[game::radar_esp_hotkey] <<'\n';
+    if (game::toggle_mode[game::thirdperson_hotkey]) std::cout << "thirdperson: " << game::toggle_mode[game::thirdperson_hotkey] <<'\n';
+    if (game::toggle_mode[game::desync_hotkey]) std::cout << "desync: " << game::toggle_mode[game::desync_hotkey] <<'\n';
+    if (game::toggle_mode[game::aimbot_fire_hotkey]) std::cout << "aimbot: " << game::toggle_mode[game::aimbot_fire_hotkey] <<'\n';
+    if (game::toggle_mode[game::aimbot_backtrack_hotkey]) std::cout << "backtrack: " << game::toggle_mode[game::aimbot_backtrack_hotkey] <<'\n';
+    if (game::toggle_mode[game::global_target_hotkey]) std::cout << "global target: " << game::toggle_mode[game::global_target_hotkey] <<'\n';
 
     std::cout << std::endl;
 
