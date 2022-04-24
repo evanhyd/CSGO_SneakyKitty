@@ -13,109 +13,10 @@
 #include <algorithm>
 #include <ctime>
 
-std::unordered_map <std::string, char8_t> user_interface::chat_color_map;
-std::vector<std::u8string> user_interface::skin_lists[5] = {};
 std::unordered_map <std::string, std::function<int(std::stringstream&)>> user_interface::command_map;
 
 void user_interface::InitUserInterface()
 {
-    chat_color_map.insert({ "@null", kNull });
-    chat_color_map.insert({ "@white", kWhite });
-    chat_color_map.insert({ "@red", kRed });
-    chat_color_map.insert({ "@light_yellow", kLightYellow });
-    chat_color_map.insert({ "@green", kGreen });
-    chat_color_map.insert({ "@light_green", kLightGreen });
-    chat_color_map.insert({ "@medium_green", kMediumGreen });
-    chat_color_map.insert({ "@medium_red", kMediumRed });
-    chat_color_map.insert({ "@grey", kGrey });
-    chat_color_map.insert({ "@yellow", kYellow });
-    chat_color_map.insert({ "@light_blue", kLightBlue });
-    chat_color_map.insert({ "@blue", kBlue });
-    chat_color_map.insert({ "@light_grey", kLightGrey });
-    chat_color_map.insert({ "@pink", kPink });
-    chat_color_map.insert({ "@light_red", kLightRed });
-    chat_color_map.insert({ "@gold", kGold });
-
-
-
-
-
-
-    srand(time(NULL));
-    //Operation Riptide Case
-    skin_lists[kCommon].push_back(u8"AUG | Plague");
-    skin_lists[kCommon].push_back(u8"Dual Berettas | Tread");
-    skin_lists[kCommon].push_back(u8"G3SG1 | Keeping Tabs");
-    skin_lists[kCommon].push_back(u8"MP7 | Guerrilla");
-    skin_lists[kCommon].push_back(u8"PP-Bizon | Lumen");
-    skin_lists[kCommon].push_back(u8"USP-S | Black Lotus");
-    skin_lists[kCommon].push_back(u8"XM1014 | Watchdog");
-
-    skin_lists[kRare].push_back(u8"MAG-7 | BI83 Spectrum");
-    skin_lists[kRare].push_back(u8"FAMAS | ZX Spectron");
-    skin_lists[kRare].push_back(u8"Five-SeveN | Boost Protocol");
-    skin_lists[kRare].push_back(u8"MP9 | Mount Fuji");
-    skin_lists[kRare].push_back(u8"M4A4 | Spider Lily");
-
-    skin_lists[kEpic].push_back(u8"MAC-10 | Toybox");
-    skin_lists[kEpic].push_back(u8"Glock-18 | Snack Attack");
-    skin_lists[kEpic].push_back(u8"SSG 08 | Turbo Peek");
-
-    skin_lists[kLegendary].push_back(u8"AK-47 | Leet Museo");
-    skin_lists[kMythic].push_back(u8"Desert Eagle | Ocean Drive");
-
-
-    //Operation Snakebite Case
-    skin_lists[kCommon].push_back(u8"SG 553 | Heavy Metal");
-    skin_lists[kCommon].push_back(u8"Glock-18 | Clear Polymer");
-    skin_lists[kCommon].push_back(u8"M249 | O.S.I.P.R.");
-    skin_lists[kCommon].push_back(u8"MP7 | Guerrilla");
-    skin_lists[kCommon].push_back(u8"CZ75-Auto | Circaetus");
-    skin_lists[kCommon].push_back(u8"UMP-45 | Oscillator");
-    skin_lists[kCommon].push_back(u8"R8 Revolver | Junk Yard");
-    skin_lists[kCommon].push_back(u8"Nova | Windblown");
-
-    skin_lists[kRare].push_back(u8"P250 | Cyber Shell");
-    skin_lists[kRare].push_back(u8"Negev | dev_texture");
-    skin_lists[kRare].push_back(u8"MAC-10 | Button Masher");
-    skin_lists[kRare].push_back(u8"Desert Eagle | Trigger Discipline");
-    skin_lists[kRare].push_back(u8"AK-47 | Slate");
-
-    skin_lists[kEpic].push_back(u8"MP9 | Food Chain");
-    skin_lists[kEpic].push_back(u8"XM1014 | XOXO");
-    skin_lists[kEpic].push_back(u8"Galil AR | Chromatic Aberration");
-
-    skin_lists[kLegendary].push_back(u8"USP-S | The Traitor");
-    skin_lists[kLegendary].push_back(u8"M4A4 | In Living Color");
-
-    skin_lists[kMythic].push_back(u8"★ Karambit | Lore");
-
-
-
-    //Operation Broken Fang Case
-    skin_lists[kCommon].push_back(u8"G3SG1 | Digital Mesh");
-    skin_lists[kCommon].push_back(u8"CZ75-Auto | Vendetta");
-    skin_lists[kCommon].push_back(u8"P90 | Cocoa Rampage");
-    skin_lists[kCommon].push_back(u8"M249 | Deep Relief");
-    skin_lists[kCommon].push_back(u8"Galil AR | Vandal");
-    skin_lists[kCommon].push_back(u8"MP5-SD | Condition Zero");
-    skin_lists[kCommon].push_back(u8"P250 | Contaminant");
-
-    skin_lists[kRare].push_back(u8"Dual Berettas | Dezastre");
-    skin_lists[kRare].push_back(u8"Nova | Clear Polymer");
-    skin_lists[kRare].push_back(u8"UMP-45 | Gold Bismuth");
-    skin_lists[kRare].push_back(u8"SSG 08 | Parallax");
-    skin_lists[kRare].push_back(u8"AWP | Exoskeleton");
-
-    skin_lists[kEpic].push_back(u8"M4A4 | Cyber Security");
-    skin_lists[kEpic].push_back(u8"Five-SeveN | Fairy Tale");
-    skin_lists[kEpic].push_back(u8"USP-S | Monster Mashup");
-
-    skin_lists[kLegendary].push_back(u8"Glock-18 | Neo-Noir");
-    skin_lists[kLegendary].push_back(u8"M4A1-S | Printstream");
-
-
-
     command_map.insert({ "fakelag", HFakeLag });
     command_map.insert({ "remove_flash", HRemoveFlash});
     command_map.insert({ "bhop", HBhop});
@@ -140,9 +41,6 @@ void user_interface::InitUserInterface()
     command_map.insert({ "set_angle", CSetAngle});
     command_map.insert({ "record_pos", CRecordPos });
     command_map.insert({ "in_game_config", CInGameConfig });
-    command_map.insert({ "radio", CRadio });
-    command_map.insert({ "fake_ban", CFakeBan });
-    command_map.insert({ "fake_unbox", CFakeUnbox});
 
 
     command_map.insert({ "test", CTest });
@@ -463,124 +361,6 @@ int user_interface::CInGameConfig(std::stringstream& ss)
 
     return 0;
 }
-int user_interface::CRadio(std::stringstream& ss)
-{
-    std::u8string radio_message = u8"playerchatwheel . \"";
-    std::string word;
-
-    while (ss >> word)
-    {
-        if (word[0] == '@')
-        {
-            auto iter = chat_color_map.find(word);
-            if (iter != chat_color_map.end()) radio_message.push_back(iter->second);
-            else if (word == "@new_line")  radio_message.append(kNewLine);
-            else return 1;
-        }
-        else radio_message += std::u8string(word.begin(), word.end()) + u8" ";
-    }
-
-    SendConsoleCommand(radio_message);
-
-    return 0;
-}
-
-
-
-int user_interface::CFakeBan(std::stringstream& ss)
-{
-    std::string player_name, word;
-
-    while (ss >> word)
-    {
-        player_name.append(word + ' ');
-    }
-
-    std::u8string fake_ban_message = u8"playerchatwheel . \"In position";
-    fake_ban_message.append(kNewLine);
-    fake_ban_message.push_back(ChatColor::kRed);
-    fake_ban_message.append(std::u8string(player_name.begin(), player_name.end()) + u8" has been permanently banned from official CS:GO servers.\"");
-
-
-    SendConsoleCommand(fake_ban_message);
-
-    return 0;
-}
-int user_interface::CFakeUnbox(std::stringstream& ss)
-{
-    std::u8string fake_unbox_message = u8"playerchatwheel . \"In position";
-    fake_unbox_message.append(kNewLine);
-    fake_unbox_message.push_back(ChatColor::kLightYellow);
-
-    std::string word;
-
-    //player name
-    std::string player_name;
-    while (ss >> word)
-    {
-        player_name.append(word + ' ');
-    }
-    fake_unbox_message.append(std::u8string(player_name.begin(), player_name.end()));
-    fake_unbox_message.push_back(ChatColor::kWhite);
-    fake_unbox_message.append(u8" has opened a container and found: ");
-
-
-    float rng = static_cast<float>(rand()) / RAND_MAX;
-
-    int rarity_index;
-    char8_t rarity_color;
-
-    if (rng > 0.9974f)
-    {
-        rarity_index = kMythic;
-        rarity_color = kYellow;
-    }
-    else if (rng > 0.9936f)
-    {
-        rarity_index = kLegendary;
-        rarity_color = kRed;
-    }
-    else if (rng > 0.968f)
-    {
-        rarity_index = kEpic;
-        rarity_color = kPink;
-    }
-    else if (rng > 0.8402f)
-    {
-        rarity_index = kRare;
-        rarity_color = kBlue;
-    }
-    else
-    {
-        rarity_index = kCommon;
-        rarity_color = kLightBlue;
-    }
-
-    int skin_index = rand() % skin_lists[rarity_index].size();
-    fake_unbox_message.push_back(rarity_color);
-    fake_unbox_message.append(skin_lists[rarity_index][skin_index]);
-
-    SendConsoleCommand(fake_unbox_message);
-
-    return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

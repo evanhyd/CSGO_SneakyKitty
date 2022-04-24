@@ -62,7 +62,7 @@ void GlowESP::operator()(int update_period_ms, float brightness, Cham enemy_mode
         {
             if (is_bright)
             {
-                this->AdjustAmbientBrightness(1.0f);
+                //this->AdjustAmbientBrightness(0.8f);
                 is_bright = false;
             }
         }

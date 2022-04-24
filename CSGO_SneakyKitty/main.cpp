@@ -84,7 +84,7 @@ int main()
     std::thread fakelag_thd(Fakelag(), 16);
     std::thread remove_flash_thd(RemoveFlash(), 16);
     std::thread bhop_thd(Bhop(), 16);
-    std::thread glow_esp_thd(GlowESP(), 16, 3.5f, Cham(255, 106, 0, 255));
+    std::thread glow_esp_thd(GlowESP(), 16, 2.0f, Cham(255, 106, 0, 255));
     std::thread radar_esp_thd(RadarESP(), 32);
     std::thread thirdperson_thd(Thirdperson(), 1000);
     std::thread desync_thd(Desync(), 1, 33.0f);

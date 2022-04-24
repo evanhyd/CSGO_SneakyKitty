@@ -114,7 +114,7 @@ void Aimbot::operator()(int update_period_ms)
                 //check visibility
                 if ((game::player_entity_list[entity_id].GetSpottedMask() >> game::local_player_index & 1) == 0)
                 {
-                    //check rage setting
+                    //check legit aimbot mode
                     if (game::toggle_mode[game::aimbot_fire_hotkey] == 1) continue;
                 }
                 
@@ -177,6 +177,8 @@ void Aimbot::operator()(int update_period_ms)
 
             if (game::toggle_mode[game::aimbot_backtrack_hotkey] == 1)
             {
+                backtrack_tick = 0;
+
                 //remove old ticks
                 while (!history.empty())
                 {

@@ -6,49 +6,12 @@
 
 namespace user_interface
 {
-    enum ChatColor : char8_t
-    {
-        kNull,
-        kWhite,
-        kRed,
-        kLightYellow,
-        kGreen,
-        kLightGreen,
-        kMediumGreen,
-        kMediumRed,
-        kGrey,
-        kYellow,
-        kLightBlue = 11,
-        kBlue,
-        kLightGrey,
-        kPink,
-        kLightRed,
-        kGold
-    };
-
-    const std::u8string kNewLine = u8"\x2029";//it seems required two char8_t
-    extern std::unordered_map <std::string, char8_t> chat_color_map;
-
-
-    enum SkinRarity : int
-    {
-        kCommon,
-        kRare,
-        kEpic,
-        kLegendary,
-        kMythic
-    };
-    extern std::vector<std::u8string> skin_lists[5];
-
-
-
     extern std::unordered_map <std::string, std::function<int(std::stringstream&)>> command_map;
     void InitUserInterface();
 
 
     void SendConsoleCommand(const std::string& command_line);
     void SendConsoleCommand(const std::u8string& command_line);
-
 
 
     void SendBuiltInCommand(const std::string& command_line);
@@ -75,12 +38,6 @@ namespace user_interface
     int CSetAngle(std::stringstream& ss);
     int CRecordPos(std::stringstream& ss);
     int CInGameConfig(std::stringstream& ss);
-    int CRadio(std::stringstream& ss);
-    int CFakeBan(std::stringstream& ss);
-    int CFakeUnbox(std::stringstream& ss);
-
 
     int CTest(std::stringstream& ss);
-
-
 }
