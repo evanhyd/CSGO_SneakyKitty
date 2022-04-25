@@ -220,7 +220,7 @@ void Aimbot::operator()(int update_period_ms)
 
             if (!has_target) continue;
 
-            //smooth the aimbot
+            //smooth the aimbot if legit and no backtrack
             if (game::toggle_mode[game::aimbot_fire_hotkey] == 1 && backtrack_tick == 0) closest /= weapon::GetSmooth(game::curr_weapon_def_index);
 
             //apply the angle modification
