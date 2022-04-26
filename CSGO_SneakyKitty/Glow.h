@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <cstdint>
 
 class Glow
 {
@@ -20,7 +21,7 @@ class Glow
 	bool render_unocculuded_;
 
 	bool full_bloom_render_;
-	char pad1_;
+	uint8_t pad1_;
 
 	int full_bloom_stencil_test_value_;
 	int glow_style_; //0 full-body  1 inline && flicker  2 inline glow  3 flicker

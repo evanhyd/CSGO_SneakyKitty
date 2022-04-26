@@ -1,4 +1,5 @@
 #include "offsets.h"
+#include "Input.h"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -156,6 +157,7 @@ DWORD offsets::model_ambient_min = 0;
 DWORD offsets::set_abs_angles = 0;
 DWORD offsets::set_abs_origin = 0;
 DWORD offsets::player_entity_struct_entry = 0;
+DWORD offsets::input_cmd_entry = 0;
 DWORD offsets::dwGlowObjectManager_size = 0;
 
 
@@ -634,6 +636,11 @@ void offsets::UpdateOffsets()
 
 	//subtract 1 fix padding
 	offsets::player_entity_struct_entry = m_bDormant - 1;
+
+	//-8, only looking for the last two commands address
+	offsets::input_cmd_entry = offsets::dwInput + sizeof(Input) - 8;
+
+
 	offsets::dwGlowObjectManager_size = dwGlowObjectManager + 0xc;
 }
 

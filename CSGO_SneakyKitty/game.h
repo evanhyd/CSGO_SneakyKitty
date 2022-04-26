@@ -37,24 +37,24 @@ namespace game
 
     
     //input info
-    extern Input input;
+    extern InputCmd input_cmd;
     extern int last_outgoing_cmd_num;
     extern DWORD curr_cmd_address;
     extern DWORD curr_verified_cmd_address;
 
 
     //hot key
-    extern byte fakelag_hotkey;
-    extern byte remove_flash_hotkey;
-    extern byte bhop_hotkey;
-    extern byte glow_esp_hotkey;
-    extern byte radar_esp_hotkey;
-    extern byte thirdperson_hotkey;
-    extern byte desync_hotkey;
-    extern byte aimbot_fire_hotkey;
-    extern byte aimbot_backtrack_hotkey;
-    extern byte global_target_hotkey;
-    extern byte rcs_hotkey;
+    extern uint8_t fakelag_hotkey;
+    extern uint8_t remove_flash_hotkey;
+    extern uint8_t bhop_hotkey;
+    extern uint8_t glow_esp_hotkey;
+    extern uint8_t radar_esp_hotkey;
+    extern uint8_t thirdperson_hotkey;
+    extern uint8_t desync_hotkey;
+    extern uint8_t aimbot_fire_hotkey;
+    extern uint8_t aimbot_backtrack_hotkey;
+    extern uint8_t global_target_hotkey;
+    extern uint8_t rcs_hotkey;
 
     extern short toggle_mode[255];
 }

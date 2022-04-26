@@ -39,7 +39,7 @@ void GlowESP::operator()(int update_period_ms, float brightness, Cham enemy_mode
         {
             if (is_glow_forced || is_bright)
             {
-                memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::force_update_spectator_glow, byte(0x74));
+                memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::force_update_spectator_glow, uint8_t(0x74));
                 this->AdjustAmbientBrightness(1.0f);
                 is_glow_forced = false;
                 is_bright = false;
@@ -70,7 +70,7 @@ void GlowESP::operator()(int update_period_ms, float brightness, Cham enemy_mode
         //0xeb non filck, 0x74 original
         if (!is_glow_forced)
         {
-            memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::force_update_spectator_glow, byte(0xeb));
+            memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::force_update_spectator_glow, uint8_t(0xeb));
             is_glow_forced = true;
         }
 

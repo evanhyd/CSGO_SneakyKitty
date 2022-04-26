@@ -1,22 +1,24 @@
 #pragma once
+#include <cstdint>
+
 
 class Position;
 
 class BoneMatrix
 {
-	char pad0[12];
+	uint8_t pad0[12];
 public:
 
 	float x_;
 
 private:
-	char pad1[12];
+	uint8_t pad1[12];
 public:
 
 	float y_;
 
 private:
-	char pad2[12];
+	uint8_t pad2[12];
 public:
 
 	float z_;

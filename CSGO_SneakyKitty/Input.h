@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <cstdint>
 #include "Angle.h"
 
 class Commands0X4
@@ -25,15 +26,29 @@ public:
 	Commands0X4 cmd_0x4_;
 
 private:
-	char pad1_[46];
+	uint8_t pad1_[46];
 };
+
 
 class VerifiedCommands
 {
 	Commands commands_;
+
+private:
 	DWORD pad0_;
 };
 
+
+
+
+
+
+class InputCmd
+{
+public:
+	DWORD pCommands_;
+	DWORD pVerifiedCommands_;
+};
 
 class Input
 {
@@ -70,35 +85,28 @@ public:
 
 
 private:
-	char pad0_[0xA4 + 8];
-
+	uint8_t  pad0[0xC];
 public:
-	bool camera_intercepts_with_mouse_;
-	bool camera_in_thirdperson_;
-	bool camera_rotates_with_mouse_;
-	bool pad1_;
-	Angle camera_angle_;
-	char camera_distance_offset_;
+
+	bool  bTrackIRAvailable;
+	bool  bMouseInitialized;
+	bool  bMouseActive;
 
 private:
-	char pad2_[19];
+	uint8_t  pad1[0x9A];
 public:
 
-	bool orthographic;
+	bool  bCameraInThirdPerson;
 
 private:
-	char pad3_[3];
+	uint8_t  pad2[0x2];
 public:
 
-	Angle current_view_angles;
-	Angle offset_view_angles;
-	float last_forward_move;
+	Angle vecCameraOffset;
 
 private:
-	int pad4_;
+	uint8_t pad3[0x38];
 public:
 
-	DWORD pCommands;
-	DWORD pVerifiedCommands;
+	InputCmd pCmds;
 };
-

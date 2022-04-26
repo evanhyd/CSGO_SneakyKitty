@@ -26,7 +26,7 @@ void UpdateWeaponInfo::operator()(int update_period_ms)
         //read player's weapon entity index
         memory::ReadMem(module::csgo_proc_handle, game::player_entity_address_list[game::local_player_index].GetAddress() + offsets::m_hActiveWeapon, game::curr_weapon_entity_index);
 
-        //kepe the first 3 bytes
+        //kepe the first 3 uint8_ts
         game::curr_weapon_entity_index &= 0xfff;
 
 		//note: this is entity, so we may be anble to render it

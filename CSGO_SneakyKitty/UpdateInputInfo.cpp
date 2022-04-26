@@ -22,7 +22,7 @@ void UpdateInputInfo::operator()(int update_period_ms)
         }
 
         //read the input
-        memory::ReadMem(module::csgo_proc_handle, module::client_dll + offsets::dwInput, game::input);
+        memory::ReadMem(module::csgo_proc_handle, module::client_dll + offsets::input_cmd_entry, game::input_cmd);
 
 
         //get the last cmd number
@@ -30,8 +30,8 @@ void UpdateInputInfo::operator()(int update_period_ms)
 
 
         //calculate the current cmd address
-        game::curr_cmd_address = game::input.pCommands + ((game::last_outgoing_cmd_num + 1) % 150) * sizeof(Commands);
-        game::curr_verified_cmd_address = game::input.pVerifiedCommands + ((game::last_outgoing_cmd_num + 1) % 150) * sizeof(VerifiedCommands);
+        game::curr_cmd_address = game::input_cmd.pCommands_ + ((game::last_outgoing_cmd_num + 1) % 150) * sizeof(Commands);
+        game::curr_verified_cmd_address = game::input_cmd.pVerifiedCommands_+ ((game::last_outgoing_cmd_num + 1) % 150) * sizeof(VerifiedCommands);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
     }

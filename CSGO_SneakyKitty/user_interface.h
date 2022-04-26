@@ -37,7 +37,7 @@ namespace user_interface
     int CExpose(std::stringstream& ss);
     int CSetAngle(std::stringstream& ss);
     int CRecordPos(std::stringstream& ss);
-    int CInGameConfig(std::stringstream& ss);
+    int CGameConfig(std::stringstream& ss);
 
     int CTest(std::stringstream& ss);
 }

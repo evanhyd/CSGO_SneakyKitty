@@ -40,7 +40,7 @@ void user_interface::InitUserInterface()
     command_map.insert({ "expose", CExpose});
     command_map.insert({ "set_angle", CSetAngle});
     command_map.insert({ "record_pos", CRecordPos });
-    command_map.insert({ "in_game_config", CInGameConfig });
+    command_map.insert({ "config", CGameConfig });
 
 
     command_map.insert({ "test", CTest });
@@ -364,7 +364,7 @@ int user_interface::CRecordPos(std::stringstream& ss)
 
     return 0;
 }
-int user_interface::CInGameConfig([[maybe_unused]] std::stringstream& ss)
+int user_interface::CGameConfig([[maybe_unused]] std::stringstream& ss)
 {
     SendConsoleCommand("viewmodel_fov 68; viewmodel_offset_x 2.5; viewmodel_offset_y 2; viewmodel_offset_z -2; viewmodel_recoil 0; cl_showpos 1; net_graph 1");
 

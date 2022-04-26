@@ -154,7 +154,10 @@ namespace offsets
 	extern DWORD model_ambient_min;
 	extern DWORD set_abs_angles;
 	extern DWORD set_abs_origin;
+
+
 	extern DWORD player_entity_struct_entry;
+	extern DWORD input_cmd_entry;
 	extern DWORD dwGlowObjectManager_size;
 
 
