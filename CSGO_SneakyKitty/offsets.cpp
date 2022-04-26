@@ -163,7 +163,11 @@ DWORD offsets::dwGlowObjectManager_size = 0;
 
 void offsets::UpdateOffsets()
 {
-    system("curl https://raw.githubusercontent.com/frk1/hazedumper/master/csgo.hpp -o offsets.txt");
+	//hazedumper
+	//system("curl https://raw.githubusercontent.com/frk1/hazedumper/master/csgo.hpp -o offsets.txt");
+
+	//blazedumper, much faster lol
+	system("curl https://raw.githubusercontent.com/Akandesh/blazedumper/master/csgo.hpp -o offsets.txt");
     std::ifstream offsets_file("offsets.txt");
 
 
