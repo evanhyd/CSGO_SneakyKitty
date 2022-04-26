@@ -20,9 +20,7 @@ DWORD offsets::m_aimPunchAngle = 0;
 DWORD offsets::m_aimPunchAngleVel = 0;
 DWORD offsets::m_angEyeAnglesX = 0;
 DWORD offsets::m_angEyeAnglesY = 0;
-DWORD offsets::m_bBombDefused = 0;
 DWORD offsets::m_bBombPlanted = 0;
-DWORD offsets::m_bBombTicking = 0;
 DWORD offsets::m_bFreezePeriod = 0;
 DWORD offsets::m_bGunGameImmunity = 0;
 DWORD offsets::m_bHasDefuser = 0;
@@ -42,6 +40,8 @@ DWORD offsets::m_clrRender = 0;
 DWORD offsets::m_dwBoneMatrix = 0;
 DWORD offsets::m_fAccuracyPenalty = 0;
 DWORD offsets::m_fFlags = 0;
+DWORD offsets::m_fRoundStartTime = 0;
+DWORD offsets::m_fWarmupPeriodEnd = 0;
 DWORD offsets::m_flC4Blow = 0;
 DWORD offsets::m_flCustomAutoExposureMax = 0;
 DWORD offsets::m_flCustomAutoExposureMin = 0;
@@ -63,13 +63,12 @@ DWORD offsets::m_hMyWeapons = 0;
 DWORD offsets::m_hObserverTarget = 0;
 DWORD offsets::m_hOwner = 0;
 DWORD offsets::m_hOwnerEntity = 0;
-DWORD offsets::m_hViewModel = 0;
 DWORD offsets::m_iAccountID = 0;
 DWORD offsets::m_iClip1 = 0;
+DWORD offsets::m_iCompetitiveRankType = 0;
 DWORD offsets::m_iCompetitiveRanking = 0;
 DWORD offsets::m_iCompetitiveWins = 0;
 DWORD offsets::m_iCrosshairId = 0;
-DWORD offsets::m_iDefaultFOV = 0;
 DWORD offsets::m_iEntityQuality = 0;
 DWORD offsets::m_iFOV = 0;
 DWORD offsets::m_iFOVStart = 0;
@@ -79,17 +78,18 @@ DWORD offsets::m_iItemDefinitionIndex = 0;
 DWORD offsets::m_iItemIDHigh = 0;
 DWORD offsets::m_iMostRecentModelBoneCounter = 0;
 DWORD offsets::m_iObserverMode = 0;
+DWORD offsets::m_iPrimaryReserveAmmoCount = 0;
+DWORD offsets::m_iRoundTime = 0;
 DWORD offsets::m_iShotsFired = 0;
 DWORD offsets::m_iState = 0;
 DWORD offsets::m_iTeamNum = 0;
 DWORD offsets::m_lifeState = 0;
-DWORD offsets::m_nBombSite = 0;
 DWORD offsets::m_nFallbackPaintKit = 0;
 DWORD offsets::m_nFallbackSeed = 0;
 DWORD offsets::m_nFallbackStatTrak = 0;
 DWORD offsets::m_nForceBone = 0;
+DWORD offsets::m_nSurvivalTeam = 0;
 DWORD offsets::m_nTickBase = 0;
-DWORD offsets::m_nViewModelIndex = 0;
 DWORD offsets::m_rgflCoordinateFrame = 0;
 DWORD offsets::m_szCustomName = 0;
 DWORD offsets::m_szLastPlaceName = 0;
@@ -98,7 +98,6 @@ DWORD offsets::m_vecOrigin = 0;
 DWORD offsets::m_vecVelocity = 0;
 DWORD offsets::m_vecViewOffset = 0;
 DWORD offsets::m_viewPunchAngle = 0;
-DWORD offsets::m_zoomLevel = 0;
 DWORD offsets::anim_overlays = 0;
 DWORD offsets::clientstate_choked_commands = 0;
 DWORD offsets::clientstate_delta_ticks = 0;
@@ -156,6 +155,7 @@ DWORD offsets::m_yawClassPtr = 0;
 DWORD offsets::model_ambient_min = 0;
 DWORD offsets::set_abs_angles = 0;
 DWORD offsets::set_abs_origin = 0;
+
 DWORD offsets::player_entity_struct_entry = 0;
 DWORD offsets::input_cmd_entry = 0;
 DWORD offsets::dwGlowObjectManager_size = 0;
@@ -172,9 +172,9 @@ void offsets::UpdateOffsets()
 
 
     //parse the file
-    //filter out the first 8 lines
+    //filter out the first 7 lines
     std::string line;
-    for (int i = 0; i < 8; ++i)
+    for (int i = 0; i < 7; ++i)
     {
         std::getline(offsets_file, line);
     }
@@ -223,13 +223,7 @@ void offsets::UpdateOffsets()
 	offsets::m_angEyeAnglesY = ParseOffset(line);
 
 	std::getline(offsets_file, line);
-	offsets::m_bBombDefused = ParseOffset(line);
-
-	std::getline(offsets_file, line);
 	offsets::m_bBombPlanted = ParseOffset(line);
-
-	std::getline(offsets_file, line);
-	offsets::m_bBombTicking = ParseOffset(line);
 
 	std::getline(offsets_file, line);
 	offsets::m_bFreezePeriod = ParseOffset(line);
@@ -287,6 +281,12 @@ void offsets::UpdateOffsets()
 
 	std::getline(offsets_file, line);
 	offsets::m_fFlags = ParseOffset(line);
+
+	std::getline(offsets_file, line);
+	offsets::m_fRoundStartTime = ParseOffset(line);
+
+	std::getline(offsets_file, line);
+	offsets::m_fWarmupPeriodEnd = ParseOffset(line);
 
 	std::getline(offsets_file, line);
 	offsets::m_flC4Blow = ParseOffset(line);
@@ -352,13 +352,13 @@ void offsets::UpdateOffsets()
 	offsets::m_hOwnerEntity = ParseOffset(line);
 
 	std::getline(offsets_file, line);
-	offsets::m_hViewModel = ParseOffset(line);
-
-	std::getline(offsets_file, line);
 	offsets::m_iAccountID = ParseOffset(line);
 
 	std::getline(offsets_file, line);
 	offsets::m_iClip1 = ParseOffset(line);
+
+	std::getline(offsets_file, line);
+	offsets::m_iCompetitiveRankType = ParseOffset(line);
 
 	std::getline(offsets_file, line);
 	offsets::m_iCompetitiveRanking = ParseOffset(line);
@@ -368,9 +368,6 @@ void offsets::UpdateOffsets()
 
 	std::getline(offsets_file, line);
 	offsets::m_iCrosshairId = ParseOffset(line);
-
-	std::getline(offsets_file, line);
-	offsets::m_iDefaultFOV = ParseOffset(line);
 
 	std::getline(offsets_file, line);
 	offsets::m_iEntityQuality = ParseOffset(line);
@@ -400,6 +397,12 @@ void offsets::UpdateOffsets()
 	offsets::m_iObserverMode = ParseOffset(line);
 
 	std::getline(offsets_file, line);
+	offsets::m_iPrimaryReserveAmmoCount = ParseOffset(line);
+
+	std::getline(offsets_file, line);
+	offsets::m_iRoundTime = ParseOffset(line);
+
+	std::getline(offsets_file, line);
 	offsets::m_iShotsFired = ParseOffset(line);
 
 	std::getline(offsets_file, line);
@@ -410,9 +413,6 @@ void offsets::UpdateOffsets()
 
 	std::getline(offsets_file, line);
 	offsets::m_lifeState = ParseOffset(line);
-
-	std::getline(offsets_file, line);
-	offsets::m_nBombSite = ParseOffset(line);
 
 	std::getline(offsets_file, line);
 	offsets::m_nFallbackPaintKit = ParseOffset(line);
@@ -427,10 +427,10 @@ void offsets::UpdateOffsets()
 	offsets::m_nForceBone = ParseOffset(line);
 
 	std::getline(offsets_file, line);
-	offsets::m_nTickBase = ParseOffset(line);
+	offsets::m_nSurvivalTeam = ParseOffset(line);
 
 	std::getline(offsets_file, line);
-	offsets::m_nViewModelIndex = ParseOffset(line);
+	offsets::m_nTickBase = ParseOffset(line);
 
 	std::getline(offsets_file, line);
 	offsets::m_rgflCoordinateFrame = ParseOffset(line);
@@ -456,14 +456,9 @@ void offsets::UpdateOffsets()
 	std::getline(offsets_file, line);
 	offsets::m_viewPunchAngle = ParseOffset(line);
 
-	std::getline(offsets_file, line);
-	offsets::m_zoomLevel = ParseOffset(line);
 
-
-	//filter invalid lines
 	std::getline(offsets_file, line);
 	std::getline(offsets_file, line);
-
 
 
 	std::getline(offsets_file, line);
@@ -636,6 +631,8 @@ void offsets::UpdateOffsets()
 
 	std::getline(offsets_file, line);
 	offsets::set_abs_origin = ParseOffset(line);
+
+
 
 
 	//subtract 1 fix padding
