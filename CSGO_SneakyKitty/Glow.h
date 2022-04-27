@@ -11,11 +11,11 @@ class Glow
 	float blue_;
 	float alpha_;
 
-	int pad0_[2];
+	uint32_t pad0_[2];
 
 	float bloom_amount_;
 
-	int u1_;
+	uint32_t u1_;
 
 	bool render_occluded_;
 	bool render_unocculuded_;

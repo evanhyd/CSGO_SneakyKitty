@@ -92,7 +92,8 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
         //micromovement and desync
         if (!is_crouching)
         {
-            commands_0x4.side_move_ = (micromovement_direction = !micromovement_direction) ? 1.1f : -1.1f;
+            micromovement_direction = !micromovement_direction;
+            commands_0x4.side_move_ = (micromovement_direction ? 1.1f : -1.1f);
 
             commands_0x4.view_angles_.y_ += -119.0f;
             commands_0x4.view_angles_.z_ = Angle::UPPER_ROLL;
@@ -101,7 +102,8 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
         }
         else
         {
-            commands_0x4.side_move_ = (micromovement_direction = !micromovement_direction) ? 3.3f : -3.3f;
+            micromovement_direction = !micromovement_direction;
+            commands_0x4.side_move_ = (micromovement_direction ? 3.3f : -3.3f);
 
             commands_0x4.view_angles_.y_ += real_angle_y;
             commands_0x4.view_angles_.z_ = real_angle_z;

@@ -76,6 +76,7 @@ namespace weapon
 		WEAPON_CZ75A = 63,
 		WEAPON_REVOLVER
 	};
+	constexpr int kMaxWeaponNum = 65;
 
 	enum WeaponType : int
 	{
@@ -87,13 +88,11 @@ namespace weapon
 		kMachinegun,
 		kSniperRifle
 	};
-
+	constexpr int kMaxWeaponTypeNum = 7;
 
 
 	constexpr float kRecoilFactor = 2.0f;
 	constexpr float kRagebotFOV = 180.0f;
-	constexpr int kMaxWeaponNum = 65;
-	constexpr int kMaxWeaponTypeNum = 7;
 
 
 	extern bool kIsGunTable[kMaxWeaponNum];

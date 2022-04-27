@@ -85,7 +85,6 @@ void weapon::InitWeaponTypeTable()
 	std::fill_n(kWeaponTypeTable, kMaxWeaponNum, kNonWeapon);
 
 	//pistol
-	kWeaponTypeTable[WEAPON_DEAGLE] = kPistol;
 	kWeaponTypeTable[WEAPON_ELITE] = kPistol;
 	kWeaponTypeTable[WEAPON_FIVESEVEN] = kPistol;
 	kWeaponTypeTable[WEAPON_GLOCK] = kPistol;
@@ -127,6 +126,7 @@ void weapon::InitWeaponTypeTable()
 
 
 	//sniper rifle
+	kWeaponTypeTable[WEAPON_DEAGLE] = kSniperRifle;//yes, deagle is a sniper rifle
 	kWeaponTypeTable[WEAPON_AWP] = kSniperRifle;
 	kWeaponTypeTable[WEAPON_SSG08] = kSniperRifle;
 
@@ -155,7 +155,7 @@ void weapon::InitSmoothTable()
 	kSmoothTable[kNonWeapon] = 170.0f;
 	kSmoothTable[kPistol] = 1.8f;
 	kSmoothTable[kShotgun] = 4.0f;
-	kSmoothTable[kSMG] = 3.8f;
+	kSmoothTable[kSMG] = 3.5f;
 	kSmoothTable[kAssaultRifle] = 3.5f;
 	kSmoothTable[kSniperRifle] = 1.0f;
 	kSmoothTable[kMachinegun] = 3.8f;
