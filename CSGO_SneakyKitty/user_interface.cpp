@@ -286,7 +286,7 @@ int user_interface::CBuyAllPistols([[maybe_unused]] std::stringstream& ss)
 
 int user_interface::CDropAll([[maybe_unused]] std::stringstream& ss)
 {
-    SendConsoleCommand("drop; drop");
+    SendConsoleCommand("drop; drop; drop");
 
     return 0;
 }
@@ -366,7 +366,8 @@ int user_interface::CRecordPos(std::stringstream& ss)
 }
 int user_interface::CGameConfig([[maybe_unused]] std::stringstream& ss)
 {
-    SendConsoleCommand("viewmodel_fov 68; viewmodel_offset_x 2.5; viewmodel_offset_y 2; viewmodel_offset_z -2; viewmodel_recoil 0; cl_showpos 1; net_graph 1");
+    SendConsoleCommand("viewmodel_fov 68; viewmodel_offset_x 2.5; viewmodel_offset_y 2; viewmodel_offset_z -2; viewmodel_recoil 0; "
+                       "cl_showpos 1; net_graph 1; +cl_show_team_equipment; cl_showfps 1");
 
     return 0;
 }

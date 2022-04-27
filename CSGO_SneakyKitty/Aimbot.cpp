@@ -30,21 +30,20 @@ bool Aimbot::QualifyAimbotRule(int bone_i)
 void Aimbot::operator()(int update_period_ms)
 {
     //enemy pos - local player pos
-    Position enemy;
-    Position relative;
+    Position enemy{};
+    Position relative{};
 
     //bullet = crosshair_angle + recoil_factor * recoil_angle
-    Angle crosshair;
-    Angle recoil;
-    Angle bullet;
+    Angle crosshair{};
+    Angle recoil{};
+    Angle bullet{};
 
     //difference = exact - bullet
-    Angle exact;
-    Angle difference;
-    Angle closest;
+    Angle exact{};
+    Angle difference{};
+    Angle closest{};
 
 
-    bool has_cleared_backtrack_history = true;
     std::deque<BacktrackCandidate> history;
 
 
@@ -58,16 +57,11 @@ void Aimbot::operator()(int update_period_ms)
     {
         if (game::connection_state != client::kFullyConnected || game::toggle_mode[game::aimbot_fire_hotkey] == 0)
         {
-            if (!has_cleared_backtrack_history)
-            {
-                history.clear();
-                has_cleared_backtrack_history = true;
-            }
+            if (!history.empty()) history.clear();
             std::this_thread::sleep_for(std::chrono::milliseconds(5000));
             continue;
         }
 
-        has_cleared_backtrack_history = false;
 
         if (weapon::IsGun(game::curr_weapon_def_index))
         {
@@ -93,6 +87,7 @@ void Aimbot::operator()(int update_period_ms)
             //calculate the maximum backtrack tick
             int max_backtrack_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 1;
 
+            //std::cout << "max: " << max_backtrack_tick << '\n';
 
             //aimbot 
             for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
@@ -130,7 +125,13 @@ void Aimbot::operator()(int update_period_ms)
 
 
                     //add to the backtrack candidates
-                    if (game::toggle_mode[game::aimbot_backtrack_hotkey] == 1) history.emplace_back(curr_tick, bone_id, enemy);
+                    if (game::toggle_mode[game::aimbot_backtrack_hotkey] == 1) 
+                    {
+                        BacktrackCandidate pos_record(curr_tick, entity_id, bone_id, enemy);
+
+                        auto res = std::lower_bound(history.begin(), history.end(), pos_record);
+                        if (res == history.end() || *res != pos_record) history.push_back(pos_record);
+                    }
 
 
                     //bullets shoot from player's eyes, subtract the relative height
@@ -177,13 +178,12 @@ void Aimbot::operator()(int update_period_ms)
 
             if (game::toggle_mode[game::aimbot_backtrack_hotkey] == 1)
             {
-                backtrack_tick = 0;
+                int best_backtrack_tick = 0;
 
                 //remove old ticks
-                while (!history.empty())
+                while (!history.empty() && curr_tick - history.front().GetTick() > max_backtrack_tick)
                 {
-                    if (curr_tick - history.front().GetTick() > max_backtrack_tick) history.pop_front();
-                    else break;
+                    history.pop_front();
                 }
 
                 //select the best backtrack tick
@@ -210,13 +210,20 @@ void Aimbot::operator()(int update_period_ms)
                     float curr_fov = difference.FOVMagnitude();
                     if (curr_fov < fov_limit)
                     {
-                        backtrack_tick = candidate.GetTick();
+                        best_backtrack_tick = candidate.GetTick();
                         closest = difference;
                         fov_limit = curr_fov;
                         has_target = true;
                     }
                 }
+
+                backtrack_tick = best_backtrack_tick;
             }
+            else
+            {
+                backtrack_tick = 0;
+            }
+
 
             if (!has_target) continue;
 

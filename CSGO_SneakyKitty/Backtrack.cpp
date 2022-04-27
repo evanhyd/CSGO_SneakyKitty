@@ -27,7 +27,7 @@ void Backtrack::operator()(int update_period_ms, int& curr_tick, int& backtrack_
 
         if (GetAsyncKeyState('W') & 1 << 15 || GetAsyncKeyState('S') & 1 << 15 || GetAsyncKeyState('A') & 1 << 15 || GetAsyncKeyState('D') & 1 << 15)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(40));
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
             continue;
         }
 
