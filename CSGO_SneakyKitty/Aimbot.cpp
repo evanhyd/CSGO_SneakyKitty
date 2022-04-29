@@ -14,6 +14,7 @@
 #include <thread>
 #include <chrono>
 #include <deque>
+#include <set>
 
 bool Aimbot::QualifyAimbotRule(int bone_i)
 {
@@ -44,7 +45,7 @@ void Aimbot::operator()(int update_period_ms)
     Angle closest{};
 
 
-    std::deque<BacktrackCandidate> history;
+    std::deque<BacktrackRecord> history;
 
 
     int curr_tick = 0;
@@ -76,7 +77,7 @@ void Aimbot::operator()(int update_period_ms)
 
 
             //apply recoil if viable
-            int weapon_type = weapon::GetWeaponType(game::curr_weapon_def_index);
+            const int weapon_type = weapon::GetWeaponType(game::curr_weapon_def_index);
             if (weapon_type == weapon::kAssaultRifle || weapon_type == weapon::kSMG || weapon_type == weapon::kMachinegun)
             {
                 memory::ReadMem(module::csgo_proc_handle, game::player_entity_address_list[game::local_player_index].GetAddress() + offsets::m_aimPunchAngle, recoil);
@@ -85,7 +86,7 @@ void Aimbot::operator()(int update_period_ms)
 
 
             //calculate the maximum backtrack tick
-            int max_backtrack_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 1;
+            const int max_backtrack_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 1;
 
             //std::cout << "max: " << max_backtrack_tick << '\n';
 
@@ -127,10 +128,16 @@ void Aimbot::operator()(int update_period_ms)
                     //add to the backtrack candidates
                     if (game::toggle_mode[game::aimbot_backtrack_hotkey] == 1) 
                     {
-                        BacktrackCandidate pos_record(curr_tick, entity_id, bone_id, enemy);
+                        //history.push_back(BacktrackRecord(curr_tick, entity_id, bone_id, enemy));
+
+                        //const bool has_record = std::binary_search(history.begin(), history.end(), pos_record);
+                        //if (!has_record) history.push_back(pos_record);
+
+                        BacktrackRecord pos_record(curr_tick, entity_id, bone_id, enemy);
 
                         auto res = std::lower_bound(history.begin(), history.end(), pos_record);
                         if (res == history.end() || *res != pos_record) history.push_back(pos_record);
+                        else *res = pos_record;
                     }
 
 
@@ -181,10 +188,9 @@ void Aimbot::operator()(int update_period_ms)
                 int best_backtrack_tick = 0;
 
                 //remove old ticks
-                while (!history.empty() && curr_tick - history.front().GetTick() > max_backtrack_tick)
-                {
-                    history.pop_front();
-                }
+                //std::clog << history.size() << '\n';
+                const auto last_valid_record = std::upper_bound(history.begin(), history.end(), BacktrackRecord(curr_tick - max_backtrack_tick, client::kMaxPlayerNum, BoneMatrix::kBoneEnd, {}));
+                history.erase(history.begin(), last_valid_record);
 
                 //select the best backtrack tick
                 for (const auto& candidate : history)

@@ -1,7 +1,7 @@
 #pragma once
 #include "Position.h"
 
-class BacktrackCandidate
+class BacktrackRecord
 {
     int tick_;
     int entity_id_;
@@ -10,11 +10,11 @@ class BacktrackCandidate
 
 public:
 
-    BacktrackCandidate(int new_tick, int new_entity_id, int new_bone_id, const Position& new_pos);
+    BacktrackRecord(int new_tick, int new_entity_id, int new_bone_id, const Position& new_pos);
 
 
-    bool operator==(const BacktrackCandidate& rhs) const;
-    bool operator<(const BacktrackCandidate& rhs) const;
+    bool operator==(const BacktrackRecord& rhs) const;
+    bool operator<(const BacktrackRecord& rhs) const;
 
     int GetTick() const;
     int GetBoneID() const;
