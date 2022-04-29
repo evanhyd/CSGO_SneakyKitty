@@ -30,7 +30,7 @@ namespace user_interface
     int CStatus(std::stringstream& ss);
     int CConnect(std::stringstream& ss);
     int CBuyAllPistols(std::stringstream& ss);
-    int CDropAll(std::stringstream& ss);
+    int CDrop(std::stringstream& ss);
     int CUpdateVoice(std::stringstream& ss);
     int CRecordVoice(std::stringstream& ss);
     int CPlayVoice(std::stringstream& ss);
@@ -38,6 +38,7 @@ namespace user_interface
     int CSetAngle(std::stringstream& ss);
     int CRecordPos(std::stringstream& ss);
     int CGameConfig(std::stringstream& ss);
+    int CQuit(std::stringstream& ss);
 
     int CTest(std::stringstream& ss);
 }

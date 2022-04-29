@@ -31,18 +31,13 @@ bool Aimbot::QualifyAimbotRule(int bone_i)
 void Aimbot::operator()(int update_period_ms)
 {
     //enemy pos - local player pos
-    Position enemy{};
-    Position relative{};
+    Position enemy{}, relative{};
 
     //bullet = crosshair_angle + recoil_factor * recoil_angle
-    Angle crosshair{};
-    Angle recoil{};
-    Angle bullet{};
+    Angle crosshair{}, recoil{}, bullet{};
 
     //difference = exact - bullet
-    Angle exact{};
-    Angle difference{};
-    Angle closest{};
+    Angle exact{}, difference{}, closest{};
 
 
     //std::deque<BacktrackRecord> history;

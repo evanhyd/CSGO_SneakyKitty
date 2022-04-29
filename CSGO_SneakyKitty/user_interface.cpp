@@ -33,7 +33,7 @@ void user_interface::InitUserInterface()
     command_map.insert({ "status", CStatus});
     command_map.insert({ "connect", CConnect });
     command_map.insert({ "buy_all_pistols", CBuyAllPistols});
-    command_map.insert({ "drop_all", CDropAll});
+    command_map.insert({ "drop_all", CDrop});
     command_map.insert({ "update_voice", CUpdateVoice});
     command_map.insert({ "record_voice", CRecordVoice});
     command_map.insert({ "play_voice", CPlayVoice});
@@ -41,7 +41,8 @@ void user_interface::InitUserInterface()
     command_map.insert({ "set_angle", CSetAngle});
     command_map.insert({ "record_pos", CRecordPos });
     command_map.insert({ "config", CGameConfig });
-
+    command_map.insert({ "quit", CQuit });
+    
 
     command_map.insert({ "test", CTest });
 }
@@ -243,7 +244,7 @@ int user_interface::CHelp([[maybe_unused]]std::stringstream& ss)
     std::cout << "/expose\n";
     std::cout << "/set_angle [pitch/yaw/roll] [angle in degree]\n";
     std::cout << "/buy_all_pistols\n";
-    std::cout << "/drop_all\n";
+    std::cout << "/drop\n";
 
     std::cout << std::endl;
 
@@ -284,7 +285,7 @@ int user_interface::CBuyAllPistols([[maybe_unused]] std::stringstream& ss)
     return 0;
 }
 
-int user_interface::CDropAll([[maybe_unused]] std::stringstream& ss)
+int user_interface::CDrop([[maybe_unused]] std::stringstream& ss)
 {
     SendConsoleCommand("drop; drop; drop");
 
@@ -330,8 +331,7 @@ int user_interface::CExpose([[maybe_unused]] std::stringstream& ss)
 
             SendConsoleCommand
             (
-                "say_team Enemy HP: " + std::to_string(game::player_entity_list[i].GetHealth()) +
-                " Loc: " + location
+                "say_team Enemy HP: " + std::to_string(game::player_entity_list[i].GetHealth()) + " at " + location
             );
             Sleep(1000);
         }
@@ -370,6 +370,12 @@ int user_interface::CGameConfig([[maybe_unused]] std::stringstream& ss)
                        "cl_showpos 1; net_graph 1; +cl_show_team_equipment; cl_showfps 1");
 
     return 0;
+}
+int user_interface::CQuit([[maybe_unused]]std::stringstream& ss)
+{
+    std::fill_n(game::toggle_mode, 255, short(0));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    exit(0);
 }
 
 
