@@ -46,10 +46,8 @@ void Angle::PointTo(const Position& pos)
 	//atan2 gives x_ in radians, where x_ in degrees -180 < x_ < 180
 	this->y_ = Angle::ToDegrees(atan2f(pos.y_, pos.x_));
 
-
 	//flat ground hypotenuse
-	float hypotenuse = hypotf(pos.y_, pos.x_);
-
+	const float hypotenuse = hypotf(pos.y_, pos.x_);
 
 	//x_ is pitch, and it is upside down
 	this->x_ = -Angle::ToDegrees(atan2f(pos.z_, hypotenuse));
