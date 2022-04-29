@@ -14,7 +14,7 @@
 #include <thread>
 #include <chrono>
 #include <deque>
-#include <set>
+#include <map>
 
 bool Aimbot::QualifyAimbotRule(int bone_i)
 {
@@ -45,7 +45,8 @@ void Aimbot::operator()(int update_period_ms)
     Angle closest{};
 
 
-    std::deque<BacktrackRecord> history;
+    //std::deque<BacktrackRecord> history;
+    std::map<BacktrackRecord, Position> history;
 
 
     int curr_tick = 0;
@@ -128,20 +129,26 @@ void Aimbot::operator()(int update_period_ms)
                     //add to the backtrack candidates
                     if (game::toggle_mode[game::aimbot_backtrack_hotkey] == 1) 
                     {
-                        //this method misses lots of shots
+                        //#1. always add, slow and bloated size
                         //history.push_back(BacktrackRecord(curr_tick, entity_id, bone_id, enemy));
+
+
+                        //#2. binary search only, misses shots really often
+                        //const BacktrackRecord pos_record(curr_tick, entity_id, bone_id, enemy);
                         //const bool has_record = std::binary_search(history.begin(), history.end(), pos_record);
                         //if (!has_record) history.push_back(pos_record);
 
-                        //binary search
-                        BacktrackRecord pos_record(curr_tick, entity_id, bone_id, enemy);
-                        auto res = std::lower_bound(history.begin(), history.end(), pos_record);
 
-                        //found new record
-                        if (res == history.end() || *res != pos_record) history.push_back(pos_record);
+                        //#3. binary search with update, relatively more reliable, but fk up the input may not be ordered
+                        //const BacktrackRecord pos_record(curr_tick, entity_id, bone_id, enemy);
+                        //auto res = std::lower_bound(history.begin(), history.end(), pos_record);
+                        //if (res == history.end() || *res != pos_record) history.push_back(pos_record); //found new record 
+                        //else *res = pos_record; //update old record
 
-                        //update old record
-                        else *res = pos_record;
+
+                        //#4. using binary search tree from std::map, slower insertion time and deletion time, but stable and correct result
+                        const BacktrackRecord pos_record(curr_tick, entity_id, bone_id);
+                        history.insert_or_assign(pos_record, enemy);
                     }
 
 
@@ -193,20 +200,20 @@ void Aimbot::operator()(int update_period_ms)
 
                 //remove old ticks
                 //std::clog << history.size() << '\n';
-                const auto last_valid_record = std::upper_bound(history.begin(), history.end(), BacktrackRecord(curr_tick - max_backtrack_tick, client::kMaxPlayerNum, BoneMatrix::kBoneEnd, {}));
-                history.erase(history.begin(), last_valid_record);
+                auto last_invalid_record_iter = history.upper_bound(BacktrackRecord(curr_tick - max_backtrack_tick, client::kMaxPlayerNum, BoneMatrix::kBoneEnd));
+                history.erase(history.begin(), last_invalid_record_iter);
 
                 //select the best backtrack tick
-                for (const auto& candidate : history)
+                for (const auto& [record, pos] : history)
                 {
-                    relative = candidate.GetPos() - game::player_entity_list[game::local_player_index].GetOrigin();
+                    relative = pos - game::player_entity_list[game::local_player_index].GetOrigin();
                     relative.z_ -= game::player_entity_list[game::local_player_index].GetViewOffsetZ();
                     exact.PointTo(relative);
                     difference = exact - bullet;
                     difference.Clamp();
 
                     float dist_to_enemy = relative.MagnitudeToOrigin();
-                    float multipoint_radius = Angle::ToDegrees(atan2f(BoneMatrix::kBoneRadius[candidate.GetBoneID()], dist_to_enemy));
+                    float multipoint_radius = Angle::ToDegrees(atan2f(BoneMatrix::kBoneRadius[record.GetBoneID()], dist_to_enemy));
 
                     float increased_yaw = difference.y_ + multipoint_radius;
                     if (increased_yaw > 180.0f) increased_yaw -= 360.0f;
@@ -220,7 +227,7 @@ void Aimbot::operator()(int update_period_ms)
                     float curr_fov = difference.FOVMagnitude();
                     if (curr_fov < fov_limit)
                     {
-                        best_backtrack_tick = candidate.GetTick();
+                        best_backtrack_tick = record.GetTick();
                         closest = difference;
                         fov_limit = curr_fov;
                         has_target = true;

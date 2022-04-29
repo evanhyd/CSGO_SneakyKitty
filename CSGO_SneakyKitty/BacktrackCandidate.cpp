@@ -1,7 +1,7 @@
 #include "BacktrackCandidate.h"
 
-BacktrackRecord::BacktrackRecord(int new_tick, int new_entity_id, int new_bone_id, const Position& new_pos) : 
-    tick_(new_tick), entity_id_(new_entity_id), bone_id_(new_bone_id), pos_(new_pos)
+BacktrackRecord::BacktrackRecord(int new_tick, int new_entity_id, int new_bone_id) : 
+    tick_(new_tick), entity_id_(new_entity_id), bone_id_(new_bone_id)
 {
     //empty
 }
@@ -22,11 +22,11 @@ int BacktrackRecord::GetTick() const
 {
     return this->tick_;
 }
+int BacktrackRecord::GetEntityID() const
+{
+    return this->entity_id_;
+}
 int BacktrackRecord::GetBoneID() const
 {
     return this->bone_id_;
-}
-const Position& BacktrackRecord::GetPos() const
-{
-    return this->pos_;
 }
