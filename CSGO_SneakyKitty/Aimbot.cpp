@@ -128,15 +128,19 @@ void Aimbot::operator()(int update_period_ms)
                     //add to the backtrack candidates
                     if (game::toggle_mode[game::aimbot_backtrack_hotkey] == 1) 
                     {
+                        //this method misses lots of shots
                         //history.push_back(BacktrackRecord(curr_tick, entity_id, bone_id, enemy));
-
                         //const bool has_record = std::binary_search(history.begin(), history.end(), pos_record);
                         //if (!has_record) history.push_back(pos_record);
 
+                        //binary search
                         BacktrackRecord pos_record(curr_tick, entity_id, bone_id, enemy);
-
                         auto res = std::lower_bound(history.begin(), history.end(), pos_record);
+
+                        //found new record
                         if (res == history.end() || *res != pos_record) history.push_back(pos_record);
+
+                        //update old record
                         else *res = pos_record;
                     }
 
