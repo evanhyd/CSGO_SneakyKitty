@@ -41,24 +41,4 @@ namespace game
     extern int last_outgoing_cmd_num;
     extern DWORD curr_cmd_address;
     extern DWORD curr_verified_cmd_address;
-
-
-    //hot key
-    enum : uint8_t
-    {
-         fakelag_hotkey,
-         remove_flash_hotkey,
-         bhop_hotkey,
-         glow_esp_hotkey,
-         radar_esp_hotkey,
-         thirdperson_hotkey,
-         desync_hotkey,
-         aimbot_fire_hotkey,
-         aimbot_backtrack_hotkey,
-         global_target_hotkey,
-         bomb_timer_hotkey
-    };
-    
-
-    extern short toggle_mode[255];
 }

@@ -23,6 +23,7 @@ namespace user_interface
     int HThirdperson(std::stringstream& ss);
     int HDesync(std::stringstream& ss);
     int HAimbot(std::stringstream& ss);
+    int HRagebot(std::stringstream& ss);
     int HBacktrack(std::stringstream& ss);
     int HGlobalTarget(std::stringstream& ss);
     int HBombTimer(std::stringstream& ss);
@@ -42,4 +43,25 @@ namespace user_interface
     int CQuit(std::stringstream& ss);
 
     int CTest(std::stringstream& ss);
+
+
+    //hot key
+    enum : uint8_t
+    {
+        kFakelag,
+        kRemoveFlash,
+        kBhop,
+        kGlowESP,
+        kRadarESP,
+        kThirdperson,
+        kDesync,
+        kAimbot,
+        kBacktrack,
+        kGlobalTarget,
+        kBombTimer,
+        kRagebot
+    };
+
+
+    extern short toggle_mode[255];
 }

@@ -6,37 +6,45 @@
 #include "memory.h"
 #include "Input.h"
 #include "weapon.h"
+#include "user_interface.h"
 
 #include <iostream>
 #include <thread>
 #include <chrono>
 
+using namespace user_interface;
 
-void Backtrack::operator()(int update_period_ms, int& curr_tick, int& backtrack_tick)
+void Backtrack::operator()(int update_period_ms, int& current_tick, const int& backtrack_tick)
 {
-    Commands0X4 commands_0x4;
+    Commands0X4 cmd;
 
     while (true)
     {
         
-        if (game::connection_state != client::kFullyConnected || game::toggle_mode[game::aimbot_backtrack_hotkey] == 0)
+        if (game::connection_state != client::kFullyConnected || toggle_mode[kBacktrack] == 0)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(5000));
             continue;
         }
 
+        //moving + freezing packet causes teleport, sus as fk
         if (GetAsyncKeyState('W') & 1 << 15 || GetAsyncKeyState('S') & 1 << 15 || GetAsyncKeyState('A') & 1 << 15 || GetAsyncKeyState('D') & 1 << 15)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(20));
             continue;
         }
 
+
+        //check crouching status
         bool is_crouching = ((GetAsyncKeyState(VK_CONTROL) & 1 << 15) ? true : false);
+
+
+
+
 
 
         //freeze the packet queue until it matches
         memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, false);
-
 
         //wait until the cmd after the current cmd
         //there will be an unused tick between the outgoing and the incoming cmd (current cmd)
@@ -51,24 +59,28 @@ void Backtrack::operator()(int update_period_ms, int& curr_tick, int& backtrack_
         }
 
         //read the incoming user cmd
-        memory::ReadMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
+        memory::ReadMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);
+
+
+
+
+
+
 
         //update the current tick
-        curr_tick = commands_0x4.tick_count_;
+        current_tick = cmd.tick_count_;
 
         //apply backtrack tick
-        int cpy_backtrack_tick = backtrack_tick;
-        if (cpy_backtrack_tick)
+        int chosen_tick = backtrack_tick;
+        if (chosen_tick > 0)
         {
-            //activate if this weapon shoots this tick
-            if (commands_0x4.buttons_mask_ & Input::IN_ATTACK)
+            //activate backtrack if player is shooting
+            if (cmd.buttons_mask_ & Input::IN_ATTACK)
             {
-                commands_0x4.tick_count_ = cpy_backtrack_tick;
-
-                if (is_crouching) commands_0x4.buttons_mask_ |= Input::IN_DUCK;
-
-                memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
-                memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, commands_0x4);
+                cmd.tick_count_ = chosen_tick;
+                if (is_crouching) cmd.buttons_mask_ |= Input::IN_DUCK;
+                memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);
+                memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, cmd);
             }
         }
 

@@ -20,6 +20,7 @@
 #include "Thirdperson.h"
 #include "Desync.h"
 #include "Aimbot.h"
+#include "Ragebot.h"
 #include "BombTimer.h"
 
 #include "user_interface.h"
@@ -94,6 +95,7 @@ int main()
     std::thread thirdperson_thd(Thirdperson(), 1000);
     std::thread desync_thd(Desync(), 1, 33.0f);
     std::thread aimbot_thd(Aimbot(), 1);
+    std::thread ragebot_thd(Ragebot(), 1);
     std::thread bomb_timer_thd(BombTimer(), 16);
     fakelag_thd.detach();
     remove_flash_thd.detach();
@@ -102,6 +104,7 @@ int main()
     radar_esp_thd.detach();
     thirdperson_thd.detach();
     desync_thd.detach();
+    ragebot_thd.detach();
     bomb_timer_thd.detach();
 
     std::cout << "Initializing GUI...";

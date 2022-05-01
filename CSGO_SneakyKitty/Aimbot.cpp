@@ -9,6 +9,7 @@
 #include "weapon.h"
 #include "Backtrack.h"
 #include "BacktrackCandidate.h"
+#include "user_interface.h"
 
 #include <iostream>
 #include <thread>
@@ -16,16 +17,12 @@
 #include <deque>
 #include <map>
 
-bool Aimbot::QualifyAimbotRule(int bone_i)
+using namespace user_interface;
+
+bool Aimbot::QualifyAimbotRule(int bone_id)
 {
     //always check teaser fisrt, because it should NEVER aim for neck or head
-    if (game::curr_weapon_def_index == weapon::WEAPON_TASER && (bone_i == BoneMatrix::kNeck || bone_i == BoneMatrix::kHead)) return false;
-
-    //aimbot mode 2 only aim for head or neck
-    if (game::toggle_mode[game::aimbot_fire_hotkey] == 2 && bone_i != BoneMatrix::kNeck && bone_i != BoneMatrix::kHead) return false;
-
-    //aimbot mode 3 aim for all bones
-    return true;
+    return !(game::curr_weapon_def_index == weapon::WEAPON_TASER && (bone_id == BoneMatrix::kNeck || bone_id == BoneMatrix::kHead));
 }
 
 void Aimbot::operator()(int update_period_ms)
@@ -52,7 +49,7 @@ void Aimbot::operator()(int update_period_ms)
 
     while (true)
     {
-        if (game::connection_state != client::kFullyConnected || game::toggle_mode[game::aimbot_fire_hotkey] == 0)
+        if (game::connection_state != client::kFullyConnected || toggle_mode[kAimbot] == 0)
         {
             if (!history.empty()) history.clear();
             std::this_thread::sleep_for(std::chrono::milliseconds(5000));
@@ -64,9 +61,8 @@ void Aimbot::operator()(int update_period_ms)
         if (!weapon::IsGun(game::curr_weapon_def_index)) continue;
         
 
-        //reset the target flag, fov upper bound
-        bool has_target = false;
-        float fov_limit = (game::toggle_mode[game::aimbot_fire_hotkey] == 1 ? weapon::GetFOV(game::curr_weapon_def_index) : weapon::kRagebotFOV);
+        //fov upper bound
+        float fov_limit = (toggle_mode[kAimbot] == 1 ? weapon::GetFOV(game::curr_weapon_def_index) : weapon::kRagebotFOV);
 
 
         //read the crosshair angle
@@ -100,15 +96,14 @@ void Aimbot::operator()(int update_period_ms)
             if (game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[entity_id]))
             {
                 //check global targe mode
-                if (game::toggle_mode[game::global_target_hotkey] == 0) continue;
+                if (user_interface::toggle_mode[kGlobalTarget] == 0) continue;
 
                 //filter out local player
                 if (entity_id == game::local_player_index) continue;
             }
 
-            //check visibility for enemy
-            //if not spotted, then rage bot mode must be on
-            else if (!Entity::SpottedBy(entity_id, game::local_player_index) && game::toggle_mode[game::aimbot_fire_hotkey] == 1) continue;
+            //filter invisible enemy
+            else if (toggle_mode[kAimbot] == 1 && !Entity::SpottedBy(entity_id, game::local_player_index)) continue;
 
 
             for (int bone_id = BoneMatrix::kBoneBegin; bone_id <= BoneMatrix::kBoneEnd; ++bone_id)
@@ -139,8 +134,10 @@ void Aimbot::operator()(int update_period_ms)
         }*/
 
 
-        //select the best backtrack tick
+        //reset the target flag, best backtrack tick
+        bool has_target = false;
         int best_backtrack_tick = 0;
+        int enemy_searched = 0;
 
         for (auto entry = history.cbegin(); entry != history.cend(); ++entry)
         {
@@ -148,18 +145,14 @@ void Aimbot::operator()(int update_period_ms)
             const BacktrackRecord& record = entry->first;
             const Position& pos = entry->second;
 
-            //backtrack if legit aimbot mode and backtrack mode
-            if (curr_tick - record.GetTick() > 2)
-            {
-                if (game::toggle_mode[game::aimbot_fire_hotkey] != 1 || game::toggle_mode[game::aimbot_backtrack_hotkey] == 0) break;
-            }
-            
+            //stop seraching if no backtrack
+            if (++enemy_searched > client::kMaxPlayerNum && toggle_mode[kBacktrack] == 0) break;
 
             //bullets shoot from player's eyes, subtract the relative height
             relative = pos - game::player_entity_list[game::local_player_index].GetOrigin();
             relative.z_ -= game::player_entity_list[game::local_player_index].GetViewOffsetZ();
 
-            //calculate the exact aimbot angle
+            //calculate the exact aimbot angle and difference
             exact.PointTo(relative);
             difference = exact - bullet;
             difference.Clamp();
@@ -186,10 +179,11 @@ void Aimbot::operator()(int update_period_ms)
             const float curr_fov = difference.FOVMagnitude();
             if (curr_fov < fov_limit)
             {
-                has_target = true;
                 closest = difference;
                 fov_limit = curr_fov;
-                if(game::toggle_mode[game::aimbot_backtrack_hotkey]) best_backtrack_tick = record.GetTick();
+
+                has_target = true;
+                best_backtrack_tick = record.GetTick();
             }
         }
         backtrack_tick = best_backtrack_tick;
@@ -198,17 +192,20 @@ void Aimbot::operator()(int update_period_ms)
         if (!has_target) continue;
 
         //legit aimbot smooth aim step
-        if (game::toggle_mode[game::aimbot_fire_hotkey] == 1) closest /= weapon::GetSmooth(game::curr_weapon_def_index);
+        if (toggle_mode[kAimbot] == 1) closest /= weapon::GetSmooth(game::curr_weapon_def_index);
 
         //apply the angle modification
         crosshair += closest;
         crosshair.Clamp();
 
-        if (GetAsyncKeyState(0x01) & 1 << 15)
-        {
-            memory::WriteMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, crosshair);
-        }
+        //left click mouse to fire
+        if (GetAsyncKeyState(0x01) & 1 << 15) memory::WriteMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, crosshair);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
     }
 }
+
+
+
+//ragebot incompatiable with aimbot, backtrack, desync
+//aimbot 2 incompatiable with backtrack

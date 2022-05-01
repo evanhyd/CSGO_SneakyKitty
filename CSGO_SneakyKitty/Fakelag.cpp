@@ -7,10 +7,13 @@
 #include "Angle.h"
 #include "Position.h"
 #include "BoneMatrix.h"
+#include "user_interface.h"
 
 #include <iostream>
 #include <thread>
 #include <chrono>
+
+using namespace user_interface;
 
 
 void Fakelag::ChokePackets(int max_choke_ticks)
@@ -29,15 +32,15 @@ void Fakelag::ChokePackets(int max_choke_ticks)
 
 void Fakelag::operator()(int update_period_ms)
 {
-    Angle enemy_eye_angle;
-    Angle enemy_aimbot_angle;
-    Angle enemy_difference_angle;
-    Position relative_pos;
+    Angle enemy_eye_angle{};
+    Angle enemy_aimbot_angle{};
+    Angle enemy_difference_angle{};
+    Position relative_pos{};
 
 
     while (true)
     {
-        if (game::connection_state != client::kFullyConnected || game::toggle_mode[game::fakelag_hotkey] == 0)
+        if (game::connection_state != client::kFullyConnected || toggle_mode[kFakelag] == 0)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(5000));
             continue;
@@ -47,7 +50,7 @@ void Fakelag::operator()(int update_period_ms)
 
 
 		//anti-trigger
-		switch (game::toggle_mode[game::fakelag_hotkey])
+		switch (user_interface::toggle_mode[kFakelag])
 		{
 		case 1:
 			for (int i = 0; i < client::kMaxPlayerNum; ++i)
@@ -56,7 +59,7 @@ void Fakelag::operator()(int update_period_ms)
 				if (!game::player_entity_is_valid[i]) continue;
 
 				//check global target mode and team
-				if (game::toggle_mode[game::global_target_hotkey] == 0 && game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[i])) continue;
+				if (user_interface::toggle_mode[kGlobalTarget] == 0 && game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[i])) continue;
 
 
 				//calculate the aimbot angle for the enemy

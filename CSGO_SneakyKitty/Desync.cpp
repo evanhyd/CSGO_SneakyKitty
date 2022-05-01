@@ -6,10 +6,13 @@
 #include "memory.h"
 #include "Input.h"
 #include "weapon.h"
+#include "user_interface.h"
 
 #include <iostream>
 #include <thread>
 #include <chrono>
+
+using namespace user_interface;
 
 void Desync::operator()(int update_period_ms, float fake_walk_speed)
 {
@@ -20,7 +23,7 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
 
     while (true)
     {
-        if (game::connection_state != client::kFullyConnected || game::toggle_mode[game::desync_hotkey] == 0)
+        if (game::connection_state != client::kFullyConnected || toggle_mode[kDesync] == 0)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(5000));
             continue;

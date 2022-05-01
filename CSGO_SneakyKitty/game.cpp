@@ -29,9 +29,3 @@ InputCmd game::input_cmd = {};
 int game::last_outgoing_cmd_num = 0;
 DWORD game::curr_cmd_address = NULL;
 DWORD game::curr_verified_cmd_address = NULL;
-
-
-
-
-
-short game::toggle_mode[255] = {};

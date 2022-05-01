@@ -24,7 +24,8 @@ void user_interface::InitUserInterface()
     command_map.insert({ "radar_esp", HRadarESP});
     command_map.insert({ "thirdperson", HThirdperson});
     command_map.insert({ "desync", HDesync});
-    command_map.insert({ "aimbot", HAimbot});
+    command_map.insert({ "aimbot", HAimbot });
+    command_map.insert({ "ragebot", HRagebot});
     command_map.insert({ "backtrack", HBacktrack});
     command_map.insert({ "global_target", HGlobalTarget });
     command_map.insert({ "bomb_timer", HBombTimer });
@@ -52,7 +53,7 @@ void user_interface::InitUserInterface()
 
 void user_interface::SendConsoleCommand(const std::string& command_line)
 {
-    COPYDATASTRUCT message;
+    COPYDATASTRUCT message{};
     message.dwData = 0;
     message.lpData = (void*)(command_line.c_str());
     message.cbData = command_line.size() + 1;
@@ -60,7 +61,7 @@ void user_interface::SendConsoleCommand(const std::string& command_line)
 }
 void user_interface::SendConsoleCommand(const std::u8string& command_line)
 {
-    COPYDATASTRUCT message;
+    COPYDATASTRUCT message{};
     message.dwData = 0;
     message.lpData = (void*)(command_line.c_str());
     message.cbData = command_line.size() + 1;
@@ -90,13 +91,12 @@ int user_interface::HFakeLag(std::stringstream& ss)
     ss >> mode;
     mode = std::clamp(mode, short(0), short(3));
 
-    if (mode != 0)
-    {
-        game::toggle_mode[game::desync_hotkey] = 0;
-        game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
-        std::cout << '\a';
-    }
-    game::toggle_mode[game::fakelag_hotkey] = mode;
+
+    //incompatiable with backtrack/desync/ragebot
+    if (toggle_mode[kBacktrack] || toggle_mode[kDesync] || toggle_mode[kRagebot]) return 0;
+
+    if (mode != 0) std::cout << '\a';
+    toggle_mode[kFakelag] = mode;
 
     return 0;
 }
@@ -107,7 +107,7 @@ int user_interface::HRemoveFlash(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(1));
 
     if (mode != 0) std::cout << '\a';
-    game::toggle_mode[game::remove_flash_hotkey] = mode;
+    toggle_mode[kRemoveFlash] = mode;
 
     return 0;
 }
@@ -118,7 +118,7 @@ int user_interface::HBhop(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(1));
 
     if (mode != 0) std::cout << '\a';
-    game::toggle_mode[game::bhop_hotkey] = mode;
+    toggle_mode[kBhop] = mode;
 
     return 0;
 }
@@ -129,7 +129,7 @@ int user_interface::HGlowESP(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(4));
 
     if (mode != 0) std::cout << '\a';
-    game::toggle_mode[game::glow_esp_hotkey] = mode;
+    toggle_mode[kGlowESP] = mode;
 
     return 0;
 }
@@ -140,7 +140,7 @@ int user_interface::HRadarESP(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(1));
 
     if (mode != 0) std::cout << '\a';
-    game::toggle_mode[game::radar_esp_hotkey] = mode;
+    toggle_mode[kRadarESP] = mode;
 
     return 0;
 }
@@ -151,7 +151,7 @@ int user_interface::HThirdperson(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(1));
 
     if (mode != 0) std::cout << '\a';
-    game::toggle_mode[game::thirdperson_hotkey] = mode;
+    toggle_mode[kThirdperson] = mode;
 
     return 0;
 }
@@ -161,13 +161,12 @@ int user_interface::HDesync(std::stringstream& ss)
     ss >> mode;
     mode = std::clamp(mode, short(0), short(1));
 
-    if (mode != 0)
-    {
-        game::toggle_mode[game::fakelag_hotkey] = 0;
-        game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
-        std::cout << '\a';
-    }
-    game::toggle_mode[game::desync_hotkey] = mode;
+
+    //incompatiable with fakelag/backtrack/ragebot
+    if (toggle_mode[kFakelag] || toggle_mode[kBacktrack] || toggle_mode[kRagebot]) return 0;
+
+    if (mode != 0) std::cout << '\a';
+    toggle_mode[kDesync] = mode;
 
     return 0;
 }
@@ -175,12 +174,28 @@ int user_interface::HAimbot(std::stringstream& ss)
 {
     short mode;
     ss >> mode;
-    mode = std::clamp(mode, short(0), short(3));
+    mode = std::clamp(mode, short(0), short(2));
+
+    //incompatiable with ragebot/backtrack (aimbot mode 2)
+    if (toggle_mode[kBacktrack] || toggle_mode[kRagebot]) return 0;
 
     if (mode != 0) std::cout << '\a';
-    else game::toggle_mode[game::aimbot_backtrack_hotkey] = 0;
+    toggle_mode[kAimbot] = mode;
 
-    game::toggle_mode[game::aimbot_fire_hotkey] = mode;
+    return 0;
+}
+int user_interface::HRagebot(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(3));
+
+    //incompatiable with fakelag/backtrack/desync/aimbot
+    if (toggle_mode[kFakelag] || toggle_mode[kBacktrack] || toggle_mode[kDesync] || toggle_mode[kAimbot]) return 0;
+
+
+    if (mode != 0) std::cout << '\a';
+    toggle_mode[kRagebot] = mode;
 
     return 0;
 }
@@ -190,16 +205,14 @@ int user_interface::HBacktrack(std::stringstream& ss)
     ss >> mode;
     mode = std::clamp(mode, short(0), short(1));
 
-    if (game::toggle_mode[game::aimbot_fire_hotkey] != 0)
-    {
-        if (mode != 0)
-        {
-            game::toggle_mode[game::fakelag_hotkey] = 0;
-            game::toggle_mode[game::desync_hotkey] = 0;
-            std::cout << '\a';
-        }
-        game::toggle_mode[game::aimbot_backtrack_hotkey] = mode;
-    }
+    //incompatiable with fakelag/desync/ragebot
+    if (toggle_mode[kFakelag] || toggle_mode[kDesync] || toggle_mode[kRagebot]) return 0;
+
+    //require aimbot
+    if (toggle_mode[kAimbot] == 0) return 0;
+
+    if (mode != 0) std::cout << '\a';
+    toggle_mode[kBacktrack] = mode;
 
     return 0;
 }
@@ -210,7 +223,7 @@ int user_interface::HGlobalTarget(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(1));
 
     if (mode != 0) std::cout << '\a';
-    game::toggle_mode[game::global_target_hotkey] = mode;
+    user_interface::toggle_mode[kGlobalTarget] = mode;
 
     return 0;
 }
@@ -221,7 +234,7 @@ int user_interface::HBombTimer(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(1));
 
     if (mode != 0) std::cout << '\a';
-    game::toggle_mode[game::bomb_timer_hotkey] = mode;
+    user_interface::toggle_mode[kBombTimer] = mode;
 
     return 0;
 }
@@ -239,8 +252,9 @@ int user_interface::CHelp([[maybe_unused]]std::stringstream& ss)
     std::cout << "/radar_esp\n";
     std::cout << "/thirdperson\n";
     std::cout << "/desync\n";
-    std::cout << "/aimbot(legit, rage1, rage2)\n";
+    std::cout << "/aimbot(legit, rage)\n";
     std::cout << "/backtrack(requires aimbot)\n";
+    std::cout << "/ragebot\n";
     std::cout << "/global target\n";
     std::cout << "/bomb timer\n";
 
@@ -270,17 +284,18 @@ int user_interface::CStatus([[maybe_unused]] std::stringstream& ss)
 {
     std::cout << "Toggle Status\n";
 
-    if(game::toggle_mode[game::fakelag_hotkey]) std::cout << "fakelag: " << game::toggle_mode[game::fakelag_hotkey] <<'\n';
-    if(game::toggle_mode[game::remove_flash_hotkey]) std::cout << "remove_flash: " << game::toggle_mode[game::remove_flash_hotkey] <<'\n';
-    if (game::toggle_mode[game::bhop_hotkey]) std::cout << "bhop: " << game::toggle_mode[game::bhop_hotkey] <<'\n';
-    if (game::toggle_mode[game::glow_esp_hotkey]) std::cout << "glow_esp: " << game::toggle_mode[game::glow_esp_hotkey] <<'\n';
-    if (game::toggle_mode[game::radar_esp_hotkey]) std::cout << "radar_esp: " << game::toggle_mode[game::radar_esp_hotkey] <<'\n';
-    if (game::toggle_mode[game::thirdperson_hotkey]) std::cout << "thirdperson: " << game::toggle_mode[game::thirdperson_hotkey] <<'\n';
-    if (game::toggle_mode[game::desync_hotkey]) std::cout << "desync: " << game::toggle_mode[game::desync_hotkey] <<'\n';
-    if (game::toggle_mode[game::aimbot_fire_hotkey]) std::cout << "aimbot: " << game::toggle_mode[game::aimbot_fire_hotkey] <<'\n';
-    if (game::toggle_mode[game::aimbot_backtrack_hotkey]) std::cout << "backtrack: " << game::toggle_mode[game::aimbot_backtrack_hotkey] <<'\n';
-    if (game::toggle_mode[game::global_target_hotkey]) std::cout << "global target: " << game::toggle_mode[game::global_target_hotkey] << '\n';
-    if (game::toggle_mode[game::bomb_timer_hotkey]) std::cout << "bomb timer: " << game::toggle_mode[game::bomb_timer_hotkey] << '\n';
+    if (toggle_mode[kFakelag])      std::cout << "fakelag: " << toggle_mode[kFakelag] <<'\n';
+    if (toggle_mode[kRemoveFlash])  std::cout << "remove_flash: " << toggle_mode[kRemoveFlash] <<'\n';
+    if (toggle_mode[kBhop])         std::cout << "bhop: " << toggle_mode[kBhop] <<'\n';
+    if (toggle_mode[kGlowESP])      std::cout << "glow_esp: " << toggle_mode[kGlowESP] <<'\n';
+    if (toggle_mode[kRadarESP])     std::cout << "radar_esp: " << toggle_mode[kRadarESP] <<'\n';
+    if (toggle_mode[kThirdperson])  std::cout << "thirdperson: " << toggle_mode[kThirdperson] <<'\n';
+    if (toggle_mode[kDesync])       std::cout << "desync: " << toggle_mode[kDesync] <<'\n';
+    if (toggle_mode[kAimbot])       std::cout << "aimbot: " << toggle_mode[kAimbot] <<'\n';
+    if (toggle_mode[kBacktrack])    std::cout << "backtrack: " << toggle_mode[kBacktrack] << '\n';
+    if (toggle_mode[kRagebot])      std::cout << "ragebot: " << toggle_mode[kRagebot] << '\n';
+    if (toggle_mode[kGlobalTarget]) std::cout << "global target: " << toggle_mode[kGlobalTarget] << '\n';
+    if (toggle_mode[kBombTimer])    std::cout << "bomb timer: " << toggle_mode[kBombTimer] << '\n';
 
     std::cout << std::endl;
 
@@ -357,7 +372,7 @@ int user_interface::CExpose([[maybe_unused]] std::stringstream& ss)
 }
 int user_interface::CSetAngle(std::stringstream& ss)
 {
-    Angle angle;
+    Angle angle{};
     ss >> angle.x_ >> angle.y_ >> angle.z_;
     angle.Clamp();
 
@@ -389,7 +404,7 @@ int user_interface::CGameConfig([[maybe_unused]] std::stringstream& ss)
 }
 int user_interface::CQuit([[maybe_unused]]std::stringstream& ss)
 {
-    std::fill_n(game::toggle_mode, 255, short(0));
+    std::fill_n(user_interface::toggle_mode, 255, short(0));
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     exit(0);
 }
@@ -420,3 +435,6 @@ int user_interface::CTest([[maybe_unused]] std::stringstream& ss)
 
     return 0;
 }
+
+
+short user_interface::toggle_mode[255] = {};

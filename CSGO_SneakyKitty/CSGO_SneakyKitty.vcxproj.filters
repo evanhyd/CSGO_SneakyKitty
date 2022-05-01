@@ -109,6 +109,9 @@
     <Filter Include="Features\BombTimer">
       <UniqueIdentifier>{71c65275-edea-452f-a1e8-2b870aaf41a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features\Ragebot">
+      <UniqueIdentifier>{684f5e1e-7659-47d7-847a-c05c270f11b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="module.cpp">
@@ -211,6 +214,9 @@
     <ClCompile Include="BombTimer.cpp">
       <Filter>Features\BombTimer</Filter>
     </ClCompile>
+    <ClCompile Include="Ragebot.cpp">
+      <Filter>Features\Ragebot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="module.h">
@@ -311,6 +317,9 @@
     </ClInclude>
     <ClInclude Include="BombTimer.h">
       <Filter>Features\BombTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="Ragebot.h">
+      <Filter>Features\Ragebot</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

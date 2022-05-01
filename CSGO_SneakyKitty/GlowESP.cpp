@@ -6,11 +6,14 @@
 #include "memory.h"
 #include "Glow.h"
 #include "Cham.h"
+#include "user_interface.h"
 
 #include <iostream>
 #include <thread>
 #include <chrono>
 #include <vector>
+
+using namespace user_interface;
 
 [[maybe_unused]]
 void GlowESP::AdjustAmbientBrightness(float brightness)
@@ -34,7 +37,7 @@ void GlowESP::operator()(int update_period_ms, [[maybe_unused]]float brightness,
     while (true)
     {
         //avoid race condition
-        const int glow_mode = game::toggle_mode[game::glow_esp_hotkey];
+        const int glow_mode = toggle_mode[kGlowESP];
 
         if (game::connection_state != client::kFullyConnected || glow_mode == 0)
         {
@@ -97,7 +100,7 @@ void GlowESP::operator()(int update_period_ms, [[maybe_unused]]float brightness,
                 if (glow_list[glow_id].GetAddress() != game::player_entity_address_list[entity_id].GetAddress()) continue;
 
                 //global target mode or enemy
-                if (game::toggle_mode[game::global_target_hotkey] == 1 || game::player_entity_list[game::local_player_index].IsEnemy(game::player_entity_list[entity_id]))
+                if (toggle_mode[kGlobalTarget] == 1 || game::player_entity_list[game::local_player_index].IsEnemy(game::player_entity_list[entity_id]))
                 {
                     glow_list[glow_id].SetGlow(glow_style, game::player_entity_list[entity_id].GetHealth());
                     memory::WriteMem(module::csgo_proc_handle, game::player_entity_address_list[entity_id].GetAddress() + offsets::m_clrRender, enemy_model_color);
