@@ -106,6 +106,9 @@
     <Filter Include="Structures\BackTrackCandidate">
       <UniqueIdentifier>{f1589bc1-6818-4aa0-bd71-a3e71256cdd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features\BombTimer">
+      <UniqueIdentifier>{71c65275-edea-452f-a1e8-2b870aaf41a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="module.cpp">
@@ -205,6 +208,9 @@
     <ClCompile Include="BacktrackCandidate.cpp">
       <Filter>Structures\BackTrackCandidate</Filter>
     </ClCompile>
+    <ClCompile Include="BombTimer.cpp">
+      <Filter>Features\BombTimer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="module.h">
@@ -302,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="BacktrackCandidate.h">
       <Filter>Structures\BackTrackCandidate</Filter>
+    </ClInclude>
+    <ClInclude Include="BombTimer.h">
+      <Filter>Features\BombTimer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -51,22 +51,22 @@ void GlowESP::operator()(int update_period_ms, [[maybe_unused]]float brightness,
 
 
         const int glow_style = glow_mode - 1;
-        //if (glow_style == Glow::kFullBody)
-        //{
-        //    if (!is_bright)
-        //    {
-        //        this->AdjustAmbientBrightness(brightness);
-        //        is_bright = true;
-        //    }
-        //}
-        //else
-        //{
-        //    if (is_bright)
-        //    {
-        //        //this->AdjustAmbientBrightness(0.8f);
-        //        is_bright = false;
-        //    }
-        //}
+        if (glow_style == Glow::kFullBody)
+        {
+            if (!is_bright)
+            {
+                this->AdjustAmbientBrightness(brightness);
+                is_bright = true;
+            }
+        }
+        else
+        {
+            if (is_bright)
+            {
+                this->AdjustAmbientBrightness(1.0f);
+                is_bright = false;
+            }
+        }
 
         //0xeb non filck, 0x74 original
         if (!is_glow_forced)
@@ -95,7 +95,6 @@ void GlowESP::operator()(int update_period_ms, [[maybe_unused]]float brightness,
             for (int glow_id = 0; glow_id < static_cast<int>(glow_manager[3]); ++glow_id)
             {
                 if (glow_list[glow_id].GetAddress() != game::player_entity_address_list[entity_id].GetAddress()) continue;
-
 
                 //global target mode or enemy
                 if (game::toggle_mode[game::global_target_hotkey] == 1 || game::player_entity_list[game::local_player_index].IsEnemy(game::player_entity_list[entity_id]))

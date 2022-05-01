@@ -25,6 +25,7 @@ namespace user_interface
     int HAimbot(std::stringstream& ss);
     int HBacktrack(std::stringstream& ss);
     int HGlobalTarget(std::stringstream& ss);
+    int HBombTimer(std::stringstream& ss);
 
     int CHelp(std::stringstream& ss);
     int CStatus(std::stringstream& ss);

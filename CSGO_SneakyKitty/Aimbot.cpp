@@ -90,7 +90,6 @@ void Aimbot::operator()(int update_period_ms)
         std::clog << "max backtrack tick: " << max_backtrack_tick << '\n';
 #endif
 
-
         //add target position to the aimbot candidate list
         for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
         {
@@ -142,6 +141,7 @@ void Aimbot::operator()(int update_period_ms)
 
         //select the best backtrack tick
         int best_backtrack_tick = 0;
+
         for (auto entry = history.cbegin(); entry != history.cend(); ++entry)
         {
             //compiler should optimize it out
@@ -197,8 +197,8 @@ void Aimbot::operator()(int update_period_ms)
         //check if selected a target
         if (!has_target) continue;
 
-        //smooth the aimbot if legit and no backtrack
-        if (game::toggle_mode[game::aimbot_fire_hotkey] == 1 && backtrack_tick == 0) closest /= weapon::GetSmooth(game::curr_weapon_def_index);
+        //legit aimbot smooth aim step
+        if (game::toggle_mode[game::aimbot_fire_hotkey] == 1) closest /= weapon::GetSmooth(game::curr_weapon_def_index);
 
         //apply the angle modification
         crosshair += closest;

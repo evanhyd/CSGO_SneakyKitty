@@ -152,11 +152,11 @@ void weapon::InitFOVTable()
 
 void weapon::InitSmoothTable()
 {
-	kSmoothTable[kNonWeapon] = 170.0f;
+	kSmoothTable[kNonWeapon] = 180.0f;
 	kSmoothTable[kPistol] = 1.8f;
-	kSmoothTable[kShotgun] = 4.0f;
-	kSmoothTable[kSMG] = 3.5f;
-	kSmoothTable[kAssaultRifle] = 3.5f;
+	kSmoothTable[kShotgun] = 2.5f;
+	kSmoothTable[kSMG] = 2.5f;
+	kSmoothTable[kAssaultRifle] = 2.5f;
 	kSmoothTable[kSniperRifle] = 1.0f;
-	kSmoothTable[kMachinegun] = 3.8f;
+	kSmoothTable[kMachinegun] = 2.5f;
 }

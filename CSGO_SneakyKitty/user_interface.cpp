@@ -26,7 +26,8 @@ void user_interface::InitUserInterface()
     command_map.insert({ "desync", HDesync});
     command_map.insert({ "aimbot", HAimbot});
     command_map.insert({ "backtrack", HBacktrack});
-    command_map.insert({ "global_target", HGlobalTarget});
+    command_map.insert({ "global_target", HGlobalTarget });
+    command_map.insert({ "bomb_timer", HBombTimer });
 
 
     command_map.insert({ "help", CHelp });
@@ -213,6 +214,19 @@ int user_interface::HGlobalTarget(std::stringstream& ss)
 
     return 0;
 }
+int user_interface::HBombTimer(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(1));
+
+    if (mode != 0) std::cout << '\a';
+    game::toggle_mode[game::bomb_timer_hotkey] = mode;
+
+    return 0;
+}
+
+
 
 
 int user_interface::CHelp([[maybe_unused]]std::stringstream& ss)
@@ -228,6 +242,7 @@ int user_interface::CHelp([[maybe_unused]]std::stringstream& ss)
     std::cout << "/aimbot(legit, rage1, rage2)\n";
     std::cout << "/backtrack(requires aimbot)\n";
     std::cout << "/global target\n";
+    std::cout << "/bomb timer\n";
 
 
     std::cout << "\n\nBuilt-in commands:\n";
@@ -264,7 +279,8 @@ int user_interface::CStatus([[maybe_unused]] std::stringstream& ss)
     if (game::toggle_mode[game::desync_hotkey]) std::cout << "desync: " << game::toggle_mode[game::desync_hotkey] <<'\n';
     if (game::toggle_mode[game::aimbot_fire_hotkey]) std::cout << "aimbot: " << game::toggle_mode[game::aimbot_fire_hotkey] <<'\n';
     if (game::toggle_mode[game::aimbot_backtrack_hotkey]) std::cout << "backtrack: " << game::toggle_mode[game::aimbot_backtrack_hotkey] <<'\n';
-    if (game::toggle_mode[game::global_target_hotkey]) std::cout << "global target: " << game::toggle_mode[game::global_target_hotkey] <<'\n';
+    if (game::toggle_mode[game::global_target_hotkey]) std::cout << "global target: " << game::toggle_mode[game::global_target_hotkey] << '\n';
+    if (game::toggle_mode[game::bomb_timer_hotkey]) std::cout << "bomb timer: " << game::toggle_mode[game::bomb_timer_hotkey] << '\n';
 
     std::cout << std::endl;
 
@@ -331,9 +347,9 @@ int user_interface::CExpose([[maybe_unused]] std::stringstream& ss)
 
             SendConsoleCommand
             (
-                "say_team Enemy HP: " + std::to_string(game::player_entity_list[i].GetHealth()) + " at " + location
+                "echo Enemy " + std::to_string(i) + " HP: " + std::to_string(game::player_entity_list[i].GetHealth()) + " at " + location
             );
-            Sleep(1000);
+            Sleep(500);
         }
     }
 

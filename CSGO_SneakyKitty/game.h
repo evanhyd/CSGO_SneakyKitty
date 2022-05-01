@@ -44,17 +44,21 @@ namespace game
 
 
     //hot key
-    extern uint8_t fakelag_hotkey;
-    extern uint8_t remove_flash_hotkey;
-    extern uint8_t bhop_hotkey;
-    extern uint8_t glow_esp_hotkey;
-    extern uint8_t radar_esp_hotkey;
-    extern uint8_t thirdperson_hotkey;
-    extern uint8_t desync_hotkey;
-    extern uint8_t aimbot_fire_hotkey;
-    extern uint8_t aimbot_backtrack_hotkey;
-    extern uint8_t global_target_hotkey;
-    extern uint8_t rcs_hotkey;
+    enum : uint8_t
+    {
+         fakelag_hotkey,
+         remove_flash_hotkey,
+         bhop_hotkey,
+         glow_esp_hotkey,
+         radar_esp_hotkey,
+         thirdperson_hotkey,
+         desync_hotkey,
+         aimbot_fire_hotkey,
+         aimbot_backtrack_hotkey,
+         global_target_hotkey,
+         bomb_timer_hotkey
+    };
+    
 
     extern short toggle_mode[255];
 }
