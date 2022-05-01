@@ -24,9 +24,9 @@ void Ragebot::operator()(int update_period_ms)
 
     //ragebot = exact - recoil
     Angle recoil{}, exact{}, ragebot{};
-    int best_target_id = -1;
+    int target_id = -1;
 
-    std::thread ragebot_thd(Ragebot::Packet(), update_period_ms, std::ref(best_target_id), std::ref(ragebot));
+    std::thread ragebot_thd(Ragebot::Packet(), update_period_ms, std::ref(target_id), std::ref(ragebot));
     ragebot_thd.detach();
 
     while (true)
@@ -40,14 +40,14 @@ void Ragebot::operator()(int update_period_ms)
         //checking holding a gun
         if (!weapon::IsGun(game::curr_weapon_def_index))
         {
-            best_target_id = -1;
+            target_id = -1;
             continue;
         }
 
 
         //obtain the recoil
         const int weapon_type = weapon::GetWeaponType(game::curr_weapon_def_index);
-        if (weapon_type == weapon::kAssaultRifle || weapon_type == weapon::kSMG || weapon_type == weapon::kMachinegun)
+        if (weapon_type == weapon::kAssaultRifle || weapon_type == weapon::kSMG || weapon_type == weapon::kMachinegun || weapon_type == weapon::kPistol)
         {
             memory::ReadMem(module::csgo_proc_handle, game::player_entity_address_list[game::local_player_index].GetAddress() + offsets::m_aimPunchAngle, recoil);
         }
@@ -57,8 +57,8 @@ void Ragebot::operator()(int update_period_ms)
         }
 
         //select the closest target
-        int target_id = -1;
-        double target_dist = 9999999999999999.0;
+        int curr_target_id = -1;
+        double curr_target_dist = 9999999999999999.0;
         for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
         {
             //filter out invalid entity 
@@ -88,18 +88,18 @@ void Ragebot::operator()(int update_period_ms)
 
             //select the closest enemy
             double dist_to_enemy = relative.MagnitudeToOrigin();
-            if (dist_to_enemy < target_dist)
+            if (dist_to_enemy < curr_target_dist)
             {
                 //calculate the exact aimbot angle
                 exact.PointTo(relative);
 
-                target_id = entity_id;
-                target_dist = dist_to_enemy;
+                curr_target_id = entity_id;
+                curr_target_dist = dist_to_enemy;
             }
         }
 
         //update
-        best_target_id = target_id;
+        target_id = curr_target_id;
         ragebot = exact - recoil * weapon::kRecoilFactor;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
@@ -109,6 +109,7 @@ void Ragebot::operator()(int update_period_ms)
 
 void Ragebot::Packet::operator()(int update_period_ms, int& best_target_id, const Angle& ragebot)
 {
+    Angle client_view{};
     Commands0X4 commands_0x4;
 
     while (true)
@@ -165,16 +166,63 @@ void Ragebot::Packet::operator()(int update_period_ms, int& best_target_id, cons
         //no target, perform antiaim
         if (best_target_id != -1)
         {
+            //force fire
             commands_0x4.buttons_mask_ |= Input::IN_ATTACK;
+
+            //fix crouching
+            if (is_crouching) commands_0x4.buttons_mask_ |= Input::IN_DUCK;
+
+            //apply ratebot angle
             commands_0x4.view_angles_ = ragebot;
 
-            commands_0x4.forward_move_ = moving_forward;
-            commands_0x4.side_move_ = moving_sideway;
 
-            memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
-            memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, commands_0x4);
+            //fix movement
+            memory::ReadMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, client_view);
+            commands_0x4.forward_move_ = moving_forward * cosf(Angle::ToRadians(ragebot.y_ - client_view.y_)) +
+                                         moving_sideway * sinf(-Angle::ToRadians(ragebot.y_ - client_view.y_));
+
+            commands_0x4.side_move_ = moving_forward * sinf(Angle::ToRadians(ragebot.y_ - client_view.y_)) +
+                                      moving_sideway * cosf(-Angle::ToRadians(ragebot.y_ - client_view.y_));
+
+
+            //clamp the speed to avoid server side anti cheat
+            commands_0x4.forward_move_ = std::clamp(commands_0x4.forward_move_, -449.5f, 449.5f);
+            commands_0x4.side_move_ = std::clamp(commands_0x4.side_move_, -449.5f, 449.5f);
         }
 
+        //sliding
+        else
+        {
+            //fix crouching
+            if (is_crouching) commands_0x4.buttons_mask_ |= Input::IN_DUCK;
+
+            //moon walk
+            if (commands_0x4.forward_move_ > 5.0f)
+            {
+                commands_0x4.buttons_mask_ &= ~Input::IN_FORWARD;
+                commands_0x4.buttons_mask_ |= Input::IN_BACK;
+            }
+            else if (commands_0x4.forward_move_ < -5.0f)
+            {
+                commands_0x4.buttons_mask_ &= ~Input::IN_BACK;
+                commands_0x4.buttons_mask_ |= Input::IN_FORWARD;
+            }
+
+            if (commands_0x4.side_move_ > 5.0f)
+            {
+                commands_0x4.buttons_mask_ &= ~Input::IN_MOVERIGHT;
+                commands_0x4.buttons_mask_ |= Input::IN_MOVELEFT;
+            }
+            else if (commands_0x4.side_move_ < -5.0f)
+            {
+                commands_0x4.buttons_mask_ &= ~Input::IN_MOVELEFT;
+                commands_0x4.buttons_mask_ |= Input::IN_MOVERIGHT;
+            }
+        }
+
+
+        memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
+        memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, commands_0x4);
         memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
     }

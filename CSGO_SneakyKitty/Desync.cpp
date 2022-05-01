@@ -16,7 +16,7 @@ using namespace user_interface;
 
 void Desync::operator()(int update_period_ms, float fake_walk_speed)
 {
-    Commands0X4 commands_0x4;
+    Commands0X4 cmd;
     bool micromovement_direction = false;
     float real_angle_y = 119.0f;
     float real_angle_z = Angle::UPPER_ROLL;
@@ -80,51 +80,51 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
         }
 
         //read the incoming user cmd
-        memory::ReadMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
+        memory::ReadMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);
 
 
         //read the engine angle
-        memory::ReadMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, commands_0x4.view_angles_);
+        memory::ReadMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, cmd.view_angles_);
 
 
         //stop shooting during the desync
-        commands_0x4.buttons_mask_ &= ~Input::IN_ATTACK;
-        commands_0x4.buttons_mask_ &= ~Input::IN_ATTACK2;
+        cmd.buttons_mask_ &= ~Input::IN_ATTACK;
+        cmd.buttons_mask_ &= ~Input::IN_ATTACK2;
 
 
         //micromovement and desync
         if (!is_crouching)
         {
             micromovement_direction = !micromovement_direction;
-            commands_0x4.side_move_ = (micromovement_direction ? 1.1f : -1.1f);
+            cmd.side_move_ = (micromovement_direction ? 1.1f : -1.1f);
 
-            commands_0x4.view_angles_.y_ += -119.0f;
-            commands_0x4.view_angles_.z_ = Angle::UPPER_ROLL;
+            cmd.view_angles_.y_ += -119.0f;
+            cmd.view_angles_.z_ = Angle::UPPER_ROLL;
 
             real_angle_y = -119.0f;
         }
         else
         {
             micromovement_direction = !micromovement_direction;
-            commands_0x4.side_move_ = (micromovement_direction ? 3.3f : -3.3f);
+            cmd.side_move_ = (micromovement_direction ? 3.3f : -3.3f);
 
-            commands_0x4.view_angles_.y_ += real_angle_y;
-            commands_0x4.view_angles_.z_ = real_angle_z;
+            cmd.view_angles_.y_ += real_angle_y;
+            cmd.view_angles_.z_ = real_angle_z;
         }
 
-        commands_0x4.view_angles_.Clamp();
+        cmd.view_angles_.Clamp();
 
 
         //fakewalk
         if (fakewalk_magnitude != 0.0f)
         {
-            commands_0x4.forward_move_ = fakewalk_magnitude * sinf(Angle::ToRadians(-real_angle_y));
-            commands_0x4.side_move_ = fakewalk_magnitude * cosf(Angle::ToRadians(-real_angle_y));
+            cmd.forward_move_ = fakewalk_magnitude * sinf(-Angle::ToRadians(real_angle_y));
+            cmd.side_move_ = fakewalk_magnitude * cosf(-Angle::ToRadians(real_angle_y));
         }
 
 
-        memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
-        memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address+ 0x4, commands_0x4);
+        memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);
+        memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address+ 0x4, cmd);
         memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));

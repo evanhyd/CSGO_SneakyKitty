@@ -140,7 +140,7 @@ void Aimbot::operator()(int update_period_ms)
 
         //reset the target flag, best backtrack tick
         bool has_target = false;
-        int best_backtrack_tick = 0;
+        int curr_backtrack_tick = 0;
         int enemy_searched = 0;
 
         for (auto entry = history.cbegin(); entry != history.cend();)
@@ -194,12 +194,12 @@ void Aimbot::operator()(int update_period_ms)
                 fov_limit = curr_fov;
 
                 has_target = true;
-                best_backtrack_tick = record.GetTick();
+                curr_backtrack_tick = record.GetTick();
             }
 
             ++entry;
         }
-        backtrack_tick = best_backtrack_tick;
+        backtrack_tick = curr_backtrack_tick;
 
         //check if selected a target
         if (!has_target) continue;
