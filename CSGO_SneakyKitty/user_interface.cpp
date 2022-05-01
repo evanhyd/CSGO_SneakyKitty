@@ -42,7 +42,8 @@ void user_interface::InitUserInterface()
     command_map.insert({ "expose", CExpose});
     command_map.insert({ "set_angle", CSetAngle});
     command_map.insert({ "record_pos", CRecordPos });
-    command_map.insert({ "config", CGameConfig });
+    command_map.insert({ "pro_config", CProConfig });
+    command_map.insert({ "troll_config", CTrollConfig });
     command_map.insert({ "quit", CQuit });
     
 
@@ -93,7 +94,7 @@ int user_interface::HFakeLag(std::stringstream& ss)
 
 
     //incompatiable with backtrack/desync/ragebot
-    if (toggle_mode[kBacktrack] || toggle_mode[kDesync] || toggle_mode[kRagebot]) return 0;
+    if (toggle_mode[kBacktrack] || toggle_mode[kDesync] || toggle_mode[kRagebot]) return 1;
 
     if (mode != 0) std::cout << '\a';
     toggle_mode[kFakelag] = mode;
@@ -163,7 +164,7 @@ int user_interface::HDesync(std::stringstream& ss)
 
 
     //incompatiable with fakelag/backtrack/ragebot
-    if (toggle_mode[kFakelag] || toggle_mode[kBacktrack] || toggle_mode[kRagebot]) return 0;
+    if (toggle_mode[kFakelag] || toggle_mode[kBacktrack] || toggle_mode[kRagebot]) return 1;
 
     if (mode != 0) std::cout << '\a';
     toggle_mode[kDesync] = mode;
@@ -177,7 +178,7 @@ int user_interface::HAimbot(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(2));
 
     //incompatiable with ragebot/backtrack (aimbot mode 2)
-    if (toggle_mode[kBacktrack] || toggle_mode[kRagebot]) return 0;
+    if (toggle_mode[kBacktrack] || toggle_mode[kRagebot]) return 1;
 
     if (mode != 0) std::cout << '\a';
     toggle_mode[kAimbot] = mode;
@@ -191,7 +192,7 @@ int user_interface::HRagebot(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(3));
 
     //incompatiable with fakelag/backtrack/desync/aimbot
-    if (toggle_mode[kFakelag] || toggle_mode[kBacktrack] || toggle_mode[kDesync] || toggle_mode[kAimbot]) return 0;
+    if (toggle_mode[kFakelag] || toggle_mode[kBacktrack] || toggle_mode[kDesync] || toggle_mode[kAimbot]) return 1;
 
 
     if (mode != 0) std::cout << '\a';
@@ -206,7 +207,7 @@ int user_interface::HBacktrack(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(1));
 
     //incompatiable with fakelag/desync/ragebot
-    if (toggle_mode[kFakelag] || toggle_mode[kDesync] || toggle_mode[kRagebot]) return 0;
+    if (toggle_mode[kFakelag] || toggle_mode[kDesync] || toggle_mode[kRagebot]) return 1;
 
     //require aimbot
     if (toggle_mode[kAimbot] == 0) return 0;
@@ -262,7 +263,8 @@ int user_interface::CHelp([[maybe_unused]]std::stringstream& ss)
     std::cout << "\n\nBuilt-in commands:\n";
     std::cout << "/help\n";
     std::cout << "/status\n";
-    std::cout << "/in_game_config\n";
+    std::cout << "/pro_config\n";
+    std::cout << "/troll_config\n";
     std::cout << "/connect (fix the connection issue)\n";
 
     std::cout << "/record voice (K to record)\n";
@@ -395,13 +397,43 @@ int user_interface::CRecordPos(std::stringstream& ss)
 
     return 0;
 }
-int user_interface::CGameConfig([[maybe_unused]] std::stringstream& ss)
+int user_interface::CProConfig([[maybe_unused]] std::stringstream& ss)
 {
-    SendConsoleCommand("viewmodel_fov 68; viewmodel_offset_x 2.5; viewmodel_offset_y 2; viewmodel_offset_z -2; viewmodel_recoil 0; "
-                       "cl_showpos 1; net_graph 1; +cl_show_team_equipment; cl_showfps 1");
+    //view model
+    SendConsoleCommand(R"(viewmodel_fov 68; viewmodel_offset_x 2.5; viewmodel_offset_y 2; viewmodel_offset_z -2; viewmodel_recoil 0)");
+    Sleep(500);
+
+    //crosshair
+    SendConsoleCommand(R"(cl_crosshairstyle "4";cl_crosshaircolor "1";cl_crosshairsize "3";cl_crosshairgap "-5";cl_crosshairalpha "255";cl_crosshairusealpha "1";cl_crosshairthickness "0.2";cl_crosshair_drawoutline "1";cl_crosshair_outlinethickness "0";cl_crosshairdot "1";)");
+    Sleep(500);
+    SendConsoleCommand(R"(cl_crosshair_t "0";cl_crosshairgap_useweaponvalue "0";hud_showtargetid "1";)");
+    Sleep(500);
+
+    //keybind
+    SendConsoleCommand(R"(bind space +jump; bind mwheelup +jump)");
+    Sleep(500);
+
+    //mouse sensitivity
+    SendConsoleCommand(R"(sensitivity 7.0; m_rawinput 1; m_customaccel 0)");
+    Sleep(500);
+
+    //misc
+    SendConsoleCommand(R"(cl_showpos 1; cl_showfps 1; net_graph 1; +cl_show_team_equipment; cl_autowepswitch 0)");
+    return 0;
+}
+
+
+int user_interface::CTrollConfig(std::stringstream& ss)
+{
+    //crosshair
+    SendConsoleCommand(R"(cl_crosshairstyle "3";cl_crosshaircolor "5";cl_crosshairsize "100";cl_crosshairgap "0";cl_crosshairalpha "255";cl_crosshairusealpha "1";cl_crosshairthickness "100";cl_crosshaircolor_r "255";cl_crosshaircolor_g "255";cl_crosshaircolor_b "255";)");
+    Sleep(500);
+
+    SendConsoleCommand(R"(cl_crosshair_drawoutline "1";cl_crosshair_outlinethickness "3";cl_crosshairdot "1";cl_crosshair_t "0";cl_crosshairgap_useweaponvalue "0";hud_showtargetid "1";)");
 
     return 0;
 }
+
 int user_interface::CQuit([[maybe_unused]]std::stringstream& ss)
 {
     std::fill_n(user_interface::toggle_mode, 255, short(0));

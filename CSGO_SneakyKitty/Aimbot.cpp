@@ -217,8 +217,3 @@ void Aimbot::operator()(int update_period_ms)
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
     }
 }
-
-
-
-//ragebot incompatiable with aimbot, backtrack, desync
-//aimbot 2 incompatiable with backtrack

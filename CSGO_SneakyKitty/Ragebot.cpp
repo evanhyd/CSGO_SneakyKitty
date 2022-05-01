@@ -110,7 +110,7 @@ void Ragebot::operator()(int update_period_ms)
 void Ragebot::Packet::operator()(int update_period_ms, int& best_target_id, const Angle& ragebot)
 {
     Angle client_view{};
-    Commands0X4 commands_0x4;
+    Commands0X4 cmd;
 
     while (true)
     {
@@ -120,10 +120,8 @@ void Ragebot::Packet::operator()(int update_period_ms, int& best_target_id, cons
             continue;
         }
 
-        //ground, grenade, planting C4
-        if (!game::player_entity_list[game::local_player_index].IsOnGround()) continue;
-        if (weapon::IsGrenade(game::curr_weapon_def_index)) continue;
-        if (weapon::IsC4(game::curr_weapon_def_index) && (GetAsyncKeyState(0x01) & 1 << 15)) continue;
+        //grenade, planting C4
+        if (weapon::IsGrenade(game::curr_weapon_def_index) && weapon::IsC4(game::curr_weapon_def_index)) continue;
 
 
         //get moving status
@@ -156,73 +154,70 @@ void Ragebot::Packet::operator()(int update_period_ms, int& best_target_id, cons
         }
 
         //read the incoming user cmd
-        memory::ReadMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
+        memory::ReadMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);
 
 
         //fix crouching
-        if (is_crouching) commands_0x4.buttons_mask_ |= Input::IN_DUCK;
+        if (is_crouching) cmd.buttons_mask_ |= Input::IN_DUCK;
 
 
         //no target, perform antiaim
         if (best_target_id != -1)
         {
             //force fire
-            commands_0x4.buttons_mask_ |= Input::IN_ATTACK;
-
-            //fix crouching
-            if (is_crouching) commands_0x4.buttons_mask_ |= Input::IN_DUCK;
+            cmd.buttons_mask_ |= Input::IN_ATTACK;
 
             //apply ratebot angle
-            commands_0x4.view_angles_ = ragebot;
+            cmd.view_angles_ = ragebot;
 
 
             //fix movement
             memory::ReadMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, client_view);
-            commands_0x4.forward_move_ = moving_forward * cosf(Angle::ToRadians(ragebot.y_ - client_view.y_)) +
+            cmd.forward_move_ = moving_forward * cosf(Angle::ToRadians(ragebot.y_ - client_view.y_)) +
                                          moving_sideway * sinf(-Angle::ToRadians(ragebot.y_ - client_view.y_));
 
-            commands_0x4.side_move_ = moving_forward * sinf(Angle::ToRadians(ragebot.y_ - client_view.y_)) +
+            cmd.side_move_ = moving_forward * sinf(Angle::ToRadians(ragebot.y_ - client_view.y_)) +
                                       moving_sideway * cosf(-Angle::ToRadians(ragebot.y_ - client_view.y_));
 
 
             //clamp the speed to avoid server side anti cheat
-            commands_0x4.forward_move_ = std::clamp(commands_0x4.forward_move_, -449.5f, 449.5f);
-            commands_0x4.side_move_ = std::clamp(commands_0x4.side_move_, -449.5f, 449.5f);
+            cmd.forward_move_ = std::clamp(cmd.forward_move_, -449.5f, 449.5f);
+            cmd.side_move_ = std::clamp(cmd.side_move_, -449.5f, 449.5f);
         }
 
         //sliding
         else
         {
-            //fix crouching
-            if (is_crouching) commands_0x4.buttons_mask_ |= Input::IN_DUCK;
+            cmd.forward_move_ = moving_forward;
+            cmd.side_move_ = moving_sideway;
 
             //moon walk
-            if (commands_0x4.forward_move_ > 5.0f)
+            if (cmd.forward_move_ > 5.0f)
             {
-                commands_0x4.buttons_mask_ &= ~Input::IN_FORWARD;
-                commands_0x4.buttons_mask_ |= Input::IN_BACK;
+                cmd.buttons_mask_ &= ~Input::IN_FORWARD;
+                cmd.buttons_mask_ |= Input::IN_BACK;
             }
-            else if (commands_0x4.forward_move_ < -5.0f)
+            else if (cmd.forward_move_ < -5.0f)
             {
-                commands_0x4.buttons_mask_ &= ~Input::IN_BACK;
-                commands_0x4.buttons_mask_ |= Input::IN_FORWARD;
+                cmd.buttons_mask_ &= ~Input::IN_BACK;
+                cmd.buttons_mask_ |= Input::IN_FORWARD;
             }
 
-            if (commands_0x4.side_move_ > 5.0f)
+            if (cmd.side_move_ > 5.0f)
             {
-                commands_0x4.buttons_mask_ &= ~Input::IN_MOVERIGHT;
-                commands_0x4.buttons_mask_ |= Input::IN_MOVELEFT;
+                cmd.buttons_mask_ &= ~Input::IN_MOVERIGHT;
+                cmd.buttons_mask_ |= Input::IN_MOVELEFT;
             }
-            else if (commands_0x4.side_move_ < -5.0f)
+            else if (cmd.side_move_ < -5.0f)
             {
-                commands_0x4.buttons_mask_ &= ~Input::IN_MOVELEFT;
-                commands_0x4.buttons_mask_ |= Input::IN_MOVERIGHT;
+                cmd.buttons_mask_ &= ~Input::IN_MOVELEFT;
+                cmd.buttons_mask_ |= Input::IN_MOVERIGHT;
             }
         }
 
 
-        memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
-        memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, commands_0x4);
+        memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);
+        memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, cmd);
         memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
     }
