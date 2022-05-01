@@ -37,9 +37,12 @@ void Ragebot::operator()(int update_period_ms)
             continue;
         }
 
-
         //checking holding a gun
-        if (!weapon::IsGun(game::curr_weapon_def_index)) continue;
+        if (!weapon::IsGun(game::curr_weapon_def_index))
+        {
+            best_target_id = -1;
+            continue;
+        }
 
 
         //obtain the recoil
@@ -53,11 +56,9 @@ void Ragebot::operator()(int update_period_ms)
             recoil = { 0.0f, 0.0f };
         }
 
-
+        //select the closest target
         int target_id = -1;
         double target_dist = 9999999999999999.0;
-
-        //add target position to the aimbot candidate list
         for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
         {
             //filter out invalid entity 
@@ -99,7 +100,7 @@ void Ragebot::operator()(int update_period_ms)
 
         //update
         best_target_id = target_id;
-        ragebot = exact - weapon::kRecoilFactor * recoil;
+        ragebot = exact - recoil * weapon::kRecoilFactor;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
     }
@@ -122,6 +123,15 @@ void Ragebot::Packet::operator()(int update_period_ms, int& best_target_id, cons
         if (!game::player_entity_list[game::local_player_index].IsOnGround()) continue;
         if (weapon::IsGrenade(game::curr_weapon_def_index)) continue;
         if (weapon::IsC4(game::curr_weapon_def_index) && (GetAsyncKeyState(0x01) & 1 << 15)) continue;
+
+
+        //get moving status
+        float moving_forward = 0.0f, moving_sideway = 0.0f;
+        if (GetAsyncKeyState('W') & 1 << 15) moving_forward = 449.5f;
+        else if (GetAsyncKeyState('S') & 1 << 15) moving_forward = -449.5f;
+
+        if (GetAsyncKeyState('D') & 1 << 15) moving_sideway = 449.5f;
+        else if (GetAsyncKeyState('A') & 1 << 15) moving_sideway = -449.5f;
 
 
         //get crouching status
@@ -157,6 +167,10 @@ void Ragebot::Packet::operator()(int update_period_ms, int& best_target_id, cons
         {
             commands_0x4.buttons_mask_ |= Input::IN_ATTACK;
             commands_0x4.view_angles_ = ragebot;
+
+            commands_0x4.forward_move_ = moving_forward;
+            commands_0x4.side_move_ = moving_sideway;
+
             memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, commands_0x4);
             memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, commands_0x4);
         }

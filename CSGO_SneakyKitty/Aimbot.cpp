@@ -58,7 +58,11 @@ void Aimbot::operator()(int update_period_ms)
 
 
         //checking holding a gun
-        if (!weapon::IsGun(game::curr_weapon_def_index)) continue;
+        if (!weapon::IsGun(game::curr_weapon_def_index))
+        {
+            backtrack_tick = 0;
+            continue;
+        }
         
 
         //fov upper bound
@@ -139,11 +143,18 @@ void Aimbot::operator()(int update_period_ms)
         int best_backtrack_tick = 0;
         int enemy_searched = 0;
 
-        for (auto entry = history.cbegin(); entry != history.cend(); ++entry)
+        for (auto entry = history.cbegin(); entry != history.cend();)
         {
             //compiler should optimize it out
             const BacktrackRecord& record = entry->first;
             const Position& pos = entry->second;
+
+            //ignore invalid/dead entity
+            if (!game::player_entity_is_valid[record.GetEntityID()])
+            {
+                entry = history.erase(entry);
+                continue;
+            }
 
             //stop seraching if no backtrack
             if (++enemy_searched > client::kMaxPlayerNum && toggle_mode[kBacktrack] == 0) break;
@@ -185,6 +196,8 @@ void Aimbot::operator()(int update_period_ms)
                 has_target = true;
                 best_backtrack_tick = record.GetTick();
             }
+
+            ++entry;
         }
         backtrack_tick = best_backtrack_tick;
 
