@@ -62,26 +62,30 @@ void Backtrack::operator()(int update_period_ms, int& current_tick, const int& b
         memory::ReadMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);
 
 
-
-
-
-
+        
 
         //update the current tick
         current_tick = cmd.tick_count_;
 
         //apply backtrack tick
-        int chosen_tick = backtrack_tick;
+        /*int chosen_tick = backtrack_tick;
         if (chosen_tick > 0)
         {
-            //activate backtrack if player is shooting
-            if (cmd.buttons_mask_ & Input::IN_ATTACK)
-            {
-                cmd.tick_count_ = chosen_tick;
-                if (is_crouching) cmd.buttons_mask_ |= Input::IN_DUCK;
-                memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);
-                memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, cmd);
-            }
+            
+                }*/
+
+        //activate backtrack if player is shooting
+        if (GetAsyncKeyState(0x01) & (1 << 15))
+        {
+            cmd.buttons_mask_ |= Input::IN_ATTACK;
+            if (is_crouching) cmd.buttons_mask_ |= Input::IN_DUCK;
+
+            //apply backtrack tick
+            int chosen_tick = backtrack_tick;
+            if (chosen_tick > 0) cmd.tick_count_ = chosen_tick;
+
+            memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);
+            memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address + 0x4, cmd);
         }
 
         memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);

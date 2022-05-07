@@ -212,7 +212,15 @@ int user_interface::HBacktrack(std::stringstream& ss)
     //require aimbot
     if (toggle_mode[kAimbot] == 0) return 0;
 
-    if (mode != 0) std::cout << '\a';
+    if (mode != 0)
+    {
+        SendConsoleCommand("unbind mouse1");
+        std::cout << '\a';
+    }
+    else
+    {
+        SendConsoleCommand("bind mouse1 +attack");
+    }
     toggle_mode[kBacktrack] = mode;
 
     return 0;
@@ -423,7 +431,7 @@ int user_interface::CProConfig([[maybe_unused]] std::stringstream& ss)
 }
 
 
-int user_interface::CTrollConfig(std::stringstream& ss)
+int user_interface::CTrollConfig([[maybe_unused]]std::stringstream& ss)
 {
     //crosshair
     SendConsoleCommand(R"(cl_crosshairstyle "3";cl_crosshaircolor "5";cl_crosshairsize "100";cl_crosshairgap "0";cl_crosshairalpha "255";cl_crosshairusealpha "1";cl_crosshairthickness "100";cl_crosshaircolor_r "255";cl_crosshaircolor_g "255";cl_crosshaircolor_b "255";)");

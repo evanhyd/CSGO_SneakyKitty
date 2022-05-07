@@ -15,7 +15,6 @@
 
 using namespace user_interface;
 
-[[maybe_unused]]
 void GlowESP::AdjustAmbientBrightness(float brightness)
 {
     //fk valve
@@ -41,13 +40,18 @@ void GlowESP::operator()(int update_period_ms, [[maybe_unused]]float brightness,
 
         if (game::connection_state != client::kFullyConnected || glow_mode == 0)
         {
-            if (is_glow_forced || is_bright)
+            if (is_glow_forced)
             {
                 memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::force_update_spectator_glow, uint8_t(0x74));
-                this->AdjustAmbientBrightness(1.0f);
                 is_glow_forced = false;
+            }
+
+            if (is_bright)
+            {
+                this->AdjustAmbientBrightness(0.8f);
                 is_bright = false;
             }
+
             std::this_thread::sleep_for(std::chrono::milliseconds(5000));
             continue;
         }

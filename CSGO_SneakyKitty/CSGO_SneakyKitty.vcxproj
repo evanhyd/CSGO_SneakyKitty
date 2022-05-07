@@ -151,7 +151,7 @@
     <ClInclude Include="Aimbot.h" />
     <ClInclude Include="Angle.h" />
     <ClInclude Include="Backtrack.h" />
-    <ClInclude Include="BacktrackCandidate.h" />
+    <ClInclude Include="BacktrackRecord.h" />
     <ClInclude Include="Bhop.h" />
     <ClInclude Include="BombTimer.h" />
     <ClInclude Include="BoneMatrix.h" />
@@ -187,7 +187,7 @@
     <ClCompile Include="Aimbot.cpp" />
     <ClCompile Include="Angle.cpp" />
     <ClCompile Include="Backtrack.cpp" />
-    <ClCompile Include="BacktrackCandidate.cpp" />
+    <ClCompile Include="BacktrackRecord.cpp" />
     <ClCompile Include="Bhop.cpp" />
     <ClCompile Include="BombTimer.cpp" />
     <ClCompile Include="BoneMatrix.cpp" />

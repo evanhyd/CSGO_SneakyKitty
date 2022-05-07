@@ -123,7 +123,6 @@ void Ragebot::Packet::operator()(int update_period_ms, int& best_target_id, cons
         //grenade, planting C4
         if (weapon::IsGrenade(game::curr_weapon_def_index) && weapon::IsC4(game::curr_weapon_def_index)) continue;
 
-
         //get moving status
         float moving_forward = 0.0f, moving_sideway = 0.0f;
         if (GetAsyncKeyState('W') & 1 << 15) moving_forward = 449.5f;
@@ -185,35 +184,37 @@ void Ragebot::Packet::operator()(int update_period_ms, int& best_target_id, cons
             cmd.side_move_ = std::clamp(cmd.side_move_, -449.5f, 449.5f);
         }
 
-        //sliding
-        else
-        {
-            cmd.forward_move_ = moving_forward;
-            cmd.side_move_ = moving_sideway;
 
-            //moon walk
-            if (cmd.forward_move_ > 5.0f)
-            {
-                cmd.buttons_mask_ &= ~Input::IN_FORWARD;
-                cmd.buttons_mask_ |= Input::IN_BACK;
-            }
-            else if (cmd.forward_move_ < -5.0f)
-            {
-                cmd.buttons_mask_ &= ~Input::IN_BACK;
-                cmd.buttons_mask_ |= Input::IN_FORWARD;
-            }
+        //disable due to ladder bug, too lazy to fix it
+        ////sliding
+        //else
+        //{
+        //    cmd.forward_move_ = moving_forward;
+        //    cmd.side_move_ = moving_sideway;
 
-            if (cmd.side_move_ > 5.0f)
-            {
-                cmd.buttons_mask_ &= ~Input::IN_MOVERIGHT;
-                cmd.buttons_mask_ |= Input::IN_MOVELEFT;
-            }
-            else if (cmd.side_move_ < -5.0f)
-            {
-                cmd.buttons_mask_ &= ~Input::IN_MOVELEFT;
-                cmd.buttons_mask_ |= Input::IN_MOVERIGHT;
-            }
-        }
+        //    //moon walk
+        //    if (cmd.forward_move_ > 5.0f)
+        //    {
+        //        cmd.buttons_mask_ &= ~Input::IN_FORWARD;
+        //        cmd.buttons_mask_ |= Input::IN_BACK;
+        //    }
+        //    else if (cmd.forward_move_ < -5.0f)
+        //    {
+        //        cmd.buttons_mask_ &= ~Input::IN_BACK;
+        //        cmd.buttons_mask_ |= Input::IN_FORWARD;
+        //    }
+
+        //    if (cmd.side_move_ > 5.0f)
+        //    {
+        //        cmd.buttons_mask_ &= ~Input::IN_MOVERIGHT;
+        //        cmd.buttons_mask_ |= Input::IN_MOVELEFT;
+        //    }
+        //    else if (cmd.side_move_ < -5.0f)
+        //    {
+        //        cmd.buttons_mask_ &= ~Input::IN_MOVELEFT;
+        //        cmd.buttons_mask_ |= Input::IN_MOVERIGHT;
+        //    }
+        //}
 
 
         memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);

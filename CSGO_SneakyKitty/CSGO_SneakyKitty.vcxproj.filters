@@ -208,7 +208,7 @@
     <ClCompile Include="user_interface.cpp">
       <Filter>user_interface</Filter>
     </ClCompile>
-    <ClCompile Include="BacktrackCandidate.cpp">
+    <ClCompile Include="BacktrackRecord.cpp">
       <Filter>Structures\BackTrackCandidate</Filter>
     </ClCompile>
     <ClCompile Include="BombTimer.cpp">
@@ -312,7 +312,7 @@
     <ClInclude Include="user_interface.h">
       <Filter>user_interface</Filter>
     </ClInclude>
-    <ClInclude Include="BacktrackCandidate.h">
+    <ClInclude Include="BacktrackRecord.h">
       <Filter>Structures\BackTrackCandidate</Filter>
     </ClInclude>
     <ClInclude Include="BombTimer.h">

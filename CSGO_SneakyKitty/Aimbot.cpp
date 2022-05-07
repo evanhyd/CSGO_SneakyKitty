@@ -8,7 +8,7 @@
 #include "Position.h"
 #include "weapon.h"
 #include "Backtrack.h"
-#include "BacktrackCandidate.h"
+#include "BacktrackRecord.h"
 #include "user_interface.h"
 
 #include <iostream>
@@ -27,31 +27,35 @@ bool Aimbot::QualifyAimbotRule(int bone_id)
 
 void Aimbot::operator()(int update_period_ms)
 {
-    //enemy pos - local player pos
-    Position enemy{}, relative{};
+    //target pos - local player pos
+    Position target{}, relative{};
 
     //bullet = crosshair_angle + recoil_factor * recoil_angle
     Angle crosshair{}, recoil{}, bullet{};
 
-    //difference = exact - bullet
-    Angle exact{}, difference{}, closest{};
+    //diff = exact - bullet
+    Angle exact{}, diff{}, smallest_diff{};
 
+    std::deque<BacktrackRecord> history[client::kMaxPlayerNum][BoneMatrix::kMaxBoneNum]{};
 
-    //std::deque<BacktrackRecord> history;
-    std::map<BacktrackRecord, Position> history;
-
-
-    int curr_tick = 0;
-    int backtrack_tick = 0;
+    int curr_tick = 0, backtrack_tick = 0;
     std::thread backtrack_thd(Backtrack(), 1, std::ref(curr_tick), std::ref(backtrack_tick));
     backtrack_thd.detach();
-    
 
     while (true)
     {
         if (game::connection_state != client::kFullyConnected || toggle_mode[kAimbot] == 0)
         {
-            if (!history.empty()) history.clear();
+            //clear the history
+            for (int entity_id = 0; entity_id < client::kMaxPlayerNum; entity_id++)
+            {
+                for (int indexed_bone_id = 0; indexed_bone_id < BoneMatrix::kMaxBoneNum; indexed_bone_id++)
+                {
+                    history[entity_id][indexed_bone_id].clear();
+                }
+            }
+            
+            //std::for_each_n(history, client::kMaxPlayerNum * BoneMatrix::kMaxBoneNum, [](auto &records) { records->clear(); });
             std::this_thread::sleep_for(std::chrono::milliseconds(5000));
             continue;
         }
@@ -63,15 +67,12 @@ void Aimbot::operator()(int update_period_ms)
             backtrack_tick = 0;
             continue;
         }
-        
 
-        //fov upper bound
+        //set up fov range
         float fov_limit = (toggle_mode[kAimbot] == 1 ? weapon::GetFOV(game::curr_weapon_def_index) : weapon::kRagebotFOV);
-
 
         //read the crosshair angle
         memory::ReadMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, crosshair);
-
 
         //predict the bullet angle, apply recoil if viable
         bullet = crosshair;
@@ -82,12 +83,11 @@ void Aimbot::operator()(int update_period_ms)
             bullet += recoil * weapon::kRecoilFactor;
         }
 
-
         //calculate the maximum backtrack tick
         const int max_backtrack_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 1;
 
 #ifdef _DEBUG
-        std::clog << "max backtrack tick: " << max_backtrack_tick << '\n';
+        std::clog << "max backtrack tick on the curr server: " << max_backtrack_tick << '\n';
 #endif
 
         //add target position to the aimbot candidate list
@@ -116,103 +116,122 @@ void Aimbot::operator()(int update_period_ms)
                 if (!this->QualifyAimbotRule(bone_id)) continue;
 
                 //calculate the relative enemy position with local playe as origin
-                enemy = Position(game::bone_matrix_list[entity_id][bone_id]);
+                target = Position(game::bone_matrix_list[entity_id][bone_id]);
 
-                //using binary search tree from std::map, slower insertion time and deletion time, but stable and correct result
-                history.insert_or_assign(BacktrackRecord(curr_tick, entity_id, bone_id), enemy);
+                //convert the bone index
+                const int indexed_bone_id = bone_id - BoneMatrix::kBoneBegin;
+                
+                //push new backtrack if the history is empty or has a new backtrack tick
+                if (history[entity_id][indexed_bone_id].empty() ||
+                    history[entity_id][indexed_bone_id].front().tick != curr_tick)
+                {
+                    history[entity_id][indexed_bone_id].emplace_front(curr_tick, target);
+                }
+                else
+                {
+                    //update the position to avoid duplicated record
+                    history[entity_id][indexed_bone_id].front().pos = target;
+                }
             }
         }
 
 
-
-        //remove old ticks
-        auto last_invalid_record_iter = history.upper_bound(BacktrackRecord(curr_tick - max_backtrack_tick, client::kMaxPlayerNum, BoneMatrix::kBoneEnd));
-        history.erase(history.begin(), last_invalid_record_iter);
+        
+        
 
 
-        //remove invalid/dead players
-        /*for (auto entry = history.begin(); entry != history.end();)
-        {
-            if (!game::player_entity_is_valid[entry->first.GetEntityID()]) entry = history.erase(entry);
-            else ++entry;
-        }*/
-
-
-        //reset the target flag, best backtrack tick
+        //reset the target flag, reset chosen backtrack tick
         bool has_target = false;
         int curr_backtrack_tick = 0;
-        int enemy_searched = 0;
+        const int record_to_search = (toggle_mode[kBacktrack] == 1 ? max_backtrack_tick : 1);
 
-        for (auto entry = history.cbegin(); entry != history.cend();)
+        for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
         {
-            //compiler should optimize it out
-            const BacktrackRecord& record = entry->first;
-            const Position& pos = entry->second;
-
-            //ignore invalid/dead entity
-            if (!game::player_entity_is_valid[record.GetEntityID()])
+            //remove invalid entity
+            if (!game::player_entity_is_valid[entity_id])
             {
-                entry = history.erase(entry);
+                for (int bone_id = BoneMatrix::kBoneBegin; bone_id <= BoneMatrix::kBoneEnd; ++bone_id)
+                {
+                    history[entity_id][bone_id].clear();
+                }
                 continue;
             }
 
-            //stop seraching if no backtrack
-            if (++enemy_searched > client::kMaxPlayerNum && toggle_mode[kBacktrack] == 0) break;
-
-            //bullets shoot from player's eyes, subtract the relative height
-            relative = pos - game::player_entity_list[game::local_player_index].GetOrigin();
-            relative.z_ -= game::player_entity_list[game::local_player_index].GetViewOffsetZ();
-
-            //calculate the exact aimbot angle and difference
-            exact.PointTo(relative);
-            difference = exact - bullet;
-            difference.Clamp();
-
-            //calculate the multipoint radius
-            const float dist_to_enemy = relative.MagnitudeToOrigin();
-            const float multipoint_radius = Angle::ToDegrees(atan2f(BoneMatrix::kBoneRadius[record.GetBoneID()], dist_to_enemy));
-
-            //select the closest multipoint angle
-            float increased_yaw = difference.y_ + multipoint_radius;
-            if (increased_yaw > 180.0f) increased_yaw -= 360.0f;
-            float decreased_yaw = difference.y_ - multipoint_radius;
-            if (decreased_yaw < -180.0f) decreased_yaw += 360.0f;
-
-            const float abs_difference_yaw = abs(difference.y_);
-            const float abs_increased_yaw = abs(increased_yaw);
-            const float abs_decreased_yaw = abs(decreased_yaw);
-
-            if (abs_increased_yaw < abs_difference_yaw && abs_increased_yaw < abs_decreased_yaw) difference.y_ = increased_yaw;
-            else if (abs_decreased_yaw < abs_difference_yaw && abs_decreased_yaw < abs_increased_yaw) difference.y_ = decreased_yaw;
-
-
-            //choose the smallest one
-            const float curr_fov = difference.FOVMagnitude();
-            if (curr_fov < fov_limit)
+            
+            for (int indexed_bone_id = 0; indexed_bone_id < BoneMatrix::kMaxBoneNum; ++indexed_bone_id)
             {
-                closest = difference;
-                fov_limit = curr_fov;
+                //remove expired tick
+                for(int record_id = history[entity_id][indexed_bone_id].size() - 1; record_id >= 0; --record_id)
+                {
+                    if (history[entity_id][indexed_bone_id][record_id].tick + max_backtrack_tick < curr_tick) history[entity_id][indexed_bone_id].pop_back();
+                    else break;
+                }
 
-                has_target = true;
-                curr_backtrack_tick = record.GetTick();
+                
+                const int bone_id = indexed_bone_id + BoneMatrix::kBoneBegin;
+                int record_searched = 0;
+                
+                for (const auto& [tick, pos] : history[entity_id][indexed_bone_id])
+                {
+                    //find the relative distance from the bone to local player eye
+                    relative = pos - game::player_entity_list[game::local_player_index].GetOrigin();
+                    relative.z_ -= game::player_entity_list[game::local_player_index].GetViewOffsetZ();
+
+                    //calculate aimbot angle, find the angle difference
+                    exact.PointTo(relative);
+                    diff = exact - bullet;
+                    diff.Clamp();
+
+                    //calculate the multipoint radius based on bone radius and distance
+                    const float dist_to_enemy = relative.MagnitudeToOrigin();
+                    const float multipoint_radius = Angle::ToDegrees(atan2f(BoneMatrix::kBoneRadius[bone_id], dist_to_enemy));
+
+                    //select the closest multipoint angle
+                    float increased_yaw = diff.y_ + multipoint_radius;
+                    if (increased_yaw > 180.0f) increased_yaw -= 360.0f;
+                    float decreased_yaw = diff.y_ - multipoint_radius;
+                    if (decreased_yaw < -180.0f) decreased_yaw += 360.0f;
+
+                    const float abs_difference_yaw = abs(diff.y_);
+                    const float abs_increased_yaw = abs(increased_yaw);
+                    const float abs_decreased_yaw = abs(decreased_yaw);
+
+                    if (abs_increased_yaw < abs_difference_yaw && abs_increased_yaw < abs_decreased_yaw) diff.y_ = increased_yaw;
+                    else if (abs_decreased_yaw < abs_difference_yaw && abs_decreased_yaw < abs_increased_yaw) diff.y_ = decreased_yaw;
+
+
+                    //choose the smallest one
+                    const float curr_fov = diff.FOVMagnitude();
+                    if (curr_fov < fov_limit)
+                    {
+                        smallest_diff = diff;
+                        fov_limit = curr_fov;
+
+                        has_target = true;
+                        curr_backtrack_tick = tick;
+                    }
+                    
+                    //check searched record, no more than once without backtrack
+                    if (++record_searched == record_to_search) break;
+                }
             }
-
-            ++entry;
         }
+        
+        
         backtrack_tick = curr_backtrack_tick;
 
         //check if selected a target
         if (!has_target) continue;
 
         //legit aimbot smooth aim step
-        if (toggle_mode[kAimbot] == 1) closest /= weapon::GetSmooth(game::curr_weapon_def_index);
+        if (toggle_mode[kAimbot] == 1) smallest_diff /= weapon::GetSmooth(game::curr_weapon_def_index);
 
         //apply the angle modification
-        crosshair += closest;
+        crosshair += smallest_diff;
         crosshair.Clamp();
 
         //left click mouse to fire
-        if (GetAsyncKeyState(0x01) & 1 << 15) memory::WriteMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, crosshair);
+        if (GetAsyncKeyState(0x01) & (1 << 15)) memory::WriteMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, crosshair);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
     }
