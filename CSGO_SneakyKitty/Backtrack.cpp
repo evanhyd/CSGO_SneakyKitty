@@ -31,7 +31,7 @@ void Backtrack::operator()(int update_period_ms, int& current_tick, const int& b
         if (GetAsyncKeyState('W') & 1 << 15 || GetAsyncKeyState('S') & 1 << 15 || GetAsyncKeyState('A') & 1 << 15 || GetAsyncKeyState('D') & 1 << 15)
         {
             //simulate mouse left click, requires raw input enable
-            if (GetAsyncKeyState(0x01) & (1 << 15)) memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::dwForceAttack, true);
+            if (GetAsyncKeyState(0x01) & (1 << 15)) memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::dwForceAttack, 6);
             std::this_thread::sleep_for(std::chrono::milliseconds(20));
             continue;
         }
@@ -80,7 +80,7 @@ void Backtrack::operator()(int update_period_ms, int& current_tick, const int& b
             }
             else
             {
-                memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::dwForceAttack, true);
+                memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::dwForceAttack, 6);
             }
         }
         

@@ -418,7 +418,7 @@ int user_interface::CProConfig([[maybe_unused]] std::stringstream& ss)
     Sleep(500);
 
     //keybind
-    SendConsoleCommand(R"(bind space +jump; bind mwheeldown +jump)");
+    SendConsoleCommand(R"(bind space +jump; bind mwheelup +jump)");
     Sleep(500);
 
     //mouse sensitivity
