@@ -36,7 +36,7 @@ void Backtrack::operator()(int update_period_ms, int& current_tick, const int& b
         //moving + freezing packet causes teleport, sus as fk
         if (GetAsyncKeyState('W') & 1 << 15 || GetAsyncKeyState('S') & 1 << 15 || GetAsyncKeyState('A') & 1 << 15 || GetAsyncKeyState('D') & 1 << 15)
         {
-            //simulate mouse left click, requires raw input enable
+            //simulate mouse left click
             if (GetAsyncKeyState(0x01) & (1 << 15)) SendInput(1, &mouse_input, sizeof(INPUT));
             std::this_thread::sleep_for(std::chrono::milliseconds(20));
             continue;
