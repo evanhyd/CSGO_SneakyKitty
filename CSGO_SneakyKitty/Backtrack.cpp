@@ -18,12 +18,6 @@ void Backtrack::operator()(int update_period_ms, int& current_tick, const int& b
 {
     Commands0X4 cmd;
 
-    INPUT mouse_input{};
-    mouse_input.type = INPUT_MOUSE;
-    mouse_input.mi.dwFlags = MOUSEEVENTF_MOVE;
-    mouse_input.mi.dwExtraInfo = 0;
-    mouse_input.mi.time = 0;
-
     while (true)
     {
         
@@ -37,7 +31,7 @@ void Backtrack::operator()(int update_period_ms, int& current_tick, const int& b
         if (GetAsyncKeyState('W') & 1 << 15 || GetAsyncKeyState('S') & 1 << 15 || GetAsyncKeyState('A') & 1 << 15 || GetAsyncKeyState('D') & 1 << 15)
         {
             //simulate mouse left click, requires raw input enable
-            if (GetAsyncKeyState(0x01) & (1 << 15)) SendInput(1, &mouse_input, sizeof(INPUT));
+            if (GetAsyncKeyState(0x01) & (1 << 15)) memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::dwForceAttack, true);
             std::this_thread::sleep_for(std::chrono::milliseconds(20));
             continue;
         }
@@ -86,7 +80,7 @@ void Backtrack::operator()(int update_period_ms, int& current_tick, const int& b
             }
             else
             {
-                SendInput(1, &mouse_input, sizeof(INPUT));
+                memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::dwForceAttack, true);
             }
         }
         
