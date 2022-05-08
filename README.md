@@ -46,3 +46,5 @@ Remote CSGO windows console
 
 ## Simple/Elegant console GUI
 use /help for more information
+
+[Useful Resources](https://github.com/hinnie123/csgo_dumps)
