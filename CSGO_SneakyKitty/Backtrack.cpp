@@ -28,15 +28,14 @@ void Backtrack::operator()(int update_period_ms, int& current_tick, const int& b
         }
 
         //moving + freezing packet causes teleport, sus as fk
-        if (GetAsyncKeyState('W') & 1 << 15 || GetAsyncKeyState('S') & 1 << 15 || GetAsyncKeyState('A') & 1 << 15 || GetAsyncKeyState('D') & 1 << 15)
+        if (!GetAsyncKeyState(0x01))
         {
-            //simulate mouse left click, requires raw input enable
-            if (GetAsyncKeyState(0x01) & (1 << 15)) memory::WriteMem(module::csgo_proc_handle, module::client_dll + offsets::dwForceAttack, 6);
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
-            continue;
+            if (GetAsyncKeyState('W') & 1 << 15 || GetAsyncKeyState('S') & 1 << 15 || GetAsyncKeyState('A') & 1 << 15 || GetAsyncKeyState('D') & 1 << 15)
+            {
+                std::this_thread::sleep_for(std::chrono::milliseconds(20));
+                continue;
+            }
         }
-
-
 
         
         //freeze the packet queue until it matches
@@ -62,7 +61,6 @@ void Backtrack::operator()(int update_period_ms, int& current_tick, const int& b
 
         //update the current tick
         current_tick = cmd.tick_count_;
-
         
         //detect mouse left click
         if (GetAsyncKeyState(0x01) & (1 << 15))

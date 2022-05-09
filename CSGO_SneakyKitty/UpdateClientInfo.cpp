@@ -37,7 +37,7 @@ void UpdateClientInfo::operator()(int update_period_ms)
             memory::ReadMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_GetLocalPlayer, game::local_player_index);
 
             //read entity address list
-            memory::ReadMem(module::csgo_proc_handle, module::client_dll + offsets::dwEntityList, game::player_entity_address_list);
+            memory::ReadMem(module::csgo_proc_handle, module::client_dll + offsets::dwEntityList, game::player_address_list);
         }
 
 

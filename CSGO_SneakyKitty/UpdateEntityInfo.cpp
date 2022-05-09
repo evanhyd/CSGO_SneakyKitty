@@ -23,27 +23,27 @@ void UpdateEntityInfo::operator()(int update_period_ms)
         for (int i = 0; i < client::kMaxPlayerNum; ++i)
         {
             //address must not be null
-            if (game::player_entity_address_list[i].GetAddress() == NULL)
+            if (game::player_address_list[i].GetAddress() == NULL)
             {
-                game::player_entity_is_valid[i] = false;
+                game::player_is_valid[i] = false;
                 continue;
             }
 
             //read player entity info
-            memory::ReadMem(module::csgo_proc_handle, game::player_entity_address_list[i].GetAddress() + offsets::player_entity_struct_entry, game::player_entity_list[i]);
+            memory::ReadMem(module::csgo_proc_handle, game::player_address_list[i].GetAddress() + offsets::player_entity_struct_entry, game::player_list[i]);
 
 
             //check team, dormant, health
-            game::player_entity_is_valid[i] = 
-                ((game::player_entity_list[i].GetTeam() == Entity::kT || game::player_entity_list[i].GetTeam() == Entity::kCT) &&
-                !game::player_entity_list[i].IsDormant() && game::player_entity_list[i].GetHealth() > 0);
+            game::player_is_valid[i] = 
+                ((game::player_list[i].GetTeam() == Entity::kT || game::player_list[i].GetTeam() == Entity::kCT) &&
+                !game::player_list[i].IsDormant() && game::player_list[i].GetHealth() > 0);
         }
 
 
         //update visibility
         for (int i = 0; i < client::kMaxPlayerNum; ++i)
         {
-            game::player_entity_is_visible[i] = (game::player_entity_is_valid[i] && Entity::SpottedBy(i, game::local_player_index));
+            game::player_is_visible[i] = (game::player_is_valid[i] && Entity::SpottedBy(i, game::local_player_index));
         }
 
 

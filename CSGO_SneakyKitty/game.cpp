@@ -7,12 +7,12 @@ int game::connection_state = 0;
 GlobalVar game::server_info;
 int game::tick_rate = 0;
 int game::local_player_index = 0;
-EntityAddress game::player_entity_address_list[client::kMaxPlayerNum] = {};
+EntityAddress game::player_address_list[client::kMaxPlayerNum] = {};
 
 
-Entity game::player_entity_list[client::kMaxPlayerNum] = {};
-bool game::player_entity_is_valid[client::kMaxPlayerNum] = {};
-bool game::player_entity_is_visible[client::kMaxPlayerNum] = {};
+Entity game::player_list[client::kMaxPlayerNum] = {};
+bool game::player_is_valid[client::kMaxPlayerNum] = {};
+bool game::player_is_visible[client::kMaxPlayerNum] = {};
 
 
 BoneMatrix game::bone_matrix_list[client::kMaxPlayerNum][BoneMatrix::kMaxBoneNum] = {};

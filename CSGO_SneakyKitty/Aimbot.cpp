@@ -79,7 +79,7 @@ void Aimbot::operator()(int update_period_ms)
         const int weapon_type = weapon::GetWeaponType(game::curr_weapon_def_index);
         if (weapon_type == weapon::kAssaultRifle || weapon_type == weapon::kSMG || weapon_type == weapon::kMachinegun)
         {
-            memory::ReadMem(module::csgo_proc_handle, game::player_entity_address_list[game::local_player_index].GetAddress() + offsets::m_aimPunchAngle, recoil);
+            memory::ReadMem(module::csgo_proc_handle, game::player_address_list[game::local_player_index].GetAddress() + offsets::m_aimPunchAngle, recoil);
             bullet += recoil * weapon::kRecoilFactor;
         }
 
@@ -94,10 +94,10 @@ void Aimbot::operator()(int update_period_ms)
         for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
         {
             //filter out invalid entity 
-            if (!game::player_entity_is_valid[entity_id]) continue;
+            if (!game::player_is_valid[entity_id]) continue;
 
             //filter out ally
-            if (game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[entity_id]))
+            if (game::player_list[game::local_player_index].IsAlly(game::player_list[entity_id]))
             {
                 //check global targe mode
                 if (user_interface::toggle_mode[kGlobalTarget] == 0) continue;
@@ -148,7 +148,7 @@ void Aimbot::operator()(int update_period_ms)
         for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
         {
             //remove invalid entity
-            if (!game::player_entity_is_valid[entity_id])
+            if (!game::player_is_valid[entity_id])
             {
                 for (int bone_id = BoneMatrix::kBoneBegin; bone_id <= BoneMatrix::kBoneEnd; ++bone_id)
                 {
@@ -174,8 +174,8 @@ void Aimbot::operator()(int update_period_ms)
                 for (const auto& [tick, pos] : history[entity_id][indexed_bone_id])
                 {
                     //find the relative distance from the bone to local player eye
-                    relative = pos - game::player_entity_list[game::local_player_index].GetOrigin();
-                    relative.z_ -= game::player_entity_list[game::local_player_index].GetViewOffsetZ();
+                    relative = pos - game::player_list[game::local_player_index].GetOrigin();
+                    relative.z_ -= game::player_list[game::local_player_index].GetViewOffsetZ();
 
                     //calculate aimbot angle, find the angle difference
                     exact.PointTo(relative);

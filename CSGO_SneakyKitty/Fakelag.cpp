@@ -56,10 +56,10 @@ void Fakelag::operator()(int update_period_ms)
 			for (int i = 0; i < client::kMaxPlayerNum; ++i)
 			{
 				//filter out invalid entity
-				if (!game::player_entity_is_valid[i]) continue;
+				if (!game::player_is_valid[i]) continue;
 
 				//check global target mode and team
-				if (user_interface::toggle_mode[kGlobalTarget] == 0 && game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[i])) continue;
+				if (user_interface::toggle_mode[kGlobalTarget] == 0 && game::player_list[game::local_player_index].IsAlly(game::player_list[i])) continue;
 
 
 				//calculate the aimbot angle for the enemy
@@ -68,7 +68,7 @@ void Fakelag::operator()(int update_period_ms)
 
 
 				//get the enemy's actual angle
-				memory::ReadMem(module::csgo_proc_handle, game::player_entity_address_list[i].GetAddress() + offsets::m_angEyeAnglesX, enemy_eye_angle);
+				memory::ReadMem(module::csgo_proc_handle, game::player_address_list[i].GetAddress() + offsets::m_angEyeAnglesX, enemy_eye_angle);
 
 
 				//convert third person angle to first person angle

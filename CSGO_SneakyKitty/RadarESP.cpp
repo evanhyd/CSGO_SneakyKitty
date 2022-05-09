@@ -24,9 +24,9 @@ void RadarESP::operator()(int update_period_ms)
 
         for (int i = 0; i < client::kMaxPlayerNum; ++i)
         {
-            if (game::player_entity_is_valid[i] && !game::player_entity_list[game::local_player_index].IsAlly(game::player_entity_list[i]))
+            if (game::player_is_valid[i] && !game::player_list[game::local_player_index].IsAlly(game::player_list[i]))
             {
-                memory::WriteMem(module::csgo_proc_handle, game::player_entity_address_list[i].GetAddress() + offsets::m_bSpotted, true);
+                memory::WriteMem(module::csgo_proc_handle, game::player_address_list[i].GetAddress() + offsets::m_bSpotted, true);
             }
         }
 

@@ -30,7 +30,7 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
         }
 
         //ground, grenade, planting C4
-        if (!game::player_entity_list[game::local_player_index].IsOnGround()) continue;
+        if (!game::player_list[game::local_player_index].IsOnGround()) continue;
         if (weapon::IsGrenade(game::curr_weapon_def_index)) continue;
         if (weapon::IsC4(game::curr_weapon_def_index) && (GetAsyncKeyState(0x01) & 1 << 15)) continue;
 

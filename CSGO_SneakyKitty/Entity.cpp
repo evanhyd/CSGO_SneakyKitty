@@ -96,5 +96,5 @@ bool Entity::IsAlly(const Entity& entity) const
 
 bool Entity::SpottedBy(int entity_id, int observer_id)
 {
-    return (game::player_entity_list[entity_id].GetSpottedMask() >> observer_id & 1);
+    return (game::player_list[entity_id].GetSpottedMask() >> observer_id & 1);
 }

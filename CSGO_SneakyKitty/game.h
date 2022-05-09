@@ -17,13 +17,13 @@ namespace game
     extern GlobalVar server_info;
     extern int tick_rate;
     extern int local_player_index;
-    extern EntityAddress player_entity_address_list[client::kMaxPlayerNum];
+    extern EntityAddress player_address_list[client::kMaxPlayerNum];
 
 
     //player entity list
-    extern Entity player_entity_list[client::kMaxPlayerNum];
-    extern bool player_entity_is_valid[client::kMaxPlayerNum];
-    extern bool player_entity_is_visible[client::kMaxPlayerNum]; //visible to local player, enemy only
+    extern Entity player_list[client::kMaxPlayerNum];
+    extern bool player_is_valid[client::kMaxPlayerNum];
+    extern bool player_is_visible[client::kMaxPlayerNum]; //visible to local player, enemy only
 
 
     //player bone matrix list

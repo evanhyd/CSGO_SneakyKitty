@@ -363,16 +363,16 @@ int user_interface::CExpose([[maybe_unused]] std::stringstream& ss)
 {
     for (int i = 0; i < client::kMaxPlayerNum; ++i)
     {
-        if (!game::player_entity_is_valid[i]) continue;
+        if (!game::player_is_valid[i]) continue;
 
-        if (game::player_entity_list[game::local_player_index].IsEnemy(game::player_entity_list[i]))
+        if (game::player_list[game::local_player_index].IsEnemy(game::player_list[i]))
         {
             char location[20] = "";
-            memory::ReadMem(module::csgo_proc_handle, game::player_entity_address_list[i].GetAddress() + offsets::m_szLastPlaceName, location);
+            memory::ReadMem(module::csgo_proc_handle, game::player_address_list[i].GetAddress() + offsets::m_szLastPlaceName, location);
 
             SendConsoleCommand
             (
-                "echo Enemy " + std::to_string(i) + " HP: " + std::to_string(game::player_entity_list[i].GetHealth()) + " at " + location
+                "echo Enemy " + std::to_string(i) + " HP: " + std::to_string(game::player_list[i].GetHealth()) + " at " + location
             );
             Sleep(500);
         }
@@ -397,9 +397,9 @@ int user_interface::CRecordPos(std::stringstream& ss)
     std::ofstream file(file_name, std::ofstream::app);
     if (!file.is_open()) file.open(file_name, std::ofstream::trunc);
 
-    file << game::player_entity_list[game::local_player_index].GetOrigin().x_ << ' '
-        << game::player_entity_list[game::local_player_index].GetOrigin().y_ << ' '
-        << game::player_entity_list[game::local_player_index].GetOrigin().z_ << '\n';
+    file << game::player_list[game::local_player_index].GetOrigin().x_ << ' '
+        << game::player_list[game::local_player_index].GetOrigin().y_ << ' '
+        << game::player_list[game::local_player_index].GetOrigin().z_ << '\n';
 
     file.close();
 

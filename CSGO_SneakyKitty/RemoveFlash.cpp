@@ -26,7 +26,7 @@ void RemoveFlash::operator()(int update_period_ms)
         //memory::WriteMem(module::csgo_process_handle, game::player_entity_address_list[game::local_player_index].address_ + offsets::m_flFlashMaxAlpha, 80.0f);
 
         //change flash duration
-        memory::WriteMem(module::csgo_proc_handle, game::player_entity_address_list[game::local_player_index].GetAddress() + offsets::m_flFlashDuration, 0.0f);
+        memory::WriteMem(module::csgo_proc_handle, game::player_address_list[game::local_player_index].GetAddress() + offsets::m_flFlashDuration, 0.0f);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
     }

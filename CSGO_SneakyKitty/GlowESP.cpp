@@ -97,22 +97,22 @@ void GlowESP::operator()(int update_period_ms, [[maybe_unused]]float brightness,
 
         for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
         {
-            if (!game::player_entity_is_valid[entity_id]) continue;
+            if (!game::player_is_valid[entity_id]) continue;
 
             for (int glow_id = 0; glow_id < static_cast<int>(glow_manager[3]); ++glow_id)
             {
-                if (glow_list[glow_id].GetAddress() != game::player_entity_address_list[entity_id].GetAddress()) continue;
+                if (glow_list[glow_id].GetAddress() != game::player_address_list[entity_id].GetAddress()) continue;
 
                 //global target mode or enemy
-                if (toggle_mode[kGlobalTarget] == 1 || game::player_entity_list[game::local_player_index].IsEnemy(game::player_entity_list[entity_id]))
+                if (toggle_mode[kGlobalTarget] == 1 || game::player_list[game::local_player_index].IsEnemy(game::player_list[entity_id]))
                 {
-                    glow_list[glow_id].SetGlow(glow_style, game::player_entity_list[entity_id].GetHealth());
-                    memory::WriteMem(module::csgo_proc_handle, game::player_entity_address_list[entity_id].GetAddress() + offsets::m_clrRender, enemy_model_color);
+                    glow_list[glow_id].SetGlow(glow_style, game::player_list[entity_id].GetHealth());
+                    memory::WriteMem(module::csgo_proc_handle, game::player_address_list[entity_id].GetAddress() + offsets::m_clrRender, enemy_model_color);
                 }
                 else
                 {
                     glow_list[glow_id].SetGlow(glow_style, 0.0f, 0.0f, 0.0f, 0.0f, false, false);
-                    memory::WriteMem(module::csgo_proc_handle, game::player_entity_address_list[entity_id].GetAddress() + offsets::m_clrRender, kTransparent);
+                    memory::WriteMem(module::csgo_proc_handle, game::player_address_list[entity_id].GetAddress() + offsets::m_clrRender, kTransparent);
                 }
 
                 memory::WriteMem(module::csgo_proc_handle, glow_manager[0] + sizeof(Glow) * glow_id, glow_list[glow_id]);
