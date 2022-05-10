@@ -1,5 +1,5 @@
 # CSGO_SneakyKitty
-Third revision of my copy-pasta CSGO external hacks, old name AKA CSGO_Cat_Sucker  
+Third revision of my ~~copy-pasta~~ totally original CSGO external hacks, old name AKA CSGO_Cat_Sucker  
 Using WINAPI to read/write to process memory  
 
 # Features:  
@@ -17,6 +17,7 @@ Adaptive aimbot fov and smoothness based on weapon categories
 Static multipoint for different bone matrices  
 Simple ragebot mode  
 Backtrack  up to 200ms  
+Ragebot with silent aim, supports moon walk  
 
 ## Fake Lag
 Adaptive anti-trigger  
@@ -39,7 +40,10 @@ Auto bunny hopping
 Enable thirdperson player views
 
 ## Remove Flash
-Remove flashbang effect
+Remove flashbang effect  
+
+## Quick Config
+Pro/Troll Config in just 1 command!  
 
 ## External CSGO Console  
 Remote CSGO windows console  
