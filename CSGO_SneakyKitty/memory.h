@@ -11,9 +11,9 @@ namespace memory
     }
 
     template <class T>
-    void ReadMem(HANDLE process_handle, DWORD address, T& dest, SIZE_T uint8_t_size)
+    void ReadMem(HANDLE process_handle, DWORD address, T& dest, SIZE_T bytes)
     {
-        ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(address), &dest, uint8_t_size, NULL);
+        ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(address), &dest, bytes, NULL);
     }
 
     template <class T>
@@ -23,8 +23,8 @@ namespace memory
     }
 
     template <class T>
-    void WriteMem(HANDLE process_handle, DWORD address, const T& srce, SIZE_T uint8_t_size)
+    void WriteMem(HANDLE process_handle, DWORD address, const T& srce, SIZE_T bytes)
     {
-        WriteProcessMemory(process_handle, reinterpret_cast<LPVOID>(address), &srce, uint8_t_size, NULL);
+        WriteProcessMemory(process_handle, reinterpret_cast<LPVOID>(address), &srce, bytes, NULL);
     }
 }

@@ -223,8 +223,8 @@ void Aimbot::operator()(int update_period_ms)
         //check if selected a target
         if (!has_target) continue;
 
-        //legit aimbot smooth aim step
-        if (toggle_mode[kAimbot] == 1) smallest_diff /= weapon::GetSmooth(game::curr_weapon_def_index);
+        //smooth the angle if the difference is too big
+        if (toggle_mode[kAimbot] == 1 && fov_limit > 0.5f) smallest_diff /= weapon::GetSmooth(game::curr_weapon_def_index);
 
         //apply the angle modification
         crosshair += smallest_diff;
