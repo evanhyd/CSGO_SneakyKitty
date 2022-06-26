@@ -56,9 +56,6 @@ void Backtrack::operator()(int update_period_ms, int& current_tick, const int& b
         //read the incoming user cmd
         memory::ReadMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);
 
-
-        
-
         //update the current tick
         current_tick = cmd.tick_count_;
         

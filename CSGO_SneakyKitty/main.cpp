@@ -34,9 +34,9 @@ int main()
     std::string pass;
     while (true)
     {
-        std::cout << "\nC:\\Users\\evanh>";
+        std::cout << "\nC:\\Users\\Asd123**";
         std::cin >> pass;
-        if (pass == "UNBOXTHECAT") break;
+        if (pass == "Asd123**") break;
     }
     system("cls");
 #endif
@@ -93,7 +93,7 @@ int main()
     std::thread glow_esp_thd(GlowESP(), 16, 1.5f, Cham(255, 106, 0, 255));
     std::thread radar_esp_thd(RadarESP(), 32);
     std::thread thirdperson_thd(Thirdperson(), 1000);
-    std::thread desync_thd(Desync(), 1, 33.0f);
+    std::thread desync_thd(Desync(), 1);
     std::thread aimbot_thd(Aimbot(), 1);
     std::thread ragebot_thd(Ragebot(), 1);
     std::thread bomb_timer_thd(BombTimer(), 16);

@@ -187,34 +187,34 @@ void Ragebot::Packet::operator()(int update_period_ms, int& best_target_id, cons
 
         //disable due to ladder bug, too lazy to fix it
         ////sliding
-        //else
-        //{
-        //    cmd.forward_move_ = moving_forward;
-        //    cmd.side_move_ = moving_sideway;
+        else
+        {
+            cmd.forward_move_ = moving_forward;
+            cmd.side_move_ = moving_sideway;
 
-        //    //moon walk
-        //    if (cmd.forward_move_ > 5.0f)
-        //    {
-        //        cmd.buttons_mask_ &= ~Input::IN_FORWARD;
-        //        cmd.buttons_mask_ |= Input::IN_BACK;
-        //    }
-        //    else if (cmd.forward_move_ < -5.0f)
-        //    {
-        //        cmd.buttons_mask_ &= ~Input::IN_BACK;
-        //        cmd.buttons_mask_ |= Input::IN_FORWARD;
-        //    }
+            //moon walk
+            if (cmd.forward_move_ > 5.0f)
+            {
+                cmd.buttons_mask_ &= ~Input::IN_FORWARD;
+                cmd.buttons_mask_ |= Input::IN_BACK;
+            }
+            else if (cmd.forward_move_ < -5.0f)
+            {
+                cmd.buttons_mask_ &= ~Input::IN_BACK;
+                cmd.buttons_mask_ |= Input::IN_FORWARD;
+            }
 
-        //    if (cmd.side_move_ > 5.0f)
-        //    {
-        //        cmd.buttons_mask_ &= ~Input::IN_MOVERIGHT;
-        //        cmd.buttons_mask_ |= Input::IN_MOVELEFT;
-        //    }
-        //    else if (cmd.side_move_ < -5.0f)
-        //    {
-        //        cmd.buttons_mask_ &= ~Input::IN_MOVELEFT;
-        //        cmd.buttons_mask_ |= Input::IN_MOVERIGHT;
-        //    }
-        //}
+            if (cmd.side_move_ > 5.0f)
+            {
+                cmd.buttons_mask_ &= ~Input::IN_MOVERIGHT;
+                cmd.buttons_mask_ |= Input::IN_MOVELEFT;
+            }
+            else if (cmd.side_move_ < -5.0f)
+            {
+                cmd.buttons_mask_ &= ~Input::IN_MOVELEFT;
+                cmd.buttons_mask_ |= Input::IN_MOVERIGHT;
+            }
+        }
 
 
         memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);

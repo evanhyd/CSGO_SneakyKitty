@@ -14,12 +14,13 @@
 
 using namespace user_interface;
 
-void Desync::operator()(int update_period_ms, float fake_walk_speed)
+void Desync::operator()(int update_period_ms)
 {
+    Angle client_view{};
     Commands0X4 cmd;
-    bool micromovement_direction = false;
-    float real_angle_y = 119.0f;
-    float real_angle_z = Angle::UPPER_ROLL;
+
+    constexpr float yaw_offset = 150.0f;
+    float real_angle_y = yaw_offset;
 
     while (true)
     {
@@ -35,32 +36,11 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
         if (weapon::IsC4(game::curr_weapon_def_index) && (GetAsyncKeyState(0x01) & 1 << 15)) continue;
 
 
-        if (GetAsyncKeyState('W') & 1 << 15 || GetAsyncKeyState('S') & 1 << 15)
-        {
-            std::this_thread::sleep_for(std::chrono::milliseconds(80));
-            continue;
-        }
-        else if (GetAsyncKeyState('A') & 1 << 15)
-        {
-            real_angle_y = -119.0f;
-            real_angle_z = Angle::UPPER_ROLL;
-            std::this_thread::sleep_for(std::chrono::milliseconds(80));
-            continue;
-        }
-        else if (GetAsyncKeyState('D') & 1 << 15)
-        {
-            real_angle_y = 119.0f;
-            real_angle_z = Angle::LOWER_ROLL;
-            std::this_thread::sleep_for(std::chrono::milliseconds(80));
-            continue;
-        }
+        if (GetAsyncKeyState('A') & 1 << 15) real_angle_y = -yaw_offset;
+        else if (GetAsyncKeyState('D') & 1 << 15) real_angle_y = yaw_offset;
 
 
-        bool is_crouching = ((GetAsyncKeyState(VK_CONTROL) & 1 << 15) ? true : false);
-
-        float fakewalk_magnitude = 0.0f;
-        if (GetAsyncKeyState('X') & 1 << 15) fakewalk_magnitude = -fake_walk_speed;
-        else if (GetAsyncKeyState('C') & 1 << 15) fakewalk_magnitude = fake_walk_speed;
+        const bool is_crouching = (GetAsyncKeyState(VK_CONTROL) >> 15) & 1;
 
         
         //freeze the packet queue until it matches
@@ -69,7 +49,7 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
 
         //wait until the cmd after the current cmd
         //there will be an unused tick between the outgoing and the incoming cmd (current cmd)
-        int incoming_cmd_num = game::last_outgoing_cmd_num + 2;
+        const int incoming_cmd_num = game::last_outgoing_cmd_num + 2;
 
         //avoid perma disconnecting after game finishes
         while (game::connection_state == client::kFullyConnected)
@@ -85,6 +65,11 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
 
         //read the engine angle
         memory::ReadMem(module::csgo_proc_handle, game::client_state + offsets::dwClientState_ViewAngles, cmd.view_angles_);
+        client_view = cmd.view_angles_;
+
+
+        //force to even tick
+        cmd.tick_count_ -= cmd.tick_count_ % 2;
 
 
         //stop shooting during the desync
@@ -92,41 +77,52 @@ void Desync::operator()(int update_period_ms, float fake_walk_speed)
         cmd.buttons_mask_ &= ~Input::IN_ATTACK2;
 
 
-        //micromovement and desync
-        if (!is_crouching)
-        {
-            micromovement_direction = !micromovement_direction;
-            cmd.side_move_ = (micromovement_direction ? 1.1f : -1.1f);
-
-            cmd.view_angles_.y_ += -119.0f;
-            cmd.view_angles_.z_ = Angle::UPPER_ROLL;
-
-            real_angle_y = -119.0f;
-        }
-        else
-        {
-            micromovement_direction = !micromovement_direction;
-            cmd.side_move_ = (micromovement_direction ? 3.3f : -3.3f);
-
-            cmd.view_angles_.y_ += real_angle_y;
-            cmd.view_angles_.z_ = real_angle_z;
-        }
-
+        //desync angle
+        cmd.view_angles_.y_ += real_angle_y;
         cmd.view_angles_.Clamp();
 
 
+
         //fakewalk
-        if (fakewalk_magnitude != 0.0f)
+        const float real_yaw = cmd.view_angles_.y_;
+
+        //get moving status
+        float forward_speed = 0.0f, sideway_speed = 0.0f;
+
+        if (cmd.buttons_mask_ & Input::IN_FORWARD) forward_speed = 449.5f;
+        else if (cmd.buttons_mask_ & Input::IN_BACK) forward_speed = -449.5f;
+
+        if (cmd.buttons_mask_ & Input::IN_MOVERIGHT) sideway_speed = 449.5f;
+        else if (cmd.buttons_mask_ & Input::IN_MOVELEFT) sideway_speed = -449.5f;
+
+
+
+        //movement correction
+        if (cmd.buttons_mask_ & (Input::IN_FORWARD | Input::IN_BACK | Input::IN_MOVERIGHT | Input::IN_MOVELEFT))
         {
-            cmd.forward_move_ = fakewalk_magnitude * sinf(-Angle::ToRadians(real_angle_y));
-            cmd.side_move_ = fakewalk_magnitude * cosf(-Angle::ToRadians(real_angle_y));
+            cmd.forward_move_ = forward_speed * cosf(Angle::ToRadians(real_yaw - client_view.y_)) +
+                sideway_speed * sinf(-Angle::ToRadians(real_yaw - client_view.y_));
+
+            cmd.side_move_ = forward_speed * sinf(Angle::ToRadians(real_yaw - client_view.y_)) +
+                sideway_speed * cosf(-Angle::ToRadians(real_yaw - client_view.y_));
+
+            //clamp the speed to avoid server side anti cheat
+            cmd.forward_move_ = std::clamp(cmd.forward_move_, -449.5f, 449.5f);
+            cmd.side_move_ = std::clamp(cmd.side_move_, -449.5f, 449.5f);
         }
+        else
+        {
+            //micromovement
+            if (cmd.tick_count_ % 4 == 2) cmd.side_move_ = (is_crouching ? 3.3f : 1.3f);
+            else cmd.side_move_ = (is_crouching ? -3.3f : 1.3f);
+        }
+
+        
 
 
         memory::WriteMem(module::csgo_proc_handle, game::curr_cmd_address + 0x4, cmd);
         memory::WriteMem(module::csgo_proc_handle, game::curr_verified_cmd_address+ 0x4, cmd);
         memory::WriteMem(module::csgo_proc_handle, module::engine_dll + offsets::dwbSendPackets, true);
-
         std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
     }
 }

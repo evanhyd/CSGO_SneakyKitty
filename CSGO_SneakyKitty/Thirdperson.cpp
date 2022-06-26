@@ -22,6 +22,8 @@ void Thirdperson::operator()(int update_period_ms)
             continue;
         }
 
+        if(game::player_list[game::local_player_index].IsDead()) continue;
+
         int observe_mode;
         memory::ReadMem(module::csgo_proc_handle, game::player_address_list[game::local_player_index].GetAddress() + offsets::m_iObserverMode, observe_mode);
         if (observe_mode == 0) observe_mode = 1;

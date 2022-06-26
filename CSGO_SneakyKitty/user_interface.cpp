@@ -281,7 +281,7 @@ int user_interface::CHelp([[maybe_unused]]std::stringstream& ss)
 
     std::cout << "/record_pos\n";
     std::cout << "/expose\n";
-    std::cout << "/set_angle [pitch/yaw/roll] [angle in degree]\n";
+    std::cout << "/set_angle [pitch] [yaw] [roll]\n";
     std::cout << "/buy_all_pistols\n";
     std::cout << "/drop\n";
 
@@ -372,9 +372,9 @@ int user_interface::CExpose([[maybe_unused]] std::stringstream& ss)
 
             SendConsoleCommand
             (
-                "echo Enemy " + std::to_string(i) + " HP: " + std::to_string(game::player_list[i].GetHealth()) + " at " + location
+                "say Enemy " + std::to_string(i) + " HP: " + std::to_string(game::player_list[i].GetHealth()) + " at " + location
             );
-            Sleep(500);
+            Sleep(1000);
         }
     }
 

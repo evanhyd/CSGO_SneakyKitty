@@ -99,11 +99,11 @@ void Aimbot::operator()(int update_period_ms)
             //filter out ally
             if (game::player_list[game::local_player_index].IsAlly(game::player_list[entity_id]))
             {
-                //check global targe mode
-                if (user_interface::toggle_mode[kGlobalTarget] == 0) continue;
-
                 //filter out local player
                 if (entity_id == game::local_player_index) continue;
+
+                //check global targe mode
+                if (user_interface::toggle_mode[kGlobalTarget] == 0) continue;
             }
 
             //filter invisible enemy
@@ -161,9 +161,9 @@ void Aimbot::operator()(int update_period_ms)
             for (int indexed_bone_id = 0; indexed_bone_id < BoneMatrix::kMaxBoneNum; ++indexed_bone_id)
             {
                 //remove expired tick
-                for(int record_id = history[entity_id][indexed_bone_id].size() - 1; record_id >= 0; --record_id)
+                while (!history[entity_id][indexed_bone_id].empty())
                 {
-                    if (history[entity_id][indexed_bone_id][record_id].tick + max_backtrack_tick < curr_tick) history[entity_id][indexed_bone_id].pop_back();
+                    if (history[entity_id][indexed_bone_id].back().tick + max_backtrack_tick < curr_tick) history[entity_id][indexed_bone_id].pop_back();
                     else break;
                 }
 
