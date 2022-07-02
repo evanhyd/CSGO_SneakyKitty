@@ -89,7 +89,7 @@ int main()
     std::cout << "Initializing features...\n";
     std::thread fakelag_thd(Fakelag(), 16);
     std::thread remove_flash_thd(RemoveFlash(), 16);
-    std::thread bhop_thd(Bhop(), 16);
+    std::thread bhop_thd(Bhop(), 10);
     std::thread glow_esp_thd(GlowESP(), 16, 1.5f, Cham(255, 106, 0, 255));
     std::thread radar_esp_thd(RadarESP(), 32);
     std::thread thirdperson_thd(Thirdperson(), 1000);
