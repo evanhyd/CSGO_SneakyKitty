@@ -1,7 +1,9 @@
 #pragma once
-class Bhop
+#include "FeatureThread.h"
+
+class Bhop : public FeatureThread
 {
 public:
-    void operator()(int update_period_ms);
+    virtual bool OnExecute() override;
 };
 

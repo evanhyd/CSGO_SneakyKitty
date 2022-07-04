@@ -1,7 +1,9 @@
 #pragma once
-class RemoveFlash
+#include "FeatureThread.h"
+
+class RemoveFlash : public FeatureThread
 {
 public:
-    void operator()(int update_period_ms);
+    virtual bool OnExecute() override;
 };
 

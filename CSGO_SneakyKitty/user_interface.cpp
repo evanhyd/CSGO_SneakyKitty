@@ -25,10 +25,11 @@ void user_interface::InitUserInterface()
     command_map.insert({ "thirdperson", HThirdperson});
     command_map.insert({ "desync", HDesync});
     command_map.insert({ "aimbot", HAimbot });
-    command_map.insert({ "ragebot", HRagebot});
     command_map.insert({ "backtrack", HBacktrack});
     command_map.insert({ "global_target", HGlobalTarget });
     command_map.insert({ "bomb_timer", HBombTimer });
+    command_map.insert({ "triggerbot", HTriggerbot });
+    command_map.insert({ "rainbowsix", HRainbowSix});
 
 
     command_map.insert({ "help", CHelp });
@@ -94,7 +95,7 @@ int user_interface::HFakeLag(std::stringstream& ss)
 
 
     //incompatiable with backtrack/desync/ragebot
-    if (toggle_mode[kBacktrack] || toggle_mode[kDesync] || toggle_mode[kRagebot]) return 1;
+    if (toggle_mode[kBacktrack] || toggle_mode[kDesync]) return 1;
 
     if (mode != 0) std::cout << '\a';
     toggle_mode[kFakelag] = mode;
@@ -164,7 +165,7 @@ int user_interface::HDesync(std::stringstream& ss)
 
 
     //incompatiable with fakelag/backtrack/ragebot
-    if (toggle_mode[kFakelag] || toggle_mode[kBacktrack] || toggle_mode[kRagebot]) return 1;
+    if (toggle_mode[kFakelag] || toggle_mode[kBacktrack]) return 1;
 
     if (mode != 0) std::cout << '\a';
     toggle_mode[kDesync] = mode;
@@ -178,28 +179,14 @@ int user_interface::HAimbot(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(2));
 
     //incompatiable with ragebot/backtrack (aimbot mode 2)
-    if (toggle_mode[kBacktrack] || toggle_mode[kRagebot]) return 1;
+    if (toggle_mode[kBacktrack]) return 1;
 
     if (mode != 0) std::cout << '\a';
     toggle_mode[kAimbot] = mode;
 
     return 0;
 }
-int user_interface::HRagebot(std::stringstream& ss)
-{
-    short mode;
-    ss >> mode;
-    mode = std::clamp(mode, short(0), short(3));
 
-    //incompatiable with fakelag/backtrack/desync/aimbot
-    if (toggle_mode[kFakelag] || toggle_mode[kBacktrack] || toggle_mode[kDesync] || toggle_mode[kAimbot]) return 1;
-
-
-    if (mode != 0) std::cout << '\a';
-    toggle_mode[kRagebot] = mode;
-
-    return 0;
-}
 int user_interface::HBacktrack(std::stringstream& ss)
 {
     short mode;
@@ -207,7 +194,7 @@ int user_interface::HBacktrack(std::stringstream& ss)
     mode = std::clamp(mode, short(0), short(1));
 
     //incompatiable with fakelag/desync/ragebot
-    if (toggle_mode[kFakelag] || toggle_mode[kDesync] || toggle_mode[kRagebot]) return 1;
+    if (toggle_mode[kFakelag] || toggle_mode[kDesync]) return 1;
 
     //require aimbot
     if (toggle_mode[kAimbot] == 0) return 0;
@@ -248,6 +235,29 @@ int user_interface::HBombTimer(std::stringstream& ss)
     return 0;
 }
 
+int user_interface::HTriggerbot(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(1));
+
+    if (mode != 0) std::cout << '\a';
+    user_interface::toggle_mode[kTriggerbot] = mode;
+
+    return 0;
+}
+
+int user_interface::HRainbowSix(std::stringstream& ss)
+{
+    short mode;
+    ss >> mode;
+    mode = std::clamp(mode, short(0), short(1));
+
+    if (mode != 0) std::cout << '\a';
+    user_interface::toggle_mode[kRainbowSix] = mode;
+
+    return 0;
+}
 
 
 
@@ -266,6 +276,8 @@ int user_interface::CHelp([[maybe_unused]]std::stringstream& ss)
     std::cout << "/ragebot\n";
     std::cout << "/global target\n";
     std::cout << "/bomb timer\n";
+    std::cout << "/triggerbot\n";
+    std::cout << "/rainbowsix\n";
 
 
     std::cout << "\n\nBuilt-in commands:\n";
@@ -303,7 +315,8 @@ int user_interface::CStatus([[maybe_unused]] std::stringstream& ss)
     if (toggle_mode[kDesync])       std::cout << "desync: " << toggle_mode[kDesync] <<'\n';
     if (toggle_mode[kAimbot])       std::cout << "aimbot: " << toggle_mode[kAimbot] <<'\n';
     if (toggle_mode[kBacktrack])    std::cout << "backtrack: " << toggle_mode[kBacktrack] << '\n';
-    if (toggle_mode[kRagebot])      std::cout << "ragebot: " << toggle_mode[kRagebot] << '\n';
+    if (toggle_mode[kTriggerbot])   std::cout << "triggerbot: " << toggle_mode[kTriggerbot] << '\n';
+    if (toggle_mode[kRainbowSix])   std::cout << "rainbowsix: " << toggle_mode[kRainbowSix] << '\n';
     if (toggle_mode[kGlobalTarget]) std::cout << "global target: " << toggle_mode[kGlobalTarget] << '\n';
     if (toggle_mode[kBombTimer])    std::cout << "bomb timer: " << toggle_mode[kBombTimer] << '\n';
 

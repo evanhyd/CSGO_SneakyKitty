@@ -1,7 +1,9 @@
 #pragma once
-class UpdateWeaponInfo
+#include "FeatureThread.h"
+
+class UpdateWeaponInfo : public FeatureThread
 {
 public:
-    void operator()(int update_period_ms);
+    virtual bool OnExecute() override;
 };
 

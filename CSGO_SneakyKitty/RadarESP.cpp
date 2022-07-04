@@ -1,35 +1,15 @@
 #include "RadarESP.h"
 
-#include "game.h"
-#include "module.h"
-#include "offsets.h"
-#include "memory.h"
-#include "user_interface.h"
 
-#include <iostream>
-#include <thread>
-#include <chrono>
-
-using namespace user_interface;
-
-void RadarESP::operator()(int update_period_ms)
+bool RadarESP::OnExecute()
 {
-    while (true)
+    for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
     {
-        if (game::connection_state != client::kFullyConnected || toggle_mode[kRadarESP] == 0)
+        if (game::player_is_valid[entity_id] && game::player_list[game::local_player_index].IsEnemy(game::player_list[entity_id]))
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-            continue;
+            memory::WriteMem(module::csgo_proc_handle, game::player_address_list[entity_id].GetAddress() + offsets::m_bSpotted, true);
         }
-
-        for (int i = 0; i < client::kMaxPlayerNum; ++i)
-        {
-            if (game::player_is_valid[i] && !game::player_list[game::local_player_index].IsAlly(game::player_list[i]))
-            {
-                memory::WriteMem(module::csgo_proc_handle, game::player_address_list[i].GetAddress() + offsets::m_bSpotted, true);
-            }
-        }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(update_period_ms));
     }
+
+    return false;
 }

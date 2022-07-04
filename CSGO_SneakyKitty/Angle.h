@@ -36,12 +36,11 @@ public:
     static constexpr float UPPER_PITCH = 89.0f;
     static constexpr float LOWER_YAW = -180.0f;
     static constexpr float UPPER_YAW = 180.0f;
-    static constexpr float LOWER_ROLL = -45.0f;
-    static constexpr float UPPER_ROLL = 45.0f;
+    static constexpr float LOWER_ROLL = -49.0f;
+    static constexpr float UPPER_ROLL = 49.0f;
     static constexpr float kPi = 3.1415926535f;
     static constexpr float kRadian = 57.2957795130f;
     static float ToDegrees(float radians);
     static float ToRadians(float degrees);
-
 };
 

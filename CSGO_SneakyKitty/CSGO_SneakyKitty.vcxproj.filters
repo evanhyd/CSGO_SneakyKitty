@@ -109,8 +109,14 @@
     <Filter Include="Features\BombTimer">
       <UniqueIdentifier>{71c65275-edea-452f-a1e8-2b870aaf41a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Features\Ragebot">
-      <UniqueIdentifier>{684f5e1e-7659-47d7-847a-c05c270f11b6}</UniqueIdentifier>
+    <Filter Include="Features\Triggerbot">
+      <UniqueIdentifier>{ad878c27-8df8-438f-b8db-962d14931bcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\FeatureThread">
+      <UniqueIdentifier>{c7315719-84a1-46aa-b6ab-62dc27c98fd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\RainbowSix">
+      <UniqueIdentifier>{5eb13328-c5cd-4f36-887c-515bf65bdf5f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -163,12 +169,6 @@
     <ClCompile Include="game.cpp">
       <Filter>Resources\game</Filter>
     </ClCompile>
-    <ClCompile Include="UpdateClientInfo.cpp">
-      <Filter>Features\UpdateClientInfo</Filter>
-    </ClCompile>
-    <ClCompile Include="UpdateEntityInfo.cpp">
-      <Filter>Features\UpdateEntityInfo</Filter>
-    </ClCompile>
     <ClCompile Include="UpdateBoneMatrixInfo.cpp">
       <Filter>Features\UpdateBoneMatrixInfo</Filter>
     </ClCompile>
@@ -214,8 +214,20 @@
     <ClCompile Include="BombTimer.cpp">
       <Filter>Features\BombTimer</Filter>
     </ClCompile>
-    <ClCompile Include="Ragebot.cpp">
-      <Filter>Features\Ragebot</Filter>
+    <ClCompile Include="Triggerbot.cpp">
+      <Filter>Features\Triggerbot</Filter>
+    </ClCompile>
+    <ClCompile Include="FeatureThread.cpp">
+      <Filter>Features\FeatureThread</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateEntityInfo.cpp">
+      <Filter>Features\UpdateEntityInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateClientInfo.cpp">
+      <Filter>Features\UpdateClientInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="RainbowSix.cpp">
+      <Filter>Features\RainbowSix</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -267,12 +279,6 @@
     <ClInclude Include="game.h">
       <Filter>Resources\game</Filter>
     </ClInclude>
-    <ClInclude Include="UpdateClientInfo.h">
-      <Filter>Features\UpdateClientInfo</Filter>
-    </ClInclude>
-    <ClInclude Include="UpdateEntityInfo.h">
-      <Filter>Features\UpdateEntityInfo</Filter>
-    </ClInclude>
     <ClInclude Include="UpdateBoneMatrixInfo.h">
       <Filter>Features\UpdateBoneMatrixInfo</Filter>
     </ClInclude>
@@ -318,8 +324,20 @@
     <ClInclude Include="BombTimer.h">
       <Filter>Features\BombTimer</Filter>
     </ClInclude>
-    <ClInclude Include="Ragebot.h">
-      <Filter>Features\Ragebot</Filter>
+    <ClInclude Include="Triggerbot.h">
+      <Filter>Features\Triggerbot</Filter>
+    </ClInclude>
+    <ClInclude Include="FeatureThread.h">
+      <Filter>Features\FeatureThread</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateEntityInfo.h">
+      <Filter>Features\UpdateEntityInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateClientInfo.h">
+      <Filter>Features\UpdateClientInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="RainbowSix.h">
+      <Filter>Features\RainbowSix</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

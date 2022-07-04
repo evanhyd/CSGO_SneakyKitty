@@ -1,7 +1,9 @@
 #pragma once
-class UpdateBoneMatrixInfo
+#include "FeatureThread.h"
+
+class UpdateBoneMatrixInfo : public FeatureThread
 {
 public:
-    void operator()(int update_period_ms);
+    virtual bool OnExecute() override;
 };
 

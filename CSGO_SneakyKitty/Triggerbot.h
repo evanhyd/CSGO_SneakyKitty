@@ -1,7 +1,7 @@
 #pragma once
 #include "FeatureThread.h"
 
-class RadarESP : public FeatureThread
+class Triggerbot : public FeatureThread
 {
 public:
     virtual bool OnExecute() override;

@@ -90,6 +90,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,6 +126,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,6 +143,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,12 +165,16 @@
     <ClInclude Include="Cham.h" />
     <ClInclude Include="client.h" />
     <ClInclude Include="Desync.h" />
+    <ClInclude Include="FeatureThread.h" />
     <ClInclude Include="GlowESP.h" />
     <ClInclude Include="Fakelag.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="GlobalVar.h" />
     <ClInclude Include="Glow.h" />
-    <ClInclude Include="Ragebot.h" />
+    <ClInclude Include="RainbowSix.h" />
+    <ClInclude Include="Triggerbot.h" />
+    <ClInclude Include="UpdateClientInfo.h" />
+    <ClInclude Include="UpdateEntityInfo.h" />
     <ClInclude Include="user_interface.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="memory.h" />
@@ -176,8 +187,6 @@
     <ClInclude Include="RemoveFlash.h" />
     <ClInclude Include="Thirdperson.h" />
     <ClInclude Include="UpdateBoneMatrixInfo.h" />
-    <ClInclude Include="UpdateClientInfo.h" />
-    <ClInclude Include="UpdateEntityInfo.h" />
     <ClInclude Include="UpdateInputInfo.h" />
     <ClInclude Include="UpdateWeaponInfo.h" />
     <ClInclude Include="Vector3.h" />
@@ -194,12 +203,16 @@
     <ClCompile Include="Cham.cpp" />
     <ClCompile Include="client.cpp" />
     <ClCompile Include="Desync.cpp" />
+    <ClCompile Include="FeatureThread.cpp" />
     <ClCompile Include="GlowESP.cpp" />
     <ClCompile Include="Fakelag.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="GlobalVar.cpp" />
     <ClCompile Include="Glow.cpp" />
-    <ClCompile Include="Ragebot.cpp" />
+    <ClCompile Include="RainbowSix.cpp" />
+    <ClCompile Include="Triggerbot.cpp" />
+    <ClCompile Include="UpdateClientInfo.cpp" />
+    <ClCompile Include="UpdateEntityInfo.cpp" />
     <ClCompile Include="user_interface.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
@@ -213,8 +226,6 @@
     <ClCompile Include="RemoveFlash.cpp" />
     <ClCompile Include="Thirdperson.cpp" />
     <ClCompile Include="UpdateBoneMatrixInfo.cpp" />
-    <ClCompile Include="UpdateClientInfo.cpp" />
-    <ClCompile Include="UpdateEntityInfo.cpp" />
     <ClCompile Include="UpdateInputInfo.cpp" />
     <ClCompile Include="UpdateWeaponInfo.cpp" />
     <ClCompile Include="Vector3.cpp" />

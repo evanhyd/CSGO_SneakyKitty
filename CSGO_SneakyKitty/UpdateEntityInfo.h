@@ -1,7 +1,9 @@
 #pragma once
-class UpdateEntityInfo
+#include "FeatureThread.h"
+
+class UpdateEntityInfo : public FeatureThread
 {
 public:
-    void operator()(int update_period_ms);
+    virtual bool OnExecute() override;
 };
 

@@ -20,8 +20,9 @@
 #include "Thirdperson.h"
 #include "Desync.h"
 #include "Aimbot.h"
-#include "Ragebot.h"
 #include "BombTimer.h"
+#include "Triggerbot.h"
+#include "RainbowSix.h"
 
 #include "user_interface.h"
 
@@ -72,11 +73,11 @@ int main()
 
     //updating threads
     std::cout << "Initializing client info...\n";
-    std::thread update_client_info_thd(UpdateClientInfo(), 5000);
-    std::thread update_entity_info_thd(UpdateEntityInfo(), 1);
-    std::thread update_bone_matrix_info_thd(UpdateBoneMatrixInfo(), 1);
-    std::thread update_weapon_info_thd(UpdateWeaponInfo(), 16);
-    std::thread update_input_info(UpdateInputInfo(), 1);
+    std::thread update_client_info_thd(UpdateClientInfo(), 5000, 1, user_interface::kCore);
+    std::thread update_entity_info_thd(UpdateEntityInfo(), 5000, 1, user_interface::kCore);
+    std::thread update_bone_matrix_info_thd(UpdateBoneMatrixInfo(), 5000, 1, user_interface::kCore);
+    std::thread update_weapon_info_thd(UpdateWeaponInfo(), 5000, 16, user_interface::kCore);
+    std::thread update_input_info(UpdateInputInfo(), 5000, 1, user_interface::kCore);
 
     update_client_info_thd.detach();
     update_entity_info_thd.detach();
@@ -87,16 +88,18 @@ int main()
 
     //features threads
     std::cout << "Initializing features...\n";
-    std::thread fakelag_thd(Fakelag(), 16);
-    std::thread remove_flash_thd(RemoveFlash(), 16);
-    std::thread bhop_thd(Bhop(), 10);
-    std::thread glow_esp_thd(GlowESP(), 16, 1.5f, Cham(255, 106, 0, 255));
-    std::thread radar_esp_thd(RadarESP(), 32);
-    std::thread thirdperson_thd(Thirdperson(), 1000);
-    std::thread desync_thd(Desync(), 1);
-    std::thread aimbot_thd(Aimbot(), 1);
-    std::thread ragebot_thd(Ragebot(), 1);
-    std::thread bomb_timer_thd(BombTimer(), 16);
+    std::thread fakelag_thd(Fakelag(), 5000, 16, user_interface::kFakelag);
+    std::thread remove_flash_thd(RemoveFlash(), 5000, 16, user_interface::kRemoveFlash);
+    std::thread bhop_thd(Bhop(), 5000, 10, user_interface::kBhop);
+    std::thread glow_esp_thd(GlowESP(), 5000, 16, user_interface::kGlowESP);
+    std::thread radar_esp_thd(RadarESP(), 5000, 32, user_interface::kRadarESP);
+    std::thread thirdperson_thd(Thirdperson(), 5000, 16, user_interface::kThirdperson);
+    std::thread desync_thd(Desync(), 5000, 1, user_interface::kDesync);
+    std::thread aimbot_thd(Aimbot(), 5000, 1, user_interface::kAimbot);
+    std::thread bomb_timer_thd(BombTimer(), 5000, 16, user_interface::kBombTimer);
+    std::thread triggerbot_thd(Triggerbot(), 5000, 1, user_interface::kTriggerbot);
+    std::thread rainbowsix_thd(RainbowSix(), 5000, 1, user_interface::kRainbowSix);
+
     fakelag_thd.detach();
     remove_flash_thd.detach();
     bhop_thd.detach();
@@ -104,8 +107,9 @@ int main()
     radar_esp_thd.detach();
     thirdperson_thd.detach();
     desync_thd.detach();
-    ragebot_thd.detach();
     bomb_timer_thd.detach();
+    triggerbot_thd.detach();
+    rainbowsix_thd.detach();
 
     std::cout << "Initializing GUI...";
     user_interface::InitUserInterface();
@@ -130,5 +134,4 @@ int main()
             std::cerr << error.what() << '\n';
         }
     }
-
 }

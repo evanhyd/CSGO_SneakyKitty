@@ -1,7 +1,9 @@
 #pragma once
-class UpdateClientInfo
+#include "FeatureThread.h"
+
+class UpdateClientInfo : public FeatureThread
 {
 public:
-    void operator()(int update_period_ms);
+    virtual bool OnExecute() override;
 };
 
