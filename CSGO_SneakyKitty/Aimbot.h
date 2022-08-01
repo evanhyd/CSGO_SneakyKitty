@@ -17,7 +17,7 @@ private:
     //diff = exact - bullet
     Angle exact_{}, diff_{}, smallest_diff_{};
 
-    std::deque<BacktrackRecord> history_[client::kMaxPlayerNum][BoneMatrix::kMaxBoneNum]{};
+    std::deque<BacktrackRecord> history_[game::kMaxPlayerNum][BoneMatrix::kMaxBoneNum]{};
     
     int curr_tick_ = 0;
     int backtrack_tick_ = 0;

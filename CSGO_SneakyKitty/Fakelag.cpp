@@ -19,13 +19,13 @@ void Fakelag::ChokePackets(int max_choke_ticks)
 
 bool Fakelag::OnExecute()
 {
-	const int max_choke_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 2;
+	const int max_choke_tick = static_cast<int>(game::kMaxLagCompensation / game::server_info.interval_per_tick_) - 2;
 
 	//anti-trigger
 	switch (user_interface::toggle_mode[user_interface::kFakelag])
 	{
 	case 1:
-		for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
+		for (int entity_id = 0; entity_id < game::kMaxPlayerNum; ++entity_id)
 		{
 			//filter out invalid entity
 			if (!game::player_is_valid[entity_id]) continue;

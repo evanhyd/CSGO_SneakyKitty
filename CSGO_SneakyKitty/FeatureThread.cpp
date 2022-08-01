@@ -15,7 +15,7 @@ void FeatureThread::operator()(int disable_ms, int enable_ms, int hotkey)
         //connection + hotkey check
         if (this->hotkey_ != user_interface::kCore)
         {
-            if (game::connection_state != client::kFullyConnected || user_interface::toggle_mode[this->hotkey_] == 0)
+            if (game::connection_state != game::kFullyConnected || user_interface::toggle_mode[this->hotkey_] == 0)
             {
                 OnDisable();
                 std::this_thread::sleep_for(std::chrono::milliseconds(this->disable_ms_));

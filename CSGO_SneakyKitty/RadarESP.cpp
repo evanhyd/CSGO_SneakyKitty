@@ -3,7 +3,7 @@
 
 bool RadarESP::OnExecute()
 {
-    for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
+    for (int entity_id = 0; entity_id < game::kMaxPlayerNum; ++entity_id)
     {
         if (game::player_is_valid[entity_id] && game::player_list[game::local_player_index].IsEnemy(game::player_list[entity_id]))
         {

@@ -75,7 +75,7 @@ bool GlowESP::OnExecute()
 
 
     //find the corresponding glow ID for each enemy
-    for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
+    for (int entity_id = 0; entity_id < game::kMaxPlayerNum; ++entity_id)
     {
         if (!game::player_is_valid[entity_id]) continue;
 

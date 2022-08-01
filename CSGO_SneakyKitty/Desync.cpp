@@ -27,7 +27,7 @@ bool Desync::OnExecute()
     const int incoming_cmd_num = game::last_outgoing_cmd_num + 2;
 
     //avoid perma disconnecting after game finishes
-    while (game::connection_state == client::kFullyConnected)
+    while (game::connection_state == game::kFullyConnected)
     {
         int cmd_num;
         memory::ReadMem(module::csgo_proc_handle, game::net_channel + 0x18, cmd_num);

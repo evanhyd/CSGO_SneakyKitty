@@ -18,7 +18,7 @@ bool UpdateWeaponInfo::OnExecute()
     //normalize the weapon definition index range
     short temp_curr_weapon_def_index;
     memory::ReadMem(module::csgo_proc_handle, game::curr_weapon_entity_address + offsets::m_iItemDefinitionIndex, temp_curr_weapon_def_index);
-    game::curr_weapon_def_index = (temp_curr_weapon_def_index < weapon::kMaxWeaponNum ? temp_curr_weapon_def_index : 0);
+    game::curr_weapon_def_index = (0 <= temp_curr_weapon_def_index && temp_curr_weapon_def_index < weapon::kMaxWeaponNum ? temp_curr_weapon_def_index : 0);
 
     return false;
 }

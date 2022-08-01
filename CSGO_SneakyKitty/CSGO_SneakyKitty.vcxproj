@@ -163,7 +163,6 @@
     <ClInclude Include="BombTimer.h" />
     <ClInclude Include="BoneMatrix.h" />
     <ClInclude Include="Cham.h" />
-    <ClInclude Include="client.h" />
     <ClInclude Include="Desync.h" />
     <ClInclude Include="FeatureThread.h" />
     <ClInclude Include="GlowESP.h" />
@@ -201,7 +200,6 @@
     <ClCompile Include="BombTimer.cpp" />
     <ClCompile Include="BoneMatrix.cpp" />
     <ClCompile Include="Cham.cpp" />
-    <ClCompile Include="client.cpp" />
     <ClCompile Include="Desync.cpp" />
     <ClCompile Include="FeatureThread.cpp" />
     <ClCompile Include="GlowESP.cpp" />

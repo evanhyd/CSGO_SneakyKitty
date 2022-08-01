@@ -14,7 +14,7 @@ bool UpdateClientInfo::OnExecute()
 
 
     //if has connected to the server
-    if (game::connection_state == client::kFullyConnected)
+    if (game::connection_state == game::kFullyConnected)
     {
         //read server info
         memory::ReadMem(module::csgo_proc_handle, module::engine_dll + offsets::dwGlobalVars, game::server_info);

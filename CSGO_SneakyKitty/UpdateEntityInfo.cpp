@@ -4,7 +4,7 @@
 bool UpdateEntityInfo::OnExecute()
 {
     //label all the player entities for future reference
-    for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
+    for (int entity_id = 0; entity_id < game::kMaxPlayerNum; ++entity_id)
     {
         //address must not be null
         if (game::player_address_list[entity_id].GetAddress() == NULL)
@@ -25,7 +25,7 @@ bool UpdateEntityInfo::OnExecute()
 
 
     //update visibility
-    for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
+    for (int entity_id = 0; entity_id < game::kMaxPlayerNum; ++entity_id)
     {
         game::player_is_visible[entity_id] = (game::player_is_valid[entity_id] && Entity::SpottedBy(entity_id, game::local_player_index));
     }

@@ -23,7 +23,7 @@ bool Aimbot::OnInitialize()
 bool Aimbot::OnDisable()
 {
     //clear the history
-    for (int entity_id = 0; entity_id < client::kMaxPlayerNum; entity_id++)
+    for (int entity_id = 0; entity_id < game::kMaxPlayerNum; entity_id++)
     {
         for (int indexed_bone_id = 0; indexed_bone_id < BoneMatrix::kMaxBoneNum; indexed_bone_id++)
         {
@@ -59,14 +59,14 @@ bool Aimbot::OnExecute()
     }
 
     //calculate the maximum backtrack tick
-    const int max_backtrack_tick = static_cast<int>(client::kMaxLagCompensation / game::server_info.interval_per_tick_) - 1;
+    const int max_backtrack_tick = static_cast<int>(game::kMaxLagCompensation / game::server_info.interval_per_tick_) - 1;
 
 #ifdef _DEBUG
     std::clog << "max backtrack tick on the curr server: " << max_backtrack_tick << '\n';
 #endif
 
     //add target position to the aimbot candidate list
-    for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
+    for (int entity_id = 0; entity_id < game::kMaxPlayerNum; ++entity_id)
     {
         //filter out invalid entity 
         if (!game::player_is_valid[entity_id]) continue;
@@ -118,7 +118,7 @@ bool Aimbot::OnExecute()
     int curr_backtrack_tick = 0;
     const int record_to_search = (user_interface::toggle_mode[user_interface::kBacktrack] == 1 ? max_backtrack_tick : 1);
 
-    for (int entity_id = 0; entity_id < client::kMaxPlayerNum; ++entity_id)
+    for (int entity_id = 0; entity_id < game::kMaxPlayerNum; ++entity_id)
     {
         //remove invalid entity
         if (!game::player_is_valid[entity_id])

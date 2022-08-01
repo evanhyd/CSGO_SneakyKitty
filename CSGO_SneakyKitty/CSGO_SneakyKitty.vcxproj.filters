@@ -40,9 +40,6 @@
     <Filter Include="Resources\weapon">
       <UniqueIdentifier>{2b20fe2b-176c-4456-b1f0-750f7c788251}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\client">
-      <UniqueIdentifier>{4ba2d8ed-732d-4f2c-a1e7-a8c070ec791b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources\module">
       <UniqueIdentifier>{21838e33-a92a-4fd8-8d13-77e194880e78}</UniqueIdentifier>
     </Filter>
@@ -122,9 +119,6 @@
   <ItemGroup>
     <ClCompile Include="module.cpp">
       <Filter>Resources\module</Filter>
-    </ClCompile>
-    <ClCompile Include="client.cpp">
-      <Filter>Resources\client</Filter>
     </ClCompile>
     <ClCompile Include="offsets.cpp">
       <Filter>Resources\offsets</Filter>
@@ -233,9 +227,6 @@
   <ItemGroup>
     <ClInclude Include="module.h">
       <Filter>Resources\module</Filter>
-    </ClInclude>
-    <ClInclude Include="client.h">
-      <Filter>Resources\client</Filter>
     </ClInclude>
     <ClInclude Include="offsets.h">
       <Filter>Resources\offsets</Filter>

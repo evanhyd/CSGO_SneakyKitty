@@ -374,7 +374,7 @@ int user_interface::CPlayVoice([[maybe_unused]] std::stringstream& ss)
 }
 int user_interface::CExpose([[maybe_unused]] std::stringstream& ss)
 {
-    for (int i = 0; i < client::kMaxPlayerNum; ++i)
+    for (int i = 0; i < game::kMaxPlayerNum; ++i)
     {
         if (!game::player_is_valid[i]) continue;
 
