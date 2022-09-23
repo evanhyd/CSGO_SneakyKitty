@@ -10,6 +10,7 @@ Version: x86
 
 ![rank](https://i.imgur.com/1SsP929.jpg)  
 8 Mar, 2020 @ 6:23pm  
+Silver -> Supreme in 3 months  
 
 # Features:  
 ## Entity Glow Hack
