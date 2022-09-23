@@ -4,6 +4,9 @@ IDE: Visual Studio
 SDK: Windows SDK  
 Version: x86  
 
+[Backtrack Preview](https://www.youtube.com/watch?v=pNCSimwlGjM)  
+[Backtrack + Antiaim Preview](https://www.youtube.com/watch?v=VmtZ2yJTb2s)  
+
 # Features:  
 ## Entity Glow Hack
 Dynamic color adjustment based on entity health  
