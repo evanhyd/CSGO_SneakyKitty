@@ -1,5 +1,5 @@
 # CSGO_SneakyKitty
-Third remake of mymtotally original CSGO external hacks, old name AKA CSGO_Cat_Sucker  
+Third remake of my totally original CSGO external hacks, old name AKA CSGO_Cat_Sucker  
 IDE: Visual Studio  
 SDK: Windows SDK  
 Version: x86  
