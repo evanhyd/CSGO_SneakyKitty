@@ -5,7 +5,11 @@ SDK: Windows SDK
 Version: x86  
 
 [Backtrack Preview](https://www.youtube.com/watch?v=pNCSimwlGjM)  
-[Backtrack + Antiaim Preview](https://www.youtube.com/watch?v=VmtZ2yJTb2s)  
+[Backtrack + Antiaim Preview (against other blatant cheater)](https://www.youtube.com/watch?v=VmtZ2yJTb2s)  
+[Silent Aim](https://youtu.be/MBunu9YRvlY)  
+
+![rank](https://i.imgur.com/1SsP929.jpg)  
+8 Mar, 2020 @ 6:23pm  
 
 # Features:  
 ## Entity Glow Hack
@@ -32,6 +36,9 @@ Fakelag on full time
 ## Desync
 Legit antiaim through micromovement  
 Z angle lean antiaim  
+
+![desync](https://i.imgur.com/HKAorpy.png)
+![desync2](https://i.imgur.com/xpCZxaz.jpg)
 
 ## Fake Lag
 Adaptive anti-trigger  
