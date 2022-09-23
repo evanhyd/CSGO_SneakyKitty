@@ -1,6 +1,8 @@
 # CSGO_SneakyKitty
-Third remake of my ~~copy-pasta~~ totally original CSGO external hacks, old name AKA CSGO_Cat_Sucker  
-Using WINAPI to read/write to process memory  
+Third remake of mymtotally original CSGO external hacks, old name AKA CSGO_Cat_Sucker  
+IDE: Visual Studio  
+SDK: Windows SDK  
+Version: x86  
 
 # Features:  
 ## Entity Glow Hack
