@@ -14,10 +14,14 @@ Silver -> Supreme in 3 months
 Adaptive aimbot fov and smoothness based on weapon categories  
 Static multipoint for different bone matrices  
 Ragebot with autofire +  silent aim, supports moon walking  
+
+## Video  
 [![silent_aim](https://img.youtube.com/vi/MBunu9YRvlY/0.jpg)](https://www.youtube.com/watch?v=MBunu9YRvlY)
 
 
 Time-bending bullet backtrack up to 200ms  
+
+## Video  
 [![backtrack](https://img.youtube.com/vi/pNCSimwlGjM/0.jpg)](https://www.youtube.com/watch?v=pNCSimwlGjM)
 
 
@@ -39,6 +43,8 @@ Z angle lean antiaim (lmao, Valve).
 
 Backtrack + Antiaim show case. The second half of the clip is me playing against enemy cheaters.   
 The video is recorded in enemy's POV who missed all the shots due to hitting my fake hitbox.  
+
+## Video  
 [![antiaim](https://img.youtube.com/vi/VmtZ2yJTb2s/0.jpg)](https://www.youtube.com/watch?v=VmtZ2yJTb2s)
 
 
