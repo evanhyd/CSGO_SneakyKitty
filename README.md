@@ -14,41 +14,46 @@ Version: x86
 Silver -> Supreme in 3 months  
 
 # Features:  
+
+## Aimbot
+Adaptive aimbot fov and smoothness based on weapon categories  
+Static multipoint for different bone matrices  
+Ragebot with autofire +  silent aim, supports moon walking  
+[![silent_aim](https://img.youtube.com/vi/MBunu9YRvlY/0.jpg)](https://www.youtube.com/watch?v=MBunu9YRvlY)
+
+
+Time-bending bullet backtrack up to 200ms  
+[![backtrack](https://img.youtube.com/vi/pNCSimwlGjM/0.jpg)](https://www.youtube.com/watch?v=pNCSimwlGjM)
+
+
 ## Entity Glow Hack
 Dynamic color adjustment based on entity health  
-Various glowing mode  
 Player model chaming  
 Brightness adjustment  
 
 ## Radar ESP  
 Reveal enemy on radar  
 
-## Aimbot
-Adaptive aimbot fov and smoothness based on weapon categories  
-Static multipoint for different bone matrices  
-Simple ragebot mode  
-Backtrack up to 200ms  
-Ragebot with silent aim, supports moon walk  
-
-## Fake Lag
-Adaptive anti-trigger  
-Fakelag on key pressed  
-Fakelag on full time  
-
 ## Desync
-Legit antiaim through micromovement  
-Z angle lean antiaim  
+Legit antiaim by desynchronizing the server hitbox and the client player model.  
+Achieved via micromovement to force the server clamping the lower body yaw to the incorrect angle.  
+Z angle lean antiaim (lmao, Valve).  
 
 ![desync](https://i.imgur.com/HKAorpy.png)
 ![desync2](https://i.imgur.com/xpCZxaz.jpg)
 
+Backtrack + Antiaim show case. The second half of the clip is me playing against enemy cheaters.   
+The video is recorded in enemy's POV who missed all the shots due to hitting my fake hitbox.  
+[![antiaim](https://img.youtube.com/vi/VmtZ2yJTb2s/0.jpg)](https://www.youtube.com/watch?v=VmtZ2yJTb2s)
+
+
 ## Fake Lag
 Adaptive anti-trigger  
-Fakelag on key pressed  
-Fakelag on full time  
+Fakelag on key pressed    
+Fakelag on full time   
 
 ## BHop
-Auto bunny hopping  
+Auto bunny hopping   
 
 ## Thirdperson
 Enable thirdperson player views
