@@ -42,9 +42,9 @@ Z angle lean antiaim (lmao, Valve).
 ![desync2](https://i.imgur.com/xpCZxaz.jpg)
 
 Backtrack + Antiaim show case. The second half of the clip is me playing against enemy cheaters.   
-The video is recorded in enemy's POV who missed all the shots due to hitting my fake hitbox.  
 
 ## Video  
+The video is recorded in enemy's POV who missed all the shots due to hitting my fake hitbox.  
 [![antiaim](https://img.youtube.com/vi/VmtZ2yJTb2s/0.jpg)](https://www.youtube.com/watch?v=VmtZ2yJTb2s)
 
 
