@@ -4,11 +4,6 @@ IDE: Visual Studio
 SDK: Windows SDK  
 Version: x86  
 
-# Video Showcase
-[Backtrack Preview](https://www.youtube.com/watch?v=pNCSimwlGjM)  
-[Backtrack + Antiaim Preview (against other blatant cheater)](https://www.youtube.com/watch?v=VmtZ2yJTb2s)  
-[Silent Aim](https://youtu.be/MBunu9YRvlY)  
-
 ![rank](https://i.imgur.com/1SsP929.jpg)  
 8 Mar, 2020 @ 6:23pm  
 Silver -> Supreme in 3 months  
